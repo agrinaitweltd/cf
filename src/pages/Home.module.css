@@ -28,13 +28,13 @@
 }
 
 .heroContent > * {
-  animation: fadeInUp 0.8s ease forwards;
+  animation: fadeInUp 0.85s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
   opacity: 0;
 }
-.heroContent > *:nth-child(1) { animation-delay: 0.35s; }
-.heroContent > *:nth-child(2) { animation-delay: 0.55s; }
-.heroContent > *:nth-child(3) { animation-delay: 0.75s; }
-.heroContent > *:nth-child(4) { animation-delay: 0.92s; }
+.heroContent > *:nth-child(1) { animation-delay: 0.25s; }
+.heroContent > *:nth-child(2) { animation-delay: 0.42s; }
+.heroContent > *:nth-child(3) { animation-delay: 0.58s; }
+.heroContent > *:nth-child(4) { animation-delay: 0.72s; }
 
 .heroTitle {
   font-size: clamp(2.8rem, 5.5vw, 5.2rem);
@@ -45,6 +45,39 @@
 }
 
 .heroAccent { color: var(--white); text-decoration: underline; text-decoration-color: rgba(255,255,255,0.30); text-underline-offset: 6px; }
+
+/* Typewriter */
+.heroTypeWrap {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 2px;
+  color: var(--white);
+  position: relative;
+}
+
+.heroTyped {
+  text-decoration: underline;
+  text-decoration-color: rgba(255, 255, 255, 0.30);
+  text-underline-offset: 6px;
+  min-width: 2ch;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+.heroCursor {
+  display: inline-block;
+  width: 3px;
+  height: 0.82em;
+  background: var(--white);
+  border-radius: 2px;
+  margin-left: 4px;
+  vertical-align: baseline;
+  animation: blink 1s step-start infinite;
+  flex-shrink: 0;
+}
 
 .heroSub {
   font-size: 1.1rem;
@@ -66,7 +99,7 @@
   align-items: center;
   gap: 20px;
   margin-top: 44px;
-  animation: fadeInUp 0.8s ease 1.1s forwards;
+  animation: fadeInUp 0.85s cubic-bezier(0.2, 0.8, 0.2, 1) 0.88s forwards;
   opacity: 0;
 }
 .heroStat {
@@ -131,6 +164,7 @@
   flex-direction: column;
   align-items: center;
   box-shadow: 0 8px 40px rgba(0,0,0,0.60);
+  animation: float 4s ease-in-out infinite;
 }
 
 .badgeNum {
@@ -166,16 +200,39 @@
   border: 1px solid var(--border);
   border-radius: var(--r-md);
   padding: 36px 28px;
-  transition: transform var(--t-base), border-color var(--t-base);
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
+              border-color 0.35s ease,
+              box-shadow 0.35s ease;
+  position: relative;
+  overflow: hidden;
+}
+.whyCard::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transform: scaleX(0);
+  transition: transform 0.4s ease;
 }
 .whyCard:hover {
-  transform: translateY(-4px);
+  transform: translateY(-6px);
   border-color: var(--accent-border);
+  box-shadow: 0 16px 48px rgba(0,0,0,0.5);
+}
+.whyCard:hover::before {
+  transform: scaleX(1);
 }
 
 .whyIcon {
   color: var(--accent);
   margin-bottom: 20px;
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.whyCard:hover .whyIcon {
+  transform: scale(1.18) rotate(-3deg);
 }
 
 .whyTitle {
@@ -208,6 +265,11 @@
   overflow: hidden;
   position: relative;
   cursor: pointer;
+  transition: transform 0.42s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.42s ease;
+}
+.projectCard:hover {
+  transform: scale(1.02);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.7);
 }
 
 .projectOverlay {
@@ -217,10 +279,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background var(--t-base);
+  transition: background 0.35s ease;
 }
 .projectCard:hover .projectOverlay {
-  background: rgba(255, 255, 255, 0.18);
+  background: rgba(0,0,0,0.45);
 }
 
 .projectLabel {

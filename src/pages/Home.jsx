@@ -1,10 +1,42 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useIntersection } from '../hooks/useIntersection'
 import ServiceCard from '../components/ServiceCard'
 import CTABanner from '../components/CTABanner'
 import { services } from '../data/services'
 import styles from './Home.module.css'
+
+const CYCLE_WORDS = ['Renovations', 'Carpentry', 'Electrics', 'Plumbing', 'Decorating', 'Handyman']
+
+function useTypewriter(words, typingSpeed = 80, deletingSpeed = 50, pause = 1800) {
+  const [display, setDisplay] = useState('')
+  const [wordIdx, setWordIdx] = useState(0)
+  const [phase, setPhase] = useState('typing') // 'typing' | 'pausing' | 'deleting'
+
+  useEffect(() => {
+    const word = words[wordIdx]
+    let timeout
+
+    if (phase === 'typing') {
+      if (display.length < word.length) {
+        timeout = setTimeout(() => setDisplay(word.slice(0, display.length + 1)), typingSpeed)
+      } else {
+        timeout = setTimeout(() => setPhase('deleting'), pause)
+      }
+    } else if (phase === 'deleting') {
+      if (display.length > 0) {
+        timeout = setTimeout(() => setDisplay(display.slice(0, -1)), deletingSpeed)
+      } else {
+        setWordIdx((i) => (i + 1) % words.length)
+        setPhase('typing')
+      }
+    }
+
+    return () => clearTimeout(timeout)
+  }, [display, phase, wordIdx, words, typingSpeed, deletingSpeed, pause])
+
+  return display
+}
 
 /* Why Choose Us icons */
 const IconShield = () => (
@@ -41,6 +73,7 @@ const whyUs = [
 ]
 
 function Home() {
+  const typedWord = useTypewriter(CYCLE_WORDS)
   const [servicesRef, servicesVisible] = useIntersection()
   const [aboutRef, aboutVisible]       = useIntersection()
   const [whyRef, whyVisible]           = useIntersection()
@@ -55,9 +88,12 @@ function Home() {
           <div className={styles.heroContent}>
             <span className="label">UK Property Improvement Specialists</span>
             <h1 className={styles.heroTitle}>
-              Your Trusted Property<br />
-              <span className={styles.heroAccent}>Improvement Experts</span><br />
-              in the UK
+              Expert{' '}
+              <span className={styles.heroTypeWrap}>
+                <span className={styles.heroTyped}>{typedWord}</span>
+                <span className={styles.heroCursor} aria-hidden="true" />
+              </span>
+              <br />Services Across the UK
             </h1>
             <p className={styles.heroSub}>
               We deliver reliable, high-quality property improvements across the UK.

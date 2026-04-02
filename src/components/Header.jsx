@@ -19,10 +19,21 @@ function Header() {
     return () => { document.body.style.overflow = '' }
   }, [mobileOpen])
 
+  // Close on Escape key
+  useEffect(() => {
+    if (!mobileOpen) return
+    const onKey = (e) => { if (e.key === 'Escape') setMobileOpen(false) }
+    document.addEventListener('keydown', onKey)
+    return () => document.removeEventListener('keydown', onKey)
+  }, [mobileOpen])
+
   const close = () => setMobileOpen(false)
 
   const navClass = ({ isActive }) =>
     isActive ? `${styles.navLink} ${styles.active}` : styles.navLink
+
+  const mobileLinkClass = ({ isActive }) =>
+    isActive ? `${styles.mobileLink} ${styles.mobileLinkActive}` : styles.mobileLink
 
   return (
     <header className={`${styles.header} ${scrolled ? styles.scrolled : ''}`}>
@@ -89,27 +100,69 @@ function Header() {
         className={`${styles.mobileNav} ${mobileOpen ? styles.mobileNavOpen : ''}`}
         aria-label="Mobile navigation"
         aria-hidden={!mobileOpen}
+        inert={!mobileOpen ? '' : undefined}
       >
-        <NavLink to="/" end className={styles.mobileLink} onClick={close}>Home</NavLink>
-        <NavLink to="/about" className={styles.mobileLink} onClick={close}>About</NavLink>
-        <NavLink to="/services" className={styles.mobileLink} onClick={close}>Services</NavLink>
+        <div className={styles.mobileLinks}>
+          <NavLink to="/" end className={mobileLinkClass} onClick={close} style={{ '--item-i': 0 }}>
+            <span className={styles.mobileNum}>01</span>
+            <span className={styles.mobileTxt}>Home</span>
+            <svg className={styles.mobileArrow} width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </NavLink>
 
-        <div className={styles.mobileSubGroup}>
-          {services.map(s => (
-            <Link
-              key={s.id}
-              to={`/services/${s.slug}`}
-              className={styles.mobileSubLink}
-              onClick={close}
-            >
-              {s.title}
-            </Link>
-          ))}
+          <NavLink to="/about" className={mobileLinkClass} onClick={close} style={{ '--item-i': 1 }}>
+            <span className={styles.mobileNum}>02</span>
+            <span className={styles.mobileTxt}>About</span>
+            <svg className={styles.mobileArrow} width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </NavLink>
+
+          <NavLink to="/services" className={mobileLinkClass} onClick={close} style={{ '--item-i': 2 }}>
+            <span className={styles.mobileNum}>03</span>
+            <span className={styles.mobileTxt}>Services</span>
+            <svg className={styles.mobileArrow} width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </NavLink>
+
+          <div className={styles.mobileSubGroup}>
+            {services.map(s => (
+              <Link key={s.id} to={`/services/${s.slug}`} className={styles.mobileSubLink} onClick={close}>
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+                {s.title}
+              </Link>
+            ))}
+          </div>
+
+          <NavLink to="/projects" className={mobileLinkClass} onClick={close} style={{ '--item-i': 3 }}>
+            <span className={styles.mobileNum}>04</span>
+            <span className={styles.mobileTxt}>Projects</span>
+            <svg className={styles.mobileArrow} width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </NavLink>
+
+          <NavLink to="/contact" className={mobileLinkClass} onClick={close} style={{ '--item-i': 4 }}>
+            <span className={styles.mobileNum}>05</span>
+            <span className={styles.mobileTxt}>Contact</span>
+            <svg className={styles.mobileArrow} width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </NavLink>
         </div>
 
-        <NavLink to="/projects" className={styles.mobileLink} onClick={close}>Projects</NavLink>
-        <NavLink to="/contact" className={styles.mobileLink} onClick={close}>Contact</NavLink>
-        <Link to="/contact" className={styles.mobileCta} onClick={close}>Get a Quote</Link>
+        <div className={styles.mobileFooter}>
+          <Link to="/contact" className={styles.mobileCta} onClick={close}>
+            Get a Free Quote
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </Link>
+        </div>
       </nav>
     </header>
   )
