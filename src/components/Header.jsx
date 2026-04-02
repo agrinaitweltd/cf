@@ -36,7 +36,8 @@ function Header() {
     isActive ? `${styles.mobileLink} ${styles.mobileLinkActive}` : styles.mobileLink
 
   return (
-    <header className={`${styles.header} ${scrolled ? styles.scrolled : ''}`}>
+    <>
+    <header className={`${styles.header} ${scrolled ? styles.scrolled : ''} ${mobileOpen ? styles.menuOpen : ''}`}>
       <div className={styles.inner}>
 
         {/* Logo */}
@@ -94,8 +95,9 @@ function Header() {
           <span /><span /><span />
         </button>
       </div>
+    </header>
 
-      {/* Mobile Drawer */}
+      {/* Mobile Drawer - outside header to avoid backdrop-filter containing block */}
       <nav
         className={`${styles.mobileNav} ${mobileOpen ? styles.mobileNavOpen : ''}`}
         aria-label="Mobile navigation"
@@ -164,7 +166,7 @@ function Header() {
           </Link>
         </div>
       </nav>
-    </header>
+    </>
   )
 }
 
