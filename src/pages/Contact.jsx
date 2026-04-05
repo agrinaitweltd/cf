@@ -50,7 +50,7 @@ function Contact() {
       <PageBanner
         title="Contact Us"
         subtitle="Ready to start your project? Get in touch for a free, no-obligation consultation and quote."
-        image="/contact-banner.jpg"
+        image="/contact-banner.png"
       />
 
       <section className="section">

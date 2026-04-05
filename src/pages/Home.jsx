@@ -221,7 +221,7 @@ function Home() {
               <div
                 key={n}
                 className={`reveal ${projectsVisible ? 'visible' : ''} d${i + 1} ${styles.projectCard}`}
-                style={{ backgroundImage: `url(/project${n}.jpg)` }}
+                style={{ backgroundImage: `url(/project${n}.png)` }}
                 role="img"
                 aria-label={`Project ${n}`}
               >

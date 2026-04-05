@@ -115,8 +115,8 @@ function About() {
           </div>
           <div className={styles.teamGrid}>
             {[
-              { img: '/team1.jpg', name: 'James Carter', role: 'Founder & Lead Renovations Specialist' },
-              { img: '/team2.jpg', name: 'Mark Thompson', role: 'Head of Electrical & Plumbing' },
+              { img: '/team1.png', name: 'James Carter', role: 'Founder & Lead Renovations Specialist' },
+              { img: '/team2.png', name: 'Mark Thompson', role: 'Head of Electrical & Plumbing' },
             ].map((member, i) => (
               <div key={member.name} className={`reveal ${teamVisible ? 'visible' : ''} d${i + 1} ${styles.teamCard}`}>
                 <div

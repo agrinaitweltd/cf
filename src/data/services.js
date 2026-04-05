@@ -42,7 +42,7 @@
     description: `Our professional painting and decorating service delivers impeccable finishes for both residential and commercial properties. Using premium materials and proven techniques, our experienced decorators create beautiful, long-lasting results that elevate any space.\n\nWe handle everything from thorough surface preparation and filling through to final coats, ensuring every detail is executed with precision. Whether you're refreshing a single room or undertaking a full commercial repaint, the result is always showroom quality.`,
     approach: `Preparation is everything in decorating â€” our team never takes shortcuts. Before a brush touches a wall we assess and repair the substrate: filling cracks, sanding imperfections, priming bare surfaces and masking all fixtures. We use trade-grade paints from brands including Farrow & Ball, Little Greene and Dulux Trade, and can colour-match to any specification. Our decorators work cleanly with full floor and furniture protection, and every project ends with a thorough post-paint clean and client walkthrough.`,
     serviceImage: '/service-painting.png',
-    banner: '/painting-banner.jpg',
+    banner: '/painting-banner.png',
     detail: '/painting-detail.png',
     stats: [
       { num: '1,200+', label: 'Properties Decorated' },
@@ -76,8 +76,8 @@
     description: `Our skilled carpenters combine traditional craftsmanship with modern techniques to deliver bespoke woodwork solutions for every setting. From fitted furniture and wardrobes to structural timber work, we approach every job with precision, care and a genuine pride in the finished result.\n\nAll work is completed to the highest standard using quality materials sourced from trusted suppliers. We take time to understand your vision and translate it into beautifully crafted woodwork that enhances your property.`,
     approach: `We start every carpentry project with detailed measurements and a design conversation â€” whether that's matching an existing finish, selecting a new timber species or agreeing a painted MDF specification. We fabricate most components in our workshop before arriving on site, which minimises disruption and maximises fit accuracy. All joints, fixings and finishes are chosen for long-term durability, and we carry out a thorough site check on every installation before considering a project complete.`,
     serviceImage: '/service-carpentry.png',
-    banner: '/carpentry-banner.jpg',
-    detail: '/carpentry-detail.jpg',
+    banner: '/carpentry-banner.png',
+    detail: '/carpentry-detail.png',
     stats: [
       { num: '800+',  label: 'Fitted Installations' },
       { num: '100%',  label: 'Bespoke Made-to-Measure' },
@@ -110,8 +110,8 @@
     description: `Our reliable handyman service covers all those essential repairs and maintenance tasks that keep your property in top condition. From minor fixes to larger maintenance projects, our experienced team handles everything with the same level of professionalism and care.\n\nWe're flexible, efficient and always leave your home or workplace clean and tidy. Available for one-off jobs or ongoing property maintenance contracts, we take the hassle out of keeping your property looking and functioning its best.`,
     approach: `Our handyman team operates with a fully stocked van covering hundreds of standard repair scenarios, meaning the vast majority of jobs are resolved in a single visit. We operate on transparent hourly rates with no call-out fee, and we'll always tell you upfront if a repair requires a specialist trade. For landlords and property managers, we offer scheduled maintenance contracts with priority booking and monthly reporting, ensuring your portfolio stays in top condition year-round.`,
     serviceImage: '/service-handyman.png',
-    banner: '/handyman-banner.jpg',
-    detail: '/handyman-detail.jpg',
+    banner: '/handyman-banner.png',
+    detail: '/handyman-detail.png',
     stats: [
       { num: '3,000+', label: 'Jobs Completed' },
       { num: 'Same',   label: 'Day Service Available' },
@@ -144,8 +144,8 @@
     description: `Our qualified and certified electricians provide a full range of electrical services for residential and commercial properties across the UK. All work is carried out in compliance with current UK wiring regulations (BS 7671) with the appropriate certifications and documentation provided upon completion.\n\nWe prioritise safety above all else while delivering efficient, reliable electrical solutions. Whether it's a routine installation or a complex rewire, you can trust our team to deliver work of the highest standard.`,
     approach: `All electrical work is carried out by fully qualified, Part P registered electricians. Before any installation or repair we carry out a comprehensive assessment of your existing circuits to identify any underlying issues. On completion of every notifiable project, we issue a full Electrical Installation Certificate or Minor Works Certificate, which you'll need for buildings insurance and when selling the property. We work with minimal disruption, routing cables neatly and making good all wall surfaces afterwards.`,
     serviceImage: '/service-electrics.png',
-    banner: '/electrics-banner.jpg',
-    detail: '/electrics-detail.jpg',
+    banner: '/electrics-banner.png',
+    detail: '/electrics-detail.png',
     stats: [
       { num: '600+',  label: 'Electrical Projects' },
       { num: 'Part P', label: 'Registered Electricians' },
@@ -178,8 +178,8 @@
     description: `Our experienced plumbers deliver a comprehensive range of plumbing services for both residential and commercial clients across the UK. Whether you need routine maintenance, an emergency repair or a complete bathroom installation, our team provides efficient, clean and reliable solutions.\n\nWe work with all types of plumbing systems and use quality, manufacturer-approved materials for lasting results. Every job is completed to the highest standard with full respect for your home and your time.`,
     approach: `Our plumbers are Gas Safe registered where gas systems are involved and fully trained on copper, plastic and press-fit pipework systems. We always investigate the root cause of a leak or failure rather than applying a temporary patch â€” you'll never face the same problem twice. For bathroom and kitchen projects, we work closely with our carpentry and tiling teams to deliver a seamless, coordinated installation. All plumbing work is pressure-tested on completion, and we provide written documentation of all gas works as required.`,
     serviceImage: '/service-plumbing.png',
-    banner: '/plumbing-banner.jpg',
-    detail: '/plumbing-detail.jpg',
+    banner: '/plumbing-banner.png',
+    detail: '/plumbing-detail.png',
     stats: [
       { num: '700+',     label: 'Plumbing Projects' },
       { num: 'Gas Safe', label: 'Registered Engineers' },

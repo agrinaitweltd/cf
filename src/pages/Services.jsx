@@ -13,7 +13,7 @@ function Services() {
       <PageBanner
         title="Our Services"
         subtitle="A complete range of professional property improvement services, delivered to the highest standard across the UK."
-        image="/about-banner.jpg"
+        image="/about-banner.png"
       />
 
       {/* ── Services Grid ── */}
