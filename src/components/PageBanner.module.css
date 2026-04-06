@@ -6,13 +6,12 @@
   background-color: #1a0d00;
   overflow: hidden;
 }
-
+}
 @media (max-width: 900px) {
   .banner {
     background-size: cover;
     background-position: center;
   }
-}
 }
 
 /* subtle parallax-like scale on the bg image */
