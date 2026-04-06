@@ -50,11 +50,12 @@ function Footer() {
                 </a>
                 {/* TikTok */}
                 <a href="https://www.tiktok.com/@cfhub.uk" aria-label="TikTok" className={styles.socialIcon} target="_blank" rel="noopener noreferrer">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M21.5 7.5c-1.38 0-2.5-1.12-2.5-2.5V3h-3v12c0 1.1-.9 2-2 2s-2-.9-2-2 .9-2 2-2c.34 0 .67.09.95.24V11.1c-.31-.07-.65-.1-1-.1-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V8.56c.73.28 1.52.44 2.35.44h.15V7.5z"/>
+                  <svg width="18" height="18" viewBox="0 0 256 256" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <g>
+                      <path d="M216.4 79.2a61.2 61.2 0 0 1-37.6-12.5V152a56 56 0 1 1-56-56 55.2 55.2 0 0 1 8 .6v24.2a32 32 0 1 0 32 32V24h24.2a37.2 37.2 0 0 0 37.2 37.2z"/>
+                    </g>
                   </svg>
                 </a>
-                <span className={styles.socialHandle}>@cfhub.uk</span>
               </div>
             </div>
 
