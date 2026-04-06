@@ -124,12 +124,13 @@ function ServicePage({ service }) {
         </div>
       </section>
 
-      {/* â”€â”€ FAQ â”€â”€ */}
+      {/* ——— FAQ ——— */}
       <section className="section">
         <div className="container">
           <div ref={faqRef} className={`section-head ${faqVisible ? 'reveal visible' : 'reveal'}`}>
-            <span className="label">Common Questions</span>
+            <span className="label">Frequently Asked</span>
             <h2>Frequently Asked Questions</h2>
+            <p className="faq-intro">Below you'll find answers to the most common questions about our services. If you need more information, please contact us directly.</p>
           </div>
           <div className={styles.faqList}>
             {service.faq.map((item, i) => (
