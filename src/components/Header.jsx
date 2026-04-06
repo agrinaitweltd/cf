@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react'
-import { Link, NavLink } from 'react-router-dom'
+
+import { useState, useEffect, useRef } from 'react'
+import { Link, NavLink, useNavigate } from 'react-router-dom'
 import styles from './Header.module.css'
 import { services } from '../data/services'
 
@@ -7,6 +8,9 @@ function Header() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [dropdownOpen, setDropdownOpen] = useState(false)
+  const [search, setSearch] = useState('')
+  const searchInput = useRef(null)
+  const navigate = useNavigate()
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60)
@@ -35,69 +39,124 @@ function Header() {
   const mobileLinkClass = ({ isActive }) =>
     isActive ? `${styles.mobileLink} ${styles.mobileLinkActive}` : styles.mobileLink
 
+  // Search submit handler
+  const handleSearch = (e) => {
+    e.preventDefault()
+    if (search.trim()) {
+      navigate(`/search?q=${encodeURIComponent(search.trim())}`)
+      setSearch('')
+      if (searchInput.current) searchInput.current.blur()
+    }
+  }
+
+  // Quote button handler
+  const handleQuote = () => {
+    navigate('/contact')
+  }
+
   return (
     <>
-    <header className={`${styles.header} ${scrolled ? styles.scrolled : ''} ${mobileOpen ? styles.menuOpen : ''}`}>
-      <div className={styles.inner}>
-
-        {/* Logo */}
-        <Link to="/" className={styles.logo} onClick={close}>
-          <img src="/logo.png" alt="CF Hub UK" className={styles.logoImg + ' animate-fadein'} loading="lazy" decoding="async" />
-        </Link>
-
-        {/* Desktop Nav */}
-        <nav className={styles.desktopNav} aria-label="Main navigation">
-          <NavLink to="/" end className={navClass}>Home</NavLink>
-          <NavLink to="/about" className={navClass}>About</NavLink>
-
-          {/* Services dropdown */}
-          <div
-            className={styles.dropdownWrap}
-            onMouseEnter={() => setDropdownOpen(true)}
-            onMouseLeave={() => setDropdownOpen(false)}
-          >
-            <NavLink to="/services" end={false} className={navClass}>
-              Services
-              <svg className={`${styles.chevron} ${dropdownOpen ? styles.chevronUp : ''}`} width="10" height="7" viewBox="0 0 10 7" fill="none" aria-hidden="true">
-                <path d="M1 1l4 4 4-4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
-              </svg>
-            </NavLink>
-            <div className={`${styles.dropdown} ${dropdownOpen ? styles.dropdownVisible : ''}`} role="menu">
-              {services.map(s => (
-                <Link
-                  key={s.id}
-                  to={`/services/${s.slug}`}
-                  className={styles.dropdownItem}
-                  onClick={() => setDropdownOpen(false)}
-                  role="menuitem"
-                >
-                  {s.title}
-                </Link>
-              ))}
-            </div>
+      {/* Top bar */}
+      <div className={styles.topBar}>
+        <div className={styles.topBarInner}>
+          <Link to="/" className={styles.topLogo} aria-label="CF Hub UK Home">
+            <img src="/logo.png" alt="CF Hub UK" className={styles.topLogoImg} loading="lazy" decoding="async" />
+          </Link>
+          <div className={styles.topLinks}>
+            <NavLink to="/about" className={styles.topLink}>About us</NavLink>
+            <span className={styles.topSep}>|</span>
+            <NavLink to="/services" className={styles.topLink}>Our expertise</NavLink>
+            <span className={styles.topSep}>|</span>
+            <NavLink to="/service-areas" className={styles.topLink}>Service areas</NavLink>
+            <span className={styles.topSep}>|</span>
+            <NavLink to="/contact" className={styles.topLink}>Contact us</NavLink>
           </div>
-
-          <NavLink to="/projects" className={navClass}>Projects</NavLink>
-          <NavLink to="/contact" className={navClass}>Contact</NavLink>
-        </nav>
-
-        <Link to="/contact" className={styles.ctaBtn} aria-label="Get a quote">
-          Get a Quote
-        </Link>
-
-        {/* Hamburger */}
-        <button
-          className={`${styles.hamburger} ${mobileOpen ? styles.hamburgerOpen : ''}`}
-          onClick={() => setMobileOpen(v => !v)}
-          aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
-          aria-expanded={mobileOpen}
-        >
-          <span /><span /><span />
-        </button>
+          <div className={styles.topContact}>
+            <a href="tel:07960481933" className={styles.topPhone}>07960 481933</a>
+            <span className={styles.topSep}>|</span>
+            <a href="mailto:enquiries@cfhubuk.com" className={styles.topEmail}>enquiries@cfhubuk.com</a>
+          </div>
+        </div>
       </div>
-    </header>
 
-      {/* Mobile Drawer - outside header to avoid backdrop-filter containing block */}
+      {/* Main header */}
+      <header className={`${styles.header} ${scrolled ? styles.scrolled : ''} ${mobileOpen ? styles.menuOpen : ''}`}>
+        <div className={styles.inner}>
+          {/* Logo (hidden on desktop, visible on mobile) */}
+          <Link to="/" className={styles.logo} onClick={close}>
+            <img src="/logo.png" alt="CF Hub UK" className={styles.logoImg + ' animate-fadein'} loading="lazy" decoding="async" />
+          </Link>
+
+          {/* Desktop Nav */}
+          <nav className={styles.desktopNav} aria-label="Main navigation">
+            <NavLink to="/" end className={navClass}>Home</NavLink>
+            <NavLink to="/about" className={navClass}>About</NavLink>
+            <div
+              className={styles.dropdownWrap}
+              onMouseEnter={() => setDropdownOpen(true)}
+              onMouseLeave={() => setDropdownOpen(false)}
+            >
+              <NavLink to="/services" end={false} className={navClass}>
+                Services
+                <svg className={`${styles.chevron} ${dropdownOpen ? styles.chevronUp : ''}`} width="10" height="7" viewBox="0 0 10 7" fill="none" aria-hidden="true">
+                  <path d="M1 1l4 4 4-4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
+                </svg>
+              </NavLink>
+              <div className={`${styles.dropdown} ${dropdownOpen ? styles.dropdownVisible : ''}`} role="menu">
+                {services.map(s => (
+                  <Link
+                    key={s.id}
+                    to={`/services/${s.slug}`}
+                    className={styles.dropdownItem}
+                    onClick={() => setDropdownOpen(false)}
+                    role="menuitem"
+                  >
+                    {s.title}
+                  </Link>
+                ))}
+              </div>
+            </div>
+            <NavLink to="/service-areas" className={navClass}>Service Areas</NavLink>
+            <NavLink to="/contact" className={navClass}>Contact</NavLink>
+          </nav>
+
+          {/* Search bar */}
+          <form className={styles.searchForm} onSubmit={handleSearch} role="search">
+            <input
+              ref={searchInput}
+              type="search"
+              className={styles.searchInput}
+              placeholder="Search..."
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+              aria-label="Search site"
+            />
+            <button type="submit" className={styles.searchBtn} aria-label="Search">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="2" />
+                <path d="M20 20l-3.5-3.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+              </svg>
+            </button>
+          </form>
+
+          {/* Quote button */}
+          <button className={styles.quoteBtn} onClick={handleQuote} type="button" aria-label="Get a quote">
+            Quote <span aria-hidden="true">→</span>
+          </button>
+
+          {/* Hamburger */}
+          <button
+            className={`${styles.hamburger} ${mobileOpen ? styles.hamburgerOpen : ''}`}
+            onClick={() => setMobileOpen(v => !v)}
+            aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={mobileOpen}
+          >
+            <span /><span /><span />
+          </button>
+        </div>
+      </header>
+
+      {/* Mobile Drawer - unchanged */}
       <nav
         className={`${styles.mobileNav} ${mobileOpen ? styles.mobileNavOpen : ''}`}
         aria-label="Mobile navigation"
@@ -112,7 +171,6 @@ function Header() {
               <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </NavLink>
-
           <NavLink to="/about" className={mobileLinkClass} onClick={close} style={{ '--item-i': 1 }}>
             <span className={styles.mobileNum}>02</span>
             <span className={styles.mobileTxt}>About</span>
@@ -120,7 +178,6 @@ function Header() {
               <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </NavLink>
-
           <NavLink to="/services" className={mobileLinkClass} onClick={close} style={{ '--item-i': 2 }}>
             <span className={styles.mobileNum}>03</span>
             <span className={styles.mobileTxt}>Services</span>
@@ -128,7 +185,6 @@ function Header() {
               <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </NavLink>
-
           <div className={styles.mobileSubGroup}>
             {services.map(s => (
               <Link key={s.id} to={`/services/${s.slug}`} className={styles.mobileSubLink} onClick={close}>
@@ -139,7 +195,6 @@ function Header() {
               </Link>
             ))}
           </div>
-
           <NavLink to="/projects" className={mobileLinkClass} onClick={close} style={{ '--item-i': 3 }}>
             <span className={styles.mobileNum}>04</span>
             <span className={styles.mobileTxt}>Projects</span>
@@ -147,7 +202,6 @@ function Header() {
               <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </NavLink>
-
           <NavLink to="/contact" className={mobileLinkClass} onClick={close} style={{ '--item-i': 4 }}>
             <span className={styles.mobileNum}>05</span>
             <span className={styles.mobileTxt}>Contact</span>
@@ -156,7 +210,6 @@ function Header() {
             </svg>
           </NavLink>
         </div>
-
         <div className={styles.mobileFooter}>
           <Link to="/contact" className={styles.mobileCta} onClick={close}>
             Get a Free Quote
