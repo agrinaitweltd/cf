@@ -112,7 +112,7 @@ function Footer() {
         <div className="container">
           <div className={styles.bottomInner}>
             <p className={styles.copy}>
-              &copy; {year} CF HUB UK. All rights reserved.
+              &copy; {year} CF HUB UK. All rights reserved. Made & Developed By Kavo Tech <a href="https://kavotech.uk" target="_blank" rel="noopener noreferrer">https://kavotech.uk</a>
             </p>
             <div className={styles.bottomLinks}>
               <a href="#" className={styles.bottomLink}>Privacy Policy</a>
