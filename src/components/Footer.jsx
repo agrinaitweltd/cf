@@ -48,6 +48,13 @@ function Footer() {
                     <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
                   </svg>
                 </a>
+                {/* TikTok */}
+                <a href="https://www.tiktok.com/@cfhub.uk" aria-label="TikTok" className={styles.socialIcon} target="_blank" rel="noopener noreferrer">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M21.5 7.5c-1.38 0-2.5-1.12-2.5-2.5V3h-3v12c0 1.1-.9 2-2 2s-2-.9-2-2 .9-2 2-2c.34 0 .67.09.95.24V11.1c-.31-.07-.65-.1-1-.1-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V8.56c.73.28 1.52.44 2.35.44h.15V7.5z"/>
+                  </svg>
+                </a>
+                <span className={styles.socialHandle}>@cfhub.uk</span>
               </div>
             </div>
 
@@ -101,13 +108,6 @@ function Footer() {
                   <span>Serving all across the United Kingdom</span>
                 </div>
                 </div>
-                          {/* TikTok */}
-                          <a href="https://www.tiktok.com/@cfhub.uk" aria-label="TikTok" className={styles.socialIcon} target="_blank" rel="noopener noreferrer">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                              <path d="M21.5 7.5c-1.38 0-2.5-1.12-2.5-2.5V3h-3v12c0 1.1-.9 2-2 2s-2-.9-2-2 .9-2 2-2c.34 0 .67.09.95.24V11.1c-.31-.07-.65-.1-1-.1-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V8.56c.73.28 1.52.44 2.35.44h.15V7.5z"/>
-                            </svg>
-                          </a>
-                          <span className={styles.socialHandle}>@cfhub.uk</span>
             </div>
 
           </div>
