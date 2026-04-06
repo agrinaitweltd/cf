@@ -44,7 +44,7 @@ function ServicePage({ service }) {
         image={service.banner}
       />
 
-      {/* â”€â”€ Stats Bar â”€â”€ */}
+      {/* ——— Stats Bar ——— */}
       <section className={styles.statsBar}>
         <div className="container">
           <div ref={statsRef} className={styles.statsGrid}>
@@ -58,12 +58,12 @@ function ServicePage({ service }) {
         </div>
       </section>
 
-      {/* â”€â”€ Main Content â”€â”€ */}
+      {/* ——— Main Content ——— */}
       <section className="section">
         <div className="container">
           <div ref={bodyRef} className={styles.bodyGrid}>
 
-            {/* Left â€“ detail image */}
+            {/* Left – detail image */}
             <div className={`reveal-left ${bodyVisible ? 'visible' : ''}`}>
               <div
                 className={styles.detailImage}
@@ -73,7 +73,7 @@ function ServicePage({ service }) {
               />
             </div>
 
-            {/* Right â€“ description + includes */}
+            {/* Right – description + includes */}
             <div className={`reveal-right ${bodyVisible ? 'visible' : ''} ${styles.bodyContent}`}>
               <span className="label">About This Service</span>
               <h2>{service.tagline}</h2>
@@ -108,7 +108,7 @@ function ServicePage({ service }) {
         </div>
       </section>
 
-      {/* â”€â”€ Our Approach â”€â”€ */}
+      {/* ——— Our Approach ——— */}
       <section className={`section section--alt ${styles.approachSection}`}>
         <div className="container">
           <div className={styles.approachGrid}>
@@ -142,7 +142,7 @@ function ServicePage({ service }) {
         </div>
       </section>
 
-      {/* â”€â”€ Other Services â”€â”€ */}
+      {/* ——— Other Services ——— */}
       <section className={`section section--alt ${styles.othersSection}`}>
         <div className="container">
           <div className="section-head">

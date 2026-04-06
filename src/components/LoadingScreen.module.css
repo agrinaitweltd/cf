@@ -1,0 +1,50 @@
+
+.loadingRoot {
+  position: fixed;
+  inset: 0;
+  background: var(--bg-primary, #0D0D0D); /* use site theme */
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.centeredLogo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+}
+
+
+.logoImg {
+  width: 96px;
+  height: 96px;
+  object-fit: contain;
+  animation: logoSpin 1.2s cubic-bezier(0.7,0.2,0.2,1.2) infinite;
+  user-select: none;
+  pointer-events: none;
+}
+
+@keyframes logoSpin {
+  0% { transform: rotate(-18deg); }
+  80% { transform: rotate(360deg); }
+  100% { transform: rotate(360deg); }
+}
+
+
+.swipeReveal {
+  position: fixed;
+  inset: 0;
+  background: #fff; /* white for swipe */
+  z-index: 10000;
+  animation: swipeIn 1s cubic-bezier(0.7,0.2,0.2,1.2) forwards;
+}
+
+@keyframes swipeIn {
+  0% { transform: translateX(-100vw); }
+  80% { transform: translateX(0); }
+  100% { transform: translateX(100vw); }
+}

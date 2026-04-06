@@ -1,8 +1,9 @@
-import { lazy, Suspense } from 'react'
+import { lazy, Suspense, useState } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import ScrollToTop from './components/ScrollToTop'
+import LoadingScreen from './components/LoadingScreen'
 
 const Home        = lazy(() => import('./pages/Home'))
 const About       = lazy(() => import('./pages/About'))
@@ -16,7 +17,21 @@ const Handyman    = lazy(() => import('./pages/Handyman'))
 const Electrics   = lazy(() => import('./pages/Electrics'))
 const Plumbing    = lazy(() => import('./pages/Plumbing'))
 
+import { useEffect } from 'react';
+
 function App() {
+  const [loading, setLoading] = useState(true); // Always show loading screen for testing
+
+  useEffect(() => {
+    if (!loading) {
+      window.sessionStorage.setItem('cf-initial-loaded', 'true');
+    }
+  }, [loading]);
+
+  if (loading) {
+    return <LoadingScreen onFinish={() => setLoading(false)} />;
+  }
+
   return (
     <>
       <ScrollToTop />
@@ -40,7 +55,7 @@ function App() {
       </main>
       <Footer />
     </>
-  )
+  );
 }
 
 export default App
