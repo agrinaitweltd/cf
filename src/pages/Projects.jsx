@@ -6,11 +6,14 @@ import styles from './Projects.module.css'
 
 const projects = [
   { id: 1, img: '/project1.png', title: 'Full Kitchen Renovation',      category: 'Renovations' },
-  { id: 2, img: '/project2.png', title: 'Contemporary Bathroom Suite',  category: 'Renovations' },
-  { id: 3, img: '/project3.png', title: 'Interior Redecoration',        category: 'Painting & Decorating' },
-  { id: 4, img: '/project4.png', title: 'Bespoke Fitted Wardrobes',     category: 'Carpentry' },
-  { id: 5, img: '/project5.png', title: 'Open-Plan Living Extension',   category: 'Renovations' },
+  { id: 2, img: '/project2.png', title: 'Living Room Makeover',  category: 'Renovations' },
+  { id: 3, img: '/project3.png', title: 'Flooring Renovation',        category: 'Painting & Decorating' },
+  { id: 4, img: '/project4.png', title: 'House Removals',     category: 'Removals' },
+  { id: 5, img: '/project5.png', title: 'Bathroom Plumbing Upgrade',   category: 'Plumbing' },
   { id: 6, img: '/project6.png', title: 'Full Electrical Rewire',       category: 'Electrics' },
+  { id: 7, img: '/project7.png', title: 'Painting for New Bedroom',    category: 'Painting & Decorating' },
+  { id: 8, img: '/project8.png', title: 'Tilling Exchange', category: 'Renovations' },
+  { id: 9, img: '/project9.png', title: 'Custom-Built Home Office',     category: 'Painting & Decorating' },
 ]
 
 const categories = ['All', ...new Set(projects.map(p => p.category))]
@@ -25,7 +28,7 @@ function Projects() {
     <>
       <PageBanner
         title="Our Projects"
-        subtitle="A selection of recent work carried out by our specialist teams across the UK."
+        subtitle="A selection of recent work carried out by our specialist teams across London."
         image="/projects-banner.png"
       />
 
