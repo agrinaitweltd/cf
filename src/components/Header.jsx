@@ -42,7 +42,7 @@ function Header() {
 
         {/* Logo */}
         <Link to="/" className={styles.logo} onClick={close}>
-          <img src="/logo.png" alt="CF Hub UK" className={styles.logoImg + ' animate-fadein'} loading="lazy" />
+          <img src="/logo.png" alt="CF Hub UK" className={styles.logoImg + ' animate-fadein'} loading="lazy" decoding="async" />
         </Link>
 
         {/* Desktop Nav */}

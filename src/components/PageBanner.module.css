@@ -3,6 +3,14 @@
   padding: 160px 0 80px;
   background-size: contain;
   background-position: top center;
+}
+
+@media (max-width: 900px) {
+  .banner {
+    background-size: cover;
+    background-position: center;
+  }
+}
   background-color: #1a0d00;
   overflow: hidden;
 }

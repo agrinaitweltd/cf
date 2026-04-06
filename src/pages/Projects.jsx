@@ -26,7 +26,7 @@ function Projects() {
       <PageBanner
         title="Our Projects"
         subtitle="A selection of recent work carried out by our specialist teams across the UK."
-        image="/about-banner.png"
+        image="/projects-banner.png"
       />
 
       <section className="section">
