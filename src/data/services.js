@@ -11,9 +11,9 @@
     banner: '/renovations-banner.png',
     detail: '/renovations-detail.png',
     stats: [
-      { num: '500+', label: 'Renovations Completed' },
+      { num: '250+', label: 'Renovations Completed' },
       { num: '98%',  label: 'Client Satisfaction' },
-      { num: '10+',  label: 'Years Experience' },
+      { num: '5+',  label: 'Years Experience' },
       { num: '100%', label: 'Fully Insured' },
     ],
     includes: [

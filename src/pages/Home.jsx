@@ -109,9 +109,9 @@ function Home() {
               <Link to="/services" className="btn btn-outline">Our Services</Link>
             </div>
             <div className={styles.heroStats}>
-              <div className={styles.heroStat}><strong>500+</strong><span>Projects Completed</span></div>
+              <div className={styles.heroStat}><strong>250+</strong><span>Renovations Completed</span></div>
               <div className={styles.heroStatDivider} aria-hidden="true" />
-              <div className={styles.heroStat}><strong>10+</strong><span>Years Experience</span></div>
+              <div className={styles.heroStat}><strong>5+</strong><span>Years Experience</span></div>
               <div className={styles.heroStatDivider} aria-hidden="true" />
               <div className={styles.heroStat}><strong>100%</strong><span>Fully Insured</span></div>
               <div className={styles.heroStatDivider} aria-hidden="true" />
@@ -155,7 +155,7 @@ function Home() {
             >
               <div className={styles.aboutImage} style={{ backgroundImage: 'url(/about-team.png)' }}>
                 <div className={styles.aboutBadge}>
-                  <span className={styles.badgeNum}>10+</span>
+                  <span className={styles.badgeNum}>5+</span>
                   <span className={styles.badgeTxt}>Years of Excellence</span>
                 </div>
               </div>
