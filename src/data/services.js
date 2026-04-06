@@ -27,7 +27,7 @@
       'Full project management from consultation to completion',
     ],
     faq: [
-      { q: 'How long does a full renovation typically take?', a: 'Timelines vary significantly depending on scope. A single-room renovation may take 1â€“2 weeks; a full house refurbishment typically runs 6â€“16 weeks. We provide a detailed programme at quotation stage.' },
+      { q: 'How long does a full renovation typically take?', a: 'Timelines vary significantly depending on scope. A single-room renovation may take 1–2 weeks; a full house refurbishment typically runs 6–16 weeks. We provide a detailed programme at quotation stage.' },
       { q: 'Do I need planning permission for my renovation?', a: 'Most internal renovations do not require planning permission. Extensions, loft conversions and structural changes may require approval. We advise on this during the consultation and can help with applications.' },
       { q: 'Can you work while we remain in the property?', a: 'Yes. We plan works in phases wherever possible so you can continue living in the property. Our team maintains cleanliness and security throughout the project.' },
       { q: 'What guarantee do you offer on renovation work?', a: 'All structural and major renovation works are covered by a minimum 12-month workmanship guarantee. Specialist elements such as roofing or waterproofing carry extended guarantees.' },
@@ -48,7 +48,7 @@
       { num: '1,200+', label: 'Properties Decorated' },
       { num: '15+',    label: 'Years Decorating' },
       { num: '100%',   label: 'Premium Materials' },
-      { num: '5â˜…',     label: 'Average Review' },
+      { num: '5★',     label: 'Average Review' },
     ],
     includes: [
       'Interior and exterior painting to the highest standard',
@@ -62,9 +62,9 @@
     ],
     faq: [
       { q: 'How do I choose the right paint finish?', a: 'The finish depends on the room\'s use and lighting. Matt hides imperfections and suits living areas; eggshell or satin is better for kitchens and bathrooms; gloss is ideal for woodwork. Our team will advise you during consultation.' },
-      { q: 'How long will a full interior repaint take?', a: 'An average 3-bedroom house typically takes 4â€“7 working days. Commercial repaints depend on square footage and accessibility. We always provide a clear timeline in your quote.' },
+      { q: 'How long will a full interior repaint take?', a: 'An average 3-bedroom house typically takes 4–7 working days. Commercial repaints depend on square footage and accessibility. We always provide a clear timeline in your quote.' },
       { q: 'Do I need to move all furniture before you start?', a: 'No — we move and protect all furniture as part of our service. We ask that very valuable or fragile items are removed to a safe location beforehand.' },
-      { q: 'Can you paint exterior render in wet weather?', a: 'We never apply exterior coatings in wet conditions or below 5Â°C. We monitor forecasts closely and schedule exterior works around suitable weather windows.' },
+      { q: 'Can you paint exterior render in wet weather?', a: 'We never apply exterior coatings in wet conditions or below 5°C. We monitor forecasts closely and schedule exterior works around suitable weather windows.' },
     ],
   },
   {
@@ -82,7 +82,7 @@
       { num: '800+',  label: 'Fitted Installations' },
       { num: '100%',  label: 'Bespoke Made-to-Measure' },
       { num: '20yr',  label: 'Material Guarantee Available' },
-      { num: '5â˜…',    label: 'Average Client Rating' },
+      { num: '5★',    label: 'Average Client Rating' },
     ],
     includes: [
       'Fitted wardrobes and bespoke bedroom furniture',
@@ -97,7 +97,7 @@
     faq: [
       { q: 'Do you design as well as install?', a: 'Yes. We offer a full design service for fitted furniture and cabinetry. You\'ll receive detailed drawings and material samples before any fabrication begins.' },
       { q: 'What materials do you use for fitted wardrobes?', a: 'We primarily work with moisture-resistant MDF, FSC-certified solid timber and quality-grade melamine boards. We can also incorporate glass, mirrors and metal accents to your specification.' },
-      { q: 'How long does a fitted wardrobe installation take?', a: 'A standard double or triple alcove installation typically takes 1â€“2 days. More complex walk-in wardrobes or full bedroom fits may take 3â€“5 days.' },
+      { q: 'How long does a fitted wardrobe installation take?', a: 'A standard double or triple alcove installation typically takes 1–2 days. More complex walk-in wardrobes or full bedroom fits may take 3–5 days.' },
       { q: 'Can you match existing woodwork in my home?', a: 'Absolutely. Matching existing paint colours, stain tones and moulding profiles is a core part of our service. We take samples and replicate them accurately.' },
     ],
   },
@@ -163,9 +163,9 @@
       'Emergency and exit lighting, fire alarm systems',
     ],
     faq: [
-      { q: 'How often should I get an EICR inspection?', a: 'For owner-occupied homes, every 10 years is recommended. Rental properties require an EICR every 5 years by law. Commercial premises typically need one every 3â€“5 years depending on use.' },
+      { q: 'How often should I get an EICR inspection?', a: 'For owner-occupied homes, every 10 years is recommended. Rental properties require an EICR every 5 years by law. Commercial premises typically need one every 3–5 years depending on use.' },
       { q: 'Do I need to notify building control for electrical work?', a: 'Certain electrical works are notifiable under Part P of the Building Regulations. As registered electricians, we self-certify this work on your behalf, meaning no separate building control application is required.' },
-      { q: 'How long does a full rewire take?', a: 'A typical 3-bedroom house rewire takes 5â€“7 days. We plan the work to minimise downtime and restore power to key circuits (sockets, lighting) each evening.' },
+      { q: 'How long does a full rewire take?', a: 'A typical 3-bedroom house rewire takes 5–7 days. We plan the work to minimise downtime and restore power to key circuits (sockets, lighting) each evening.' },
       { q: 'Can you install EV chargers at my property?', a: 'Yes. We are OZEV-approved installers for home and commercial EV charger installation. We handle the survey, installation and grid notification, and can assist with government grant applications.' },
     ],
   },
@@ -199,7 +199,7 @@
     faq: [
       { q: 'What should I do in a plumbing emergency?', a: 'First, locate and turn off your stopcock (usually under the kitchen sink or outside the front of the property) to stop the water supply. Then call us — we provide 24/7 emergency response for urgent plumbing failures.' },
       { q: 'Do you need to be Gas Safe registered to service a boiler?', a: 'Yes — by UK law, anyone working on gas appliances must be on the Gas Safe Register. All our gas engineers are fully registered and can provide their registration details on request.' },
-      { q: 'How long does a full bathroom installation take?', a: 'A standard bathroom suite swap typically takes 3â€“5 days. Full wet room or tiled bathroom installations, including tiling and any structural work, usually take 7â€“10 days.' },
+      { q: 'How long does a full bathroom installation take?', a: 'A standard bathroom suite swap typically takes 3–5 days. Full wet room or tiled bathroom installations, including tiling and any structural work, usually take 7–10 days.' },
       { q: 'Can you fix a dripping tap or is that too small a job?', a: 'No job is too small. A dripping tap wastes significant water over time and can indicate wider issues. We\'re happy to attend for small repairs — just combine it with any other maintenance items to maximise your visit.' },
     ],
   },
