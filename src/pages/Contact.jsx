@@ -184,7 +184,7 @@ function Contact() {
                     </div>
                     <div>
                       <p className={styles.infoLabel}>Phone</p>
-                      <a href="tel:08001234567" className={styles.infoVal}>0800 123 4567</a>
+                      <a href="tel:07960481933" className={styles.infoVal}>07960481933</a>
                     </div>
                   </div>
 
@@ -197,7 +197,7 @@ function Contact() {
                     </div>
                     <div>
                       <p className={styles.infoLabel}>Email</p>
-                      <a href="mailto:info@cfhubuk.co.uk" className={styles.infoVal}>info@cfhubuk.co.uk</a>
+                      <a href="mailto:enquiries@cfhubuk.com" className={styles.infoVal}>enquiries@cfhubuk.com</a>
                     </div>
                   </div>
 
