@@ -3,7 +3,7 @@ import styles from './ServiceCard.module.css'
 
 function ServiceCard({ service }) {
   return (
-    <article className={styles.card}>
+    <article className={styles.card + ' animate-fadein'}>
       <div
         className={styles.image}
         style={{ backgroundImage: `url(${service.serviceImage})` }}

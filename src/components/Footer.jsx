@@ -14,7 +14,7 @@ function Footer() {
             {/* Brand */}
             <div className={styles.brand}>
               <Link to="/" className={styles.logo}>
-                <img src="/logo.png" alt="CF Hub UK" className={styles.logoImg} />
+                <img src="/logo.png" alt="CF Hub UK" className={styles.logoImg + ' animate-fadein'} loading="lazy" />
               </Link>
               <p className={styles.tagline}>
                 Your trusted property improvement experts across the UK. Quality

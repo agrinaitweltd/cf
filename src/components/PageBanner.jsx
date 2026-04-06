@@ -3,7 +3,7 @@ import styles from './PageBanner.module.css'
 function PageBanner({ title, subtitle, image }) {
   return (
     <section
-      className={styles.banner}
+      className={styles.banner + ' animate-zoomout'}
       style={{ backgroundImage: `url(${image})` }}
       aria-label={`${title} page banner`}
     >

@@ -82,7 +82,7 @@ function Home() {
   return (
     <>
       {/* ── Hero ── */}
-      <section className={styles.hero} style={{ backgroundImage: 'url(/hero-meain.png)' }} aria-label="Hero">
+      <section className={styles.hero + ' animate-zoomout'} style={{ backgroundImage: 'url(/hero-meain.png)' }} aria-label="Hero">
         <div className={styles.heroOverlay} aria-hidden="true" />
         <div className="container">
           <div className={styles.heroContent}>
@@ -122,7 +122,7 @@ function Home() {
       </section>
 
       {/* ── Services Overview ── */}
-      <section className={`section ${styles.servicesSection}`}>
+      <section className={`section ${styles.servicesSection} animate-fadein`}>
         <div className="container">
           <div ref={servicesRef} className={`section-head section-head--center ${servicesVisible ? 'reveal visible' : 'reveal'}`}>
             <span className="label">What We Do</span>
@@ -146,7 +146,7 @@ function Home() {
       </section>
 
       {/* ── About Preview ── */}
-      <section className={`section section--alt ${styles.aboutSection}`}>
+      <section className={`section section--alt ${styles.aboutSection} animate-fadein`}>
         <div className="container">
           <div className={styles.aboutGrid}>
             <div
@@ -186,7 +186,7 @@ function Home() {
       </section>
 
       {/* ── Why Choose Us ── */}
-      <section className={`section ${styles.whySection}`}>
+      <section className={`section ${styles.whySection} animate-fadein`}>
         <div className="container">
           <div ref={whyRef} className={`section-head section-head--center ${whyVisible ? 'reveal visible' : 'reveal'}`}>
             <span className="label">Why CF HUB UK</span>
@@ -209,7 +209,7 @@ function Home() {
       </section>
 
       {/* ── Recent Projects ── */}
-      <section className={`section section--alt ${styles.projectsSection}`}>
+      <section className={`section section--alt ${styles.projectsSection} animate-fadein`}>
         <div className="container">
           <div ref={projectsRef} className={`section-head ${projectsVisible ? 'reveal visible' : 'reveal'}`}>
             <span className="label">Our Work</span>
