@@ -103,7 +103,7 @@ function About() {
       </section>
 
       {/* ── Team ── */}
-      <section className={`section section--alt ${styles.teamSection}`}>
+      <section className={styles.teamSection + ' animate-mobile-slidein'}>
         <div className="container">
           <div ref={teamRef} className={`section-head section-head--center ${teamVisible ? 'reveal visible' : 'reveal'}`}>
             <span className="label">Meet the Team</span>
