@@ -365,6 +365,22 @@ p {
 .animate-fadein {
   animation: fadeIn 0.9s var(--t-base) both;
 }
+/* New desktop animation classes */
+.animate-fadein-up {
+  animation: fadeInUp 0.8s var(--t-base) both;
+}
+.animate-fadein-down {
+  animation: fadeInDown 0.8s var(--t-base) both;
+}
+.animate-scalein {
+  animation: scaleIn 0.7s var(--t-base) both;
+}
+.animate-slidein-left {
+  animation: slideInLeft 0.8s var(--t-base) both;
+}
+.animate-slidein-right {
+  animation: slideInRight 0.8s var(--t-base) both;
+}
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(32px); }
   to   { opacity: 1; transform: none; }
