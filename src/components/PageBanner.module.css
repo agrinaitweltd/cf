@@ -1,8 +1,8 @@
 .banner {
   position: relative;
   padding: 160px 0 80px;
-  background-size: cover;
-  background-position: center;
+  background-size: contain;
+  background-position: top center;
   background-color: #1a0d00;
   overflow: hidden;
 }
