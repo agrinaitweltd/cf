@@ -145,6 +145,7 @@
   display: flex;
   align-items: flex-start;
   gap: 16px;
+  min-width: 0;
 }
 
 .infoIconWrap {
@@ -175,6 +176,7 @@
   font-size: 0.95rem;
   color: var(--text-primary);
   transition: color var(--t-fast);
+  overflow-wrap: anywhere;
 }
 .infoVal:hover { color: var(--accent); }
 
@@ -182,6 +184,7 @@
   font-size: 0.88rem;
   color: var(--text-secondary);
   line-height: 1.6;
+  overflow-wrap: anywhere;
 }
 
 /* Map */

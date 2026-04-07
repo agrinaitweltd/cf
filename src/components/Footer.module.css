@@ -39,6 +39,7 @@
 .socials {
   display: flex;
   gap: 10px;
+  flex-wrap: wrap;
 }
 
 .socialIcon {
@@ -52,6 +53,11 @@
   border-radius: var(--r-sm);
   color: var(--text-secondary);
   transition: all var(--t-fast);
+  flex-shrink: 0;
+}
+
+.socialIcon svg {
+  display: block;
 }
 .socialIcon:hover {
   background: var(--accent-dim);
@@ -102,12 +108,20 @@
   color: var(--text-secondary);
   font-size: 0.88rem;
   line-height: 1.55;
+  min-width: 0;
 }
 .contactItem svg {
   flex-shrink: 0;
   margin-top: 2px;
   color: var(--accent);
   opacity: 0.9;
+  display: block;
+}
+
+.contactItem span,
+.contactItem a {
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 /* Bottom bar */
@@ -147,6 +161,7 @@
 .bottomLinks {
   display: flex;
   gap: 24px;
+  flex-wrap: wrap;
 }
 
 .bottomLink {
@@ -176,5 +191,13 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 12px;
+  }
+
+  .socials {
+    gap: 8px;
+  }
+
+  .bottomLinks {
+    gap: 12px 20px;
   }
 }
