@@ -11,10 +11,29 @@ const values = [
   { title: 'Excellence',    text: 'We hold ourselves to an exceptional standard in everything we do — constantly improving our practices, skills and service.' },
 ]
 
+const processSteps = [
+  {
+    title: 'Consultation & Survey',
+    text: 'We start by understanding your goals, inspecting the space and identifying the right scope, materials and timeline for the job.',
+  },
+  {
+    title: 'Clear Quote & Planning',
+    text: 'You receive a transparent breakdown of the work, realistic scheduling and clear communication before any project begins.',
+  },
+  {
+    title: 'Skilled Delivery',
+    text: 'Our team completes the work with attention to detail, clean site management and a consistent focus on quality throughout.',
+  },
+  {
+    title: 'Final Checks & Handover',
+    text: 'We review every finish, resolve the final details and make sure the completed result meets the standard we promised.',
+  },
+]
+
 function About() {
   const [storyRef, storyVisible]  = useIntersection()
   const [valRef, valVisible]      = useIntersection()
-  const [teamRef, teamVisible]    = useIntersection()
+  const [processRef, processVisible] = useIntersection()
 
   return (
     <>
@@ -102,33 +121,25 @@ function About() {
         </div>
       </section>
 
-      {/* ── Team ── */}
-      <section className={styles.teamSection + ' animate-mobile-slidein'}>
+      {/* ── Process ── */}
+      <section className={styles.processSection + ' animate-mobile-slidein'}>
         <div className="container">
-          <div ref={teamRef} className={`section-head section-head--center ${teamVisible ? 'reveal visible' : 'reveal'}`}>
-            <span className="label">Meet the Team</span>
-            <h2>The People Behind the Work</h2>
+          <div ref={processRef} className={`section-head section-head--center ${processVisible ? 'reveal visible' : 'reveal'}`}>
+            <span className="label">How We Work</span>
+            <h2>A Process Built Around Clarity</h2>
             <p>
-              Our team of experienced tradespeople are the backbone of CF HUB UK.
-              Skilled, reliable and passionate about the work they do.
+              Every project follows a straightforward process designed to keep work efficient,
+              communication clear and standards consistently high from start to finish.
             </p>
           </div>
-          <div className={styles.teamGrid}>
-            {[
-              { img: '/team1.png', name: 'James Carter', role: 'Founder & Lead Renovations Specialist' },
-              { img: '/team2.png', name: 'Mark Thompson', role: 'Head of Electrical & Plumbing' },
-            ].map((member, i) => (
-              <div key={member.name} className={`reveal ${teamVisible ? 'visible' : ''} d${i + 1} ${styles.teamCard}`}>
-                <div
-                  className={styles.teamPhoto}
-                  style={{ backgroundImage: `url(${member.img})` }}
-                  role="img"
-                  aria-label={member.name}
-                />
-                <div className={styles.teamInfo}>
-                  <h3 className={styles.teamName}>{member.name}</h3>
-                  <p className={styles.teamRole}>{member.role}</p>
+          <div className={styles.processGrid}>
+            {processSteps.map((step, i) => (
+              <div key={step.title} className={`reveal ${processVisible ? 'visible' : ''} d${i + 1} ${styles.processCard}`}>
+                <div className={styles.processTop}>
+                  <span className={styles.processNum}>0{i + 1}</span>
+                  <h3 className={styles.processTitle}>{step.title}</h3>
                 </div>
+                <p className={styles.processText}>{step.text}</p>
               </div>
             ))}
           </div>
