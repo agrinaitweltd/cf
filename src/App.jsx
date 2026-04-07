@@ -4,6 +4,7 @@ import Header from './components/Header'
 import Footer from './components/Footer'
 import ScrollToTop from './components/ScrollToTop'
 import LoadingScreen from './components/LoadingScreen'
+import CookieConsent from './components/CookieConsent'
 
 const Home        = lazy(() => import('./pages/Home'))
 const About       = lazy(() => import('./pages/About'))
@@ -69,6 +70,7 @@ function App() {
         </main>
         <Footer />
       </Suspense>
+      <CookieConsent />
     </>
   );
 }
