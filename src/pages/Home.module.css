@@ -333,4 +333,11 @@
   .heroSub { font-size: 0.96rem; }
   .projectGrid { grid-template-columns: 1fr; }
   .projectCard { height: 240px; }
+  .aboutBadge {
+    right: auto;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -24px;
+    animation: none;
+  }
 }

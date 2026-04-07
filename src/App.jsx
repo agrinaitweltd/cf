@@ -1,4 +1,4 @@
-import { lazy, Suspense, useState, useEffect, useLayoutEffect, useRef } from 'react'
+import { lazy, Suspense, useState, useEffect, useLayoutEffect, useRef, useCallback } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import Header from './components/Header'
 import Footer from './components/Footer'
@@ -22,6 +22,8 @@ function App() {
   const [loading, setLoading] = useState(true);
   const previousPathRef = useRef(pathname);
 
+  const handleFinish = useCallback(() => setLoading(false), []);
+
   useLayoutEffect(() => {
     if (previousPathRef.current !== pathname) {
       previousPathRef.current = pathname;
@@ -42,7 +44,7 @@ function App() {
   }, [loading]);
 
   if (loading) {
-    return <LoadingScreen key={pathname} onFinish={() => setLoading(false)} />;
+    return <LoadingScreen key={pathname} onFinish={handleFinish} />;
   }
 
   return (

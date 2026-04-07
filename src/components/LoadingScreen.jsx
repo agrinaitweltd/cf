@@ -1,19 +1,25 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import styles from './LoadingScreen.module.css';
 
 export default function LoadingScreen({ onFinish }) {
-  const [showSwipe, setShowSwipe] = useState(false);
+  const [phase, setPhase] = useState('spin'); // spin → swipe → done
+  const calledRef = useRef(false);
 
   useEffect(() => {
+    calledRef.current = false;
+    let swipeTimer;
     let finishTimer;
 
-    const swipeTimer = setTimeout(() => {
-      setShowSwipe(true);
+    swipeTimer = setTimeout(() => {
+      setPhase('swipe');
 
       finishTimer = setTimeout(() => {
-        onFinish();
-      }, 1000);
-    }, 1600);
+        if (!calledRef.current) {
+          calledRef.current = true;
+          onFinish();
+        }
+      }, 900);
+    }, 1500);
 
     return () => {
       clearTimeout(swipeTimer);
@@ -22,15 +28,16 @@ export default function LoadingScreen({ onFinish }) {
   }, [onFinish]);
 
   return (
-    <div className={styles.loadingRoot}>
+    <div className={styles.loadingRoot} aria-live="polite">
       <div className={styles.centeredLogo}>
         <img
           src="/logo.png"
-          alt="Logo"
+          alt="CF HUB UK"
           className={styles.logoImg}
+          draggable="false"
         />
       </div>
-      {showSwipe && <div className={styles.swipeReveal} />}
+      {phase === 'swipe' && <div className={styles.swipeReveal} />}
     </div>
   );
 }
