@@ -130,6 +130,18 @@
 
 .kavoWhite {
   color: #fff !important;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  background: linear-gradient(135deg, #fff 0%, #999 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  transition: opacity var(--t-fast);
+}
+
+.kavoWhite:hover {
+  opacity: 0.8;
 }
 
 .bottomLinks {

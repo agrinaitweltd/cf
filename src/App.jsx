@@ -1,4 +1,4 @@
-import { lazy, Suspense, useState } from 'react'
+import { lazy, Suspense, useState, useEffect, useLayoutEffect } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import Header from './components/Header'
 import Footer from './components/Footer'
@@ -17,10 +17,14 @@ const Handyman    = lazy(() => import('./pages/Handyman'))
 const Electrics   = lazy(() => import('./pages/Electrics'))
 const Plumbing    = lazy(() => import('./pages/Plumbing'))
 
-import { useEffect } from 'react';
-
 function App() {
-  const [loading, setLoading] = useState(true); // Always show loading screen for testing
+  const [loading, setLoading] = useState(true);
+
+  useLayoutEffect(() => {
+    if (!loading) {
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    }
+  }, [loading]);
 
   useEffect(() => {
     if (!loading) {
