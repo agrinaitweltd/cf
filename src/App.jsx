@@ -1,5 +1,5 @@
-import { lazy, Suspense, useState, useEffect, useLayoutEffect } from 'react'
-import { Routes, Route } from 'react-router-dom'
+import { lazy, Suspense, useState, useEffect, useLayoutEffect, useRef } from 'react'
+import { Routes, Route, useLocation } from 'react-router-dom'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import ScrollToTop from './components/ScrollToTop'
@@ -18,7 +18,16 @@ const Electrics   = lazy(() => import('./pages/Electrics'))
 const Plumbing    = lazy(() => import('./pages/Plumbing'))
 
 function App() {
+  const { pathname } = useLocation()
   const [loading, setLoading] = useState(true);
+  const previousPathRef = useRef(pathname);
+
+  useLayoutEffect(() => {
+    if (previousPathRef.current !== pathname) {
+      previousPathRef.current = pathname;
+      setLoading(true);
+    }
+  }, [pathname]);
 
   useLayoutEffect(() => {
     if (!loading) {
@@ -33,7 +42,7 @@ function App() {
   }, [loading]);
 
   if (loading) {
-    return <LoadingScreen onFinish={() => setLoading(false)} />;
+    return <LoadingScreen key={pathname} onFinish={() => setLoading(false)} />;
   }
 
   return (

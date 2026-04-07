@@ -5,15 +5,20 @@ export default function LoadingScreen({ onFinish }) {
   const [showSwipe, setShowSwipe] = useState(false);
 
   useEffect(() => {
-    // Simulate loading for 1.6s, then trigger swipe
-    const timer = setTimeout(() => {
+    let finishTimer;
+
+    const swipeTimer = setTimeout(() => {
       setShowSwipe(true);
-      // Swipe animation lasts 1s, then call onFinish
-      setTimeout(() => {
+
+      finishTimer = setTimeout(() => {
         onFinish();
       }, 1000);
     }, 1600);
-    return () => clearTimeout(timer);
+
+    return () => {
+      clearTimeout(swipeTimer);
+      clearTimeout(finishTimer);
+    };
   }, [onFinish]);
 
   return (
