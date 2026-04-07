@@ -119,6 +119,10 @@ p {
   overflow-x: hidden;
 }
 
+.pageFallback {
+  min-height: 100dvh;
+}
+
 .section {
   padding: var(--section-pad) 0;
   content-visibility: auto;

@@ -40,8 +40,8 @@ function App() {
     <>
       <ScrollToTop />
       <Header />
-      <main>
-        <Suspense fallback={null}>
+      <Suspense fallback={<main className="pageFallback" aria-hidden="true" />}>
+        <main>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
@@ -55,9 +55,9 @@ function App() {
             <Route path="/projects" element={<Projects />} />
             <Route path="/contact" element={<Contact />} />
           </Routes>
-        </Suspense>
-      </main>
-      <Footer />
+        </main>
+        <Footer />
+      </Suspense>
     </>
   );
 }
