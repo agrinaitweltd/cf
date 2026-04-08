@@ -79,6 +79,7 @@ function Header() {
 
           <NavLink to="/projects" className={navClass}>Projects</NavLink>
           <NavLink to="/contact" className={navClass}>Contact</NavLink>
+          <NavLink to="/join" className={navClass}>Join the Team</NavLink>
         </nav>
 
         <Link to="/contact" className={styles.ctaBtn} aria-label="Get a quote">
@@ -151,6 +152,14 @@ function Header() {
           <NavLink to="/contact" className={mobileLinkClass} onClick={close} style={{ '--item-i': 4 }}>
             <span className={styles.mobileNum}>05</span>
             <span className={styles.mobileTxt}>Contact</span>
+            <svg className={styles.mobileArrow} width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </NavLink>
+
+          <NavLink to="/join" className={mobileLinkClass} onClick={close} style={{ '--item-i': 5 }}>
+            <span className={styles.mobileNum}>06</span>
+            <span className={styles.mobileTxt}>Join the Team</span>
             <svg className={styles.mobileArrow} width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
               <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
