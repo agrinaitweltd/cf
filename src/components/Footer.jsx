@@ -69,6 +69,7 @@ function Footer() {
                 <Link to="/projects" className={styles.footerLink}>Projects</Link>
                 <Link to="/contact" className={styles.footerLink}>Contact Us</Link>
                 <Link to="/contact" className={styles.footerLink}>Get a Quote</Link>
+                <Link to="/join" className={styles.footerLink}>Join the Team</Link>
               </nav>
             </div>
 

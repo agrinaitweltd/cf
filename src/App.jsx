@@ -17,6 +17,7 @@ const Carpentry   = lazy(() => import('./pages/Carpentry'))
 const Handyman    = lazy(() => import('./pages/Handyman'))
 const Electrics   = lazy(() => import('./pages/Electrics'))
 const Plumbing    = lazy(() => import('./pages/Plumbing'))
+const JoinTeam    = lazy(() => import('./pages/JoinTeam'))
 
 function App() {
   const { pathname } = useLocation()
@@ -66,6 +67,7 @@ function App() {
             <Route path="/services/plumbing" element={<Plumbing />} />
             <Route path="/projects" element={<Projects />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/join" element={<JoinTeam />} />
           </Routes>
         </main>
         <Footer />
