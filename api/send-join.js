@@ -134,12 +134,25 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const apiKey = process.env.RESEND_API_KEY;
+  const apiKey = (
+    process.env.RESEND_API_KEY ||
+    process.env.RESEND_KEY ||
+    process.env.RESEND ||
+    ''
+  ).trim();
+
   if (!apiKey) {
-    return res.status(500).json({ error: 'Server email is not configured. Please try again later.' });
+    return res.status(500).json({
+      error: 'Server email is not configured. Add RESEND_API_KEY (or RESEND_KEY/RESEND) in Vercel Environment Variables and redeploy.',
+    });
   }
 
   const resend = new Resend(apiKey);
+  const fromEmail = (
+    process.env.RESEND_FROM_EMAIL ||
+    process.env.FROM_EMAIL ||
+    'CF HUB UK <onboarding@resend.dev>'
+  ).trim();
 
   const { name, email, phone, role, experience, location, availability, workType, certifications, message, cvBase64, cvName, cvMime } = req.body ?? {};
 
@@ -169,7 +182,7 @@ export default async function handler(req, res) {
     await Promise.all([
       // Notification to CF HUB UK (with CV attached)
       resend.emails.send({
-        from: 'CF HUB UK <noreply@cfhubuk.com>',
+        from: fromEmail,
         to: 'enquiries@cfhubuk.com',
         replyTo: email,
         subject: `New Application: ${role} — ${name}`,
@@ -190,7 +203,7 @@ export default async function handler(req, res) {
       }),
       // Confirmation to the applicant
       resend.emails.send({
-        from: 'CF HUB UK <noreply@cfhubuk.com>',
+        from: fromEmail,
         to: email,
         subject: 'Your application to CF HUB UK has been received',
         html: confirmationEmail({ name, role }),
@@ -200,6 +213,15 @@ export default async function handler(req, res) {
     return res.status(200).json({ success: true });
   } catch (err) {
     console.error('Resend error (join):', err);
-    return res.status(500).json({ error: 'Failed to send email. Please try again.' });
+    const providerMessage =
+      err?.message ||
+      err?.error?.message ||
+      err?.response?.data?.message ||
+      '';
+    return res.status(500).json({
+      error: providerMessage
+        ? `Email provider error: ${providerMessage}`
+        : 'Failed to send email. Please try again.',
+    });
   }
 }
