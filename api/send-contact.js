@@ -146,7 +146,10 @@ export default async function handler(req, res) {
   const fromEmail = (
     process.env.RESEND_FROM_EMAIL ||
     process.env.FROM_EMAIL ||
-    'CF HUB UK <onboarding@resend.dev>'
+    'CF HUB UK <noreply@cfhubuk.com>'
+  ).trim();
+  const adminEmail = (
+    process.env.ADMIN_EMAIL || 'enquiries@cfhubuk.com'
   ).trim();
 
   const { name, email, phone, service, propertyType, postcode, budget, preferredContact, timeline, message } = req.body ?? {};
@@ -169,48 +172,42 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Invalid email address' });
   }
 
-  try {
-    await Promise.all([
-      // Notification to CF HUB UK
-      resend.emails.send({
-        from: fromEmail,
-        to: 'enquiries@cfhubuk.com',
-        replyTo: email,
-        subject: `New Enquiry: ${service} — ${name}`,
-        html: internalEmail({
-          name,
-          email,
-          phone: phone?.trim(),
-          service,
-          propertyType,
-          postcode,
-          budget,
-          preferredContact,
-          timeline,
-          message,
-        }),
-      }),
-      // Confirmation to the customer
-      resend.emails.send({
-        from: fromEmail,
-        to: email,
-        subject: "We've received your enquiry — CF HUB UK",
-        html: confirmationEmail({ name, service }),
-      }),
-    ]);
+  // Send both emails independently — a failure in one must not block the other
+  const adminResult = await resend.emails.send({
+    from: fromEmail,
+    to: adminEmail,
+    replyTo: email,
+    subject: `New Enquiry: ${service} — ${name}`,
+    html: internalEmail({
+      name,
+      email,
+      phone: phone?.trim(),
+      service,
+      propertyType,
+      postcode,
+      budget,
+      preferredContact,
+      timeline,
+      message,
+    }),
+  }).catch(err => {
+    console.error('Resend admin email error (contact):', err?.message ?? err);
+    return null;
+  });
 
-    return res.status(200).json({ success: true });
-  } catch (err) {
-    console.error('Resend error (contact):', err);
-    const providerMessage =
-      err?.message ||
-      err?.error?.message ||
-      err?.response?.data?.message ||
-      '';
-    return res.status(500).json({
-      error: providerMessage
-        ? `Email provider error: ${providerMessage}`
-        : 'Failed to send email. Please try again.',
-    });
+  const customerResult = await resend.emails.send({
+    from: fromEmail,
+    to: email,
+    subject: "We've received your enquiry — CF HUB UK",
+    html: confirmationEmail({ name, service }),
+  }).catch(err => {
+    console.error('Resend customer email error (contact):', err?.message ?? err);
+    return null;
+  });
+
+  if (!adminResult && !customerResult) {
+    return res.status(500).json({ error: 'Failed to send emails. Please try again or call us directly.' });
   }
+
+  return res.status(200).json({ success: true });
 }
