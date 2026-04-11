@@ -20,6 +20,8 @@ function Contact() {
   const [form, setForm] = useState(INITIAL)
   const [errors, setErrors] = useState({})
   const [submitted, setSubmitted] = useState(false)
+  const [sending, setSending] = useState(false)
+  const [serverError, setServerError] = useState('')
 
   const validate = () => {
     const e = {}
@@ -36,13 +38,28 @@ function Contact() {
     if (errors[name]) setErrors(e => ({ ...e, [name]: '' }))
   }
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault()
     const e2 = validate()
     if (Object.keys(e2).length) { setErrors(e2); return }
-    setSubmitted(true)
-    setForm(INITIAL)
-    setErrors({})
+    setSending(true)
+    setServerError('')
+    try {
+      const res = await fetch('/api/send-contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || 'Something went wrong.')
+      setSubmitted(true)
+      setForm(INITIAL)
+      setErrors({})
+    } catch (err) {
+      setServerError(err.message || 'Something went wrong. Please try again.')
+    } finally {
+      setSending(false)
+    }
   }
 
   return (
@@ -159,11 +176,16 @@ function Contact() {
                     {errors.message && <span className={styles.error} role="alert">{errors.message}</span>}
                   </div>
 
-                  <button type="submit" className={`btn btn-primary ${styles.submitBtn}`}>
-                    Send Enquiry
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                      <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
+                  {serverError && (
+                    <p className={styles.error} role="alert" style={{ marginBottom: '12px' }}>{serverError}</p>
+                  )}
+                  <button type="submit" className={`btn btn-primary ${styles.submitBtn}`} disabled={sending}>
+                    {sending ? 'Sending…' : 'Send Enquiry'}
+                    {!sending && (
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    )}
                   </button>
                 </form>
               )}

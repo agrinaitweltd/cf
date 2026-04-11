@@ -19,13 +19,15 @@ const ALLOWED_TYPES = [
   'application/msword',
   'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
 ]
-const MAX_SIZE = 5 * 1024 * 1024 // 5 MB
+const MAX_SIZE = 3 * 1024 * 1024 // 3 MB (base64 overhead must fit within Vercel's 4.5 MB limit)
 
 function JoinTeam() {
   const [form, setForm] = useState(INITIAL)
   const [cv, setCv] = useState(null)
   const [errors, setErrors] = useState({})
   const [submitted, setSubmitted] = useState(false)
+  const [sending, setSending] = useState(false)
+  const [serverError, setServerError] = useState('')
   const fileRef = useRef()
 
   const validate = () => {
@@ -64,14 +66,41 @@ function JoinTeam() {
     if (fileRef.current) fileRef.current.value = ''
   }
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault()
     const e2 = validate()
     if (Object.keys(e2).length) { setErrors(e2); return }
-    setSubmitted(true)
-    setForm(INITIAL)
-    setCv(null)
-    setErrors({})
+    setSending(true)
+    setServerError('')
+    try {
+      // Read CV as base64
+      let cvBase64 = null
+      let cvMime = null
+      if (cv) {
+        cvBase64 = await new Promise((resolve, reject) => {
+          const reader = new FileReader()
+          reader.onload = () => resolve(reader.result.split(',')[1])
+          reader.onerror = reject
+          reader.readAsDataURL(cv)
+        })
+        cvMime = cv.type
+      }
+      const res = await fetch('/api/send-join', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...form, cvBase64, cvName: cv?.name, cvMime }),
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error || 'Something went wrong.')
+      setSubmitted(true)
+      setForm(INITIAL)
+      setCv(null)
+      setErrors({})
+    } catch (err) {
+      setServerError(err.message || 'Something went wrong. Please try again.')
+    } finally {
+      setSending(false)
+    }
   }
 
   return (
@@ -161,7 +190,7 @@ function JoinTeam() {
                         </svg>
                       </div>
                       <span className={styles.fileText}><strong>Click to upload</strong> or drag and drop</span>
-                      <span className={styles.fileHint}>PDF or Word document (max 5 MB)</span>
+                      <span className={styles.fileHint}>PDF or Word document (max 3 MB)</span>
                     </label>
                     {errors.cv && <span className={styles.error} role="alert">{errors.cv}</span>}
                     {cv && (
@@ -178,7 +207,12 @@ function JoinTeam() {
                     )}
                   </div>
 
-                  <button type="submit" className={`btn ${styles.submitBtn}`}>Submit Application</button>
+                  {serverError && (
+                    <p className={styles.error} role="alert" style={{ marginBottom: '12px' }}>{serverError}</p>
+                  )}
+                  <button type="submit" className={`btn ${styles.submitBtn}`} disabled={sending}>
+                    {sending ? 'Submitting…' : 'Submit Application'}
+                  </button>
                 </form>
               )}
             </div>
