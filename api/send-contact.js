@@ -2,7 +2,7 @@ import { Resend } from 'resend';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-function internalEmail({ name, email, phone, service, message }) {
+function internalEmail({ name, email, phone, service, propertyType, postcode, budget, preferredContact, timeline, message }) {
   return `<!DOCTYPE html>
 <html lang="en">
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width"></head>
@@ -35,6 +35,26 @@ function internalEmail({ name, email, phone, service, message }) {
               <tr>
                 <td style="padding:12px 16px;font-size:13px;font-weight:700;color:#555;border-bottom:1px solid #eee;">Service</td>
                 <td style="padding:12px 16px;font-size:14px;color:#111;border-bottom:1px solid #eee;">${service}</td>
+              </tr>
+              <tr style="background:#f9f9f9;">
+                <td style="padding:12px 16px;font-size:13px;font-weight:700;color:#555;border-bottom:1px solid #eee;">Property Type</td>
+                <td style="padding:12px 16px;font-size:14px;color:#111;border-bottom:1px solid #eee;">${propertyType}</td>
+              </tr>
+              <tr>
+                <td style="padding:12px 16px;font-size:13px;font-weight:700;color:#555;border-bottom:1px solid #eee;">Postcode</td>
+                <td style="padding:12px 16px;font-size:14px;color:#111;border-bottom:1px solid #eee;">${postcode}</td>
+              </tr>
+              <tr style="background:#f9f9f9;">
+                <td style="padding:12px 16px;font-size:13px;font-weight:700;color:#555;border-bottom:1px solid #eee;">Budget</td>
+                <td style="padding:12px 16px;font-size:14px;color:#111;border-bottom:1px solid #eee;">${budget || 'Not provided'}</td>
+              </tr>
+              <tr>
+                <td style="padding:12px 16px;font-size:13px;font-weight:700;color:#555;border-bottom:1px solid #eee;">Preferred Contact</td>
+                <td style="padding:12px 16px;font-size:14px;color:#111;border-bottom:1px solid #eee;">${preferredContact}</td>
+              </tr>
+              <tr style="background:#f9f9f9;">
+                <td style="padding:12px 16px;font-size:13px;font-weight:700;color:#555;border-bottom:1px solid #eee;">Start Timeline</td>
+                <td style="padding:12px 16px;font-size:14px;color:#111;border-bottom:1px solid #eee;">${timeline}</td>
               </tr>
               <tr style="background:#f9f9f9;">
                 <td style="padding:12px 16px;font-size:13px;font-weight:700;color:#555;vertical-align:top;">Message</td>
@@ -111,13 +131,17 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { name, email, phone, service, message } = req.body ?? {};
+  const { name, email, phone, service, propertyType, postcode, budget, preferredContact, timeline, message } = req.body ?? {};
 
   // Server-side validation
   if (
     typeof name !== 'string' || !name.trim() ||
     typeof email !== 'string' || !email.trim() ||
     typeof service !== 'string' || !service.trim() ||
+    typeof propertyType !== 'string' || !propertyType.trim() ||
+    typeof postcode !== 'string' || !postcode.trim() ||
+    typeof preferredContact !== 'string' || !preferredContact.trim() ||
+    typeof timeline !== 'string' || !timeline.trim() ||
     typeof message !== 'string' || !message.trim()
   ) {
     return res.status(400).json({ error: 'Missing required fields' });
@@ -135,7 +159,18 @@ export default async function handler(req, res) {
         to: 'enquiries@cfhubuk.com',
         replyTo: email,
         subject: `New Enquiry: ${service} — ${name}`,
-        html: internalEmail({ name, email, phone: phone?.trim(), service, message }),
+        html: internalEmail({
+          name,
+          email,
+          phone: phone?.trim(),
+          service,
+          propertyType,
+          postcode,
+          budget,
+          preferredContact,
+          timeline,
+          message,
+        }),
       }),
       // Confirmation to the customer
       resend.emails.send({

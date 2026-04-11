@@ -2,7 +2,7 @@ import { Resend } from 'resend';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-function internalEmail({ name, email, phone, role, experience, message, cvName }) {
+function internalEmail({ name, email, phone, role, experience, location, availability, workType, certifications, message, cvName }) {
   return `<!DOCTYPE html>
 <html lang="en">
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width"></head>
@@ -39,6 +39,22 @@ function internalEmail({ name, email, phone, role, experience, message, cvName }
               <tr style="background:#f9f9f9;">
                 <td style="padding:12px 16px;font-size:13px;font-weight:700;color:#555;border-bottom:1px solid #eee;">Experience</td>
                 <td style="padding:12px 16px;font-size:14px;color:#111;border-bottom:1px solid #eee;">${experience || 'Not provided'}</td>
+              </tr>
+              <tr>
+                <td style="padding:12px 16px;font-size:13px;font-weight:700;color:#555;border-bottom:1px solid #eee;">Location</td>
+                <td style="padding:12px 16px;font-size:14px;color:#111;border-bottom:1px solid #eee;">${location}</td>
+              </tr>
+              <tr style="background:#f9f9f9;">
+                <td style="padding:12px 16px;font-size:13px;font-weight:700;color:#555;border-bottom:1px solid #eee;">Availability</td>
+                <td style="padding:12px 16px;font-size:14px;color:#111;border-bottom:1px solid #eee;">${availability}</td>
+              </tr>
+              <tr>
+                <td style="padding:12px 16px;font-size:13px;font-weight:700;color:#555;border-bottom:1px solid #eee;">Work Type</td>
+                <td style="padding:12px 16px;font-size:14px;color:#111;border-bottom:1px solid #eee;">${workType}</td>
+              </tr>
+              <tr style="background:#f9f9f9;">
+                <td style="padding:12px 16px;font-size:13px;font-weight:700;color:#555;border-bottom:1px solid #eee;">Qualifications</td>
+                <td style="padding:12px 16px;font-size:14px;color:#111;border-bottom:1px solid #eee;">${certifications || 'Not provided'}</td>
               </tr>
               <tr>
                 <td style="padding:12px 16px;font-size:13px;font-weight:700;color:#555;border-bottom:1px solid #eee;">CV</td>
@@ -120,13 +136,16 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { name, email, phone, role, experience, message, cvBase64, cvName, cvMime } = req.body ?? {};
+  const { name, email, phone, role, experience, location, availability, workType, certifications, message, cvBase64, cvName, cvMime } = req.body ?? {};
 
   // Server-side validation
   if (
     typeof name !== 'string' || !name.trim() ||
     typeof email !== 'string' || !email.trim() ||
     typeof role !== 'string' || !role.trim() ||
+    typeof location !== 'string' || !location.trim() ||
+    typeof availability !== 'string' || !availability.trim() ||
+    typeof workType !== 'string' || !workType.trim() ||
     typeof message !== 'string' || !message.trim()
   ) {
     return res.status(400).json({ error: 'Missing required fields' });
@@ -149,7 +168,19 @@ export default async function handler(req, res) {
         to: 'enquiries@cfhubuk.com',
         replyTo: email,
         subject: `New Application: ${role} — ${name}`,
-        html: internalEmail({ name, email, phone: phone?.trim(), role, experience: experience?.trim(), message, cvName }),
+        html: internalEmail({
+          name,
+          email,
+          phone: phone?.trim(),
+          role,
+          experience: experience?.trim(),
+          location,
+          availability,
+          workType,
+          certifications: certifications?.trim(),
+          message,
+          cvName,
+        }),
         attachments,
       }),
       // Confirmation to the applicant

@@ -13,7 +13,35 @@ const roleOptions = [
   'Other',
 ]
 
-const INITIAL = { name: '', email: '', phone: '', role: '', experience: '', message: '' }
+const availabilityOptions = [
+  'Select availability…',
+  'Immediate',
+  '1 week notice',
+  '2 weeks notice',
+  '1 month notice',
+]
+
+const workTypeOptions = [
+  'Select preferred work type…',
+  'Full-time',
+  'Part-time',
+  'Contract',
+  'Subcontractor',
+  'Flexible',
+]
+
+const INITIAL = {
+  name: '',
+  email: '',
+  phone: '',
+  role: '',
+  experience: '',
+  location: '',
+  availability: '',
+  workType: '',
+  certifications: '',
+  message: '',
+}
 const ALLOWED_TYPES = [
   'application/pdf',
   'application/msword',
@@ -36,9 +64,22 @@ function JoinTeam() {
     if (!form.email.trim()) e.email = 'Please enter your email address.'
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email = 'Please enter a valid email address.'
     if (!form.role || form.role === 'Select a role…') e.role = 'Please select a role.'
+    if (!form.location.trim()) e.location = 'Please enter your town/city or postcode.'
+    if (!form.availability || form.availability === 'Select availability…') e.availability = 'Please select availability.'
+    if (!form.workType || form.workType === 'Select preferred work type…') e.workType = 'Please select your preferred work type.'
     if (!form.message.trim()) e.message = 'Tell us a bit about yourself.'
     if (!cv) e.cv = 'Please upload your CV.'
     return e
+  }
+
+  const parseApiResponse = async res => {
+    const text = await res.text()
+    if (!text) return {}
+    try {
+      return JSON.parse(text)
+    } catch {
+      return { error: text.slice(0, 180) }
+    }
   }
 
   const handleChange = ({ target: { name, value } }) => {
@@ -54,7 +95,7 @@ function JoinTeam() {
       return
     }
     if (file.size > MAX_SIZE) {
-      setErrors(prev => ({ ...prev, cv: 'File must be under 5 MB.' }))
+      setErrors(prev => ({ ...prev, cv: 'File must be under 3 MB.' }))
       return
     }
     setCv(file)
@@ -90,8 +131,8 @@ function JoinTeam() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...form, cvBase64, cvName: cv?.name, cvMime }),
       })
-      const data = await res.json()
-      if (!res.ok) throw new Error(data.error || 'Something went wrong.')
+      const data = await parseApiResponse(res)
+      if (!res.ok) throw new Error(data.error || 'Server error. Please try again in a moment.')
       setSubmitted(true)
       setForm(INITIAL)
       setCv(null)
@@ -169,6 +210,70 @@ function JoinTeam() {
                   <div className={styles.field}>
                     <label htmlFor="experience" className={styles.label}>Years of Experience</label>
                     <input id="experience" name="experience" type="text" value={form.experience} onChange={handleChange} placeholder="e.g. 5 years" className={styles.input} />
+                  </div>
+
+                  <div className={styles.row}>
+                    <div className={styles.field}>
+                      <label htmlFor="location" className={styles.label}>Town/City or Postcode <span className={styles.req}>*</span></label>
+                      <input
+                        id="location"
+                        name="location"
+                        type="text"
+                        value={form.location}
+                        onChange={handleChange}
+                        placeholder="e.g. Birmingham, B1"
+                        className={`${styles.input} ${errors.location ? styles.inputError : ''}`}
+                      />
+                      {errors.location && <span className={styles.error} role="alert">{errors.location}</span>}
+                    </div>
+                    <div className={styles.field}>
+                      <label htmlFor="availability" className={styles.label}>Availability <span className={styles.req}>*</span></label>
+                      <select
+                        id="availability"
+                        name="availability"
+                        value={form.availability}
+                        onChange={handleChange}
+                        className={`${styles.input} ${styles.select} ${errors.availability ? styles.inputError : ''}`}
+                      >
+                        {availabilityOptions.map(o => (
+                          <option key={o} value={o === 'Select availability…' ? '' : o} disabled={o === 'Select availability…'}>
+                            {o}
+                          </option>
+                        ))}
+                      </select>
+                      {errors.availability && <span className={styles.error} role="alert">{errors.availability}</span>}
+                    </div>
+                  </div>
+
+                  <div className={styles.field}>
+                    <label htmlFor="workType" className={styles.label}>Preferred Work Type <span className={styles.req}>*</span></label>
+                    <select
+                      id="workType"
+                      name="workType"
+                      value={form.workType}
+                      onChange={handleChange}
+                      className={`${styles.input} ${styles.select} ${errors.workType ? styles.inputError : ''}`}
+                    >
+                      {workTypeOptions.map(o => (
+                        <option key={o} value={o === 'Select preferred work type…' ? '' : o} disabled={o === 'Select preferred work type…'}>
+                          {o}
+                        </option>
+                      ))}
+                    </select>
+                    {errors.workType && <span className={styles.error} role="alert">{errors.workType}</span>}
+                  </div>
+
+                  <div className={styles.field}>
+                    <label htmlFor="certifications" className={styles.label}>Key Qualifications / CSCS / NVQ (Optional)</label>
+                    <input
+                      id="certifications"
+                      name="certifications"
+                      type="text"
+                      value={form.certifications}
+                      onChange={handleChange}
+                      placeholder="e.g. NVQ Level 3, ECS Gold Card"
+                      className={styles.input}
+                    />
                   </div>
 
                   <div className={styles.field}>

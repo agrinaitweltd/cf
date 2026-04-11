@@ -14,7 +14,53 @@ const serviceOptions = [
   'Other / General Enquiry',
 ]
 
-const INITIAL = { name: '', email: '', phone: '', service: '', message: '' }
+const propertyTypeOptions = [
+  'Select property type…',
+  'House',
+  'Flat / Apartment',
+  'Commercial',
+  'Landlord Property',
+  'Other',
+]
+
+const budgetOptions = [
+  'Select budget range…',
+  'Under £1,000',
+  '£1,000 - £5,000',
+  '£5,000 - £15,000',
+  '£15,000 - £30,000',
+  '£30,000+',
+]
+
+const preferredContactOptions = [
+  'Select contact preference…',
+  'Phone',
+  'Email',
+  'WhatsApp',
+  'No preference',
+]
+
+const timelineOptions = [
+  'Select preferred start time…',
+  'ASAP',
+  'Within 2 weeks',
+  'Within 1 month',
+  'Within 3 months',
+  'Just exploring options',
+]
+
+const INITIAL = {
+  name: '',
+  email: '',
+  phone: '',
+  service: '',
+  propertyType: '',
+  postcode: '',
+  budget: '',
+  preferredContact: '',
+  timeline: '',
+  message: '',
+}
 
 function Contact() {
   const [form, setForm] = useState(INITIAL)
@@ -29,8 +75,22 @@ function Contact() {
     if (!form.email.trim())   e.email   = 'Please enter your email address.'
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email = 'Please enter a valid email address.'
     if (!form.service || form.service === 'Select a service…') e.service = 'Please select a service.'
+    if (!form.propertyType || form.propertyType === 'Select property type…') e.propertyType = 'Please select a property type.'
+    if (!form.postcode.trim()) e.postcode = 'Please enter your postcode.'
+    if (!form.preferredContact || form.preferredContact === 'Select contact preference…') e.preferredContact = 'Please choose a contact preference.'
+    if (!form.timeline || form.timeline === 'Select preferred start time…') e.timeline = 'Please select your preferred start time.'
     if (!form.message.trim()) e.message = 'Please enter a message.'
     return e
+  }
+
+  const parseApiResponse = async res => {
+    const text = await res.text()
+    if (!text) return {}
+    try {
+      return JSON.parse(text)
+    } catch {
+      return { error: text.slice(0, 180) }
+    }
   }
 
   const handleChange = ({ target: { name, value } }) => {
@@ -50,8 +110,8 @@ function Contact() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
       })
-      const data = await res.json()
-      if (!res.ok) throw new Error(data.error || 'Something went wrong.')
+      const data = await parseApiResponse(res)
+      if (!res.ok) throw new Error(data.error || 'Server error. Please try again in a moment.')
       setSubmitted(true)
       setForm(INITIAL)
       setErrors({})
@@ -160,6 +220,94 @@ function Contact() {
                       </select>
                       {errors.service && <span className={styles.error} role="alert">{errors.service}</span>}
                     </div>
+                  </div>
+
+                  <div className={styles.row}>
+                    <div className={styles.field}>
+                      <label htmlFor="propertyType" className={styles.label}>Property Type <span className={styles.req}>*</span></label>
+                      <select
+                        id="propertyType"
+                        name="propertyType"
+                        value={form.propertyType}
+                        onChange={handleChange}
+                        className={`${styles.input} ${styles.select} ${errors.propertyType ? styles.inputError : ''}`}
+                      >
+                        {propertyTypeOptions.map(o => (
+                          <option key={o} value={o === 'Select property type…' ? '' : o} disabled={o === 'Select property type…'}>
+                            {o}
+                          </option>
+                        ))}
+                      </select>
+                      {errors.propertyType && <span className={styles.error} role="alert">{errors.propertyType}</span>}
+                    </div>
+                    <div className={styles.field}>
+                      <label htmlFor="postcode" className={styles.label}>Postcode <span className={styles.req}>*</span></label>
+                      <input
+                        id="postcode"
+                        name="postcode"
+                        type="text"
+                        value={form.postcode}
+                        onChange={handleChange}
+                        placeholder="e.g. SW1A 1AA"
+                        className={`${styles.input} ${errors.postcode ? styles.inputError : ''}`}
+                        autoComplete="postal-code"
+                      />
+                      {errors.postcode && <span className={styles.error} role="alert">{errors.postcode}</span>}
+                    </div>
+                  </div>
+
+                  <div className={styles.row}>
+                    <div className={styles.field}>
+                      <label htmlFor="budget" className={styles.label}>Estimated Budget</label>
+                      <select
+                        id="budget"
+                        name="budget"
+                        value={form.budget}
+                        onChange={handleChange}
+                        className={`${styles.input} ${styles.select}`}
+                      >
+                        {budgetOptions.map(o => (
+                          <option key={o} value={o === 'Select budget range…' ? '' : o} disabled={o === 'Select budget range…'}>
+                            {o}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div className={styles.field}>
+                      <label htmlFor="preferredContact" className={styles.label}>Preferred Contact Method <span className={styles.req}>*</span></label>
+                      <select
+                        id="preferredContact"
+                        name="preferredContact"
+                        value={form.preferredContact}
+                        onChange={handleChange}
+                        className={`${styles.input} ${styles.select} ${errors.preferredContact ? styles.inputError : ''}`}
+                      >
+                        {preferredContactOptions.map(o => (
+                          <option key={o} value={o === 'Select contact preference…' ? '' : o} disabled={o === 'Select contact preference…'}>
+                            {o}
+                          </option>
+                        ))}
+                      </select>
+                      {errors.preferredContact && <span className={styles.error} role="alert">{errors.preferredContact}</span>}
+                    </div>
+                  </div>
+
+                  <div className={styles.field}>
+                    <label htmlFor="timeline" className={styles.label}>When Would You Like Work to Start? <span className={styles.req}>*</span></label>
+                    <select
+                      id="timeline"
+                      name="timeline"
+                      value={form.timeline}
+                      onChange={handleChange}
+                      className={`${styles.input} ${styles.select} ${errors.timeline ? styles.inputError : ''}`}
+                    >
+                      {timelineOptions.map(o => (
+                        <option key={o} value={o === 'Select preferred start time…' ? '' : o} disabled={o === 'Select preferred start time…'}>
+                          {o}
+                        </option>
+                      ))}
+                    </select>
+                    {errors.timeline && <span className={styles.error} role="alert">{errors.timeline}</span>}
                   </div>
 
                   <div className={styles.field}>
