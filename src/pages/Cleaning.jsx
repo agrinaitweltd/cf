@@ -5,7 +5,7 @@ import styles from './Cleaning.module.css'
 
 function Cleaning() {
   const homeGallery = cleaningGallerySections.slice(0, 2)
-  const heroImages = homeGallery.flatMap(section => section.images).slice(0, 4)
+  const heroImages = ['/cleaning/gallery/hero41.png']
 
   return (
     <>
