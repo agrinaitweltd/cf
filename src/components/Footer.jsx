@@ -27,11 +27,11 @@ function Footer() {
               <div className={styles.col}>
                 <h4 className={styles.colTitle}>Cleaning Navigation</h4>
                 <nav>
-                  <a href="/cleaning" className={styles.footerLink}>Cleaning Home</a>
-                  <a href="/cleaning#services" className={styles.footerLink}>Cleaning Services</a>
-                  <a href="/cleaning#reviews" className={styles.footerLink}>Reviews</a>
-                  <a href="/cleaning#gallery" className={styles.footerLink}>Gallery</a>
-                  <a href="/cleaning#join-team" className={styles.footerLink}>Join the Team</a>
+                  <Link to="/cleaning" className={styles.footerLink}>Cleaning Home</Link>
+                  <Link to="/cleaning/services" className={styles.footerLink}>Cleaning Services</Link>
+                  <Link to="/cleaning/gallery" className={styles.footerLink}>Cleaning Gallery</Link>
+                  <Link to="/cleaning/contact" className={styles.footerLink}>Book Cleaning</Link>
+                  <Link to="/cleaning/join" className={styles.footerLink}>Join the Team</Link>
                 </nav>
               </div>
 

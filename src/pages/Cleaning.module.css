@@ -55,16 +55,6 @@
   line-height: 1.8;
 }
 
-.groupTitle {
-  margin-bottom: 18px;
-  font-size: 1.15rem;
-  letter-spacing: 0.01em;
-}
-
-.additionalGrid {
-  margin-top: 6px;
-}
-
 .serviceCard {
   background: var(--bg-card);
   border: 1px solid var(--border);
@@ -78,14 +68,17 @@
   transform: translateY(-2px);
 }
 
-.serviceCard h4 {
+.serviceCard h3 {
+  font-size: 1.05rem;
   margin-bottom: 10px;
-  font-size: 1.06rem;
 }
 
 .serviceCard p {
   font-size: 0.9rem;
-  line-height: 1.7;
+}
+
+.sectionCta {
+  margin-top: 26px;
 }
 
 .reviewSection {
@@ -117,8 +110,8 @@
 
 .galleryGrid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 18px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
 }
 
 .galleryItem {
@@ -130,135 +123,16 @@
 
 .galleryItem img {
   width: 100%;
-  height: 260px;
+  height: 220px;
   object-fit: cover;
 }
 
 .galleryItem figcaption {
-  padding: 12px 14px;
-  font-size: 0.76rem;
-  letter-spacing: 0.02em;
+  padding: 10px 12px;
+  font-size: 0.74rem;
   color: var(--text-secondary);
   border-top: 1px solid var(--border);
-}
-
-.formSection {
-  border-top: 1px solid var(--border);
-}
-
-.form {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--r-md);
-  padding: 26px;
-}
-
-.row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 18px;
-}
-
-.field {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.field label {
-  font-family: var(--font-heading);
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--text-primary);
-}
-
-.field input,
-.field select,
-.field textarea {
-  background: #121212;
-  border: 1px solid var(--border);
-  border-radius: var(--r-sm);
-  color: var(--text-primary);
-  padding: 13px 14px;
-  font-size: 0.9rem;
-  outline: none;
-}
-
-.field input:focus,
-.field select:focus,
-.field textarea:focus {
-  border-color: rgba(255, 255, 255, 0.5);
-  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.08);
-}
-
-.inputError {
-  border-color: #e84040 !important;
-}
-
-.error {
-  color: #f05050;
-  font-size: 0.78rem;
-}
-
-.fileRow {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 0.82rem;
-  color: var(--text-secondary);
-}
-
-.removeBtn {
-  font-size: 0.8rem;
-  color: var(--text-primary);
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  padding: 3px 9px;
-}
-
-.success {
-  background: var(--bg-card);
-  border: 1px solid var(--accent-border);
-  border-radius: var(--r-md);
-  padding: 34px;
-}
-
-.success h3 {
-  margin-bottom: 8px;
-}
-
-.success p {
-  margin-bottom: 20px;
-}
-
-.switchSection {
-  padding: 0 0 80px;
-}
-
-.switchCard {
-  border: 1px solid var(--border);
-  border-radius: var(--r-md);
-  background: var(--bg-card);
-  padding: 30px;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 14px 24px;
-}
-
-.switchCard h3 {
-  font-size: 1.25rem;
-  margin-right: auto;
-}
-
-.switchCard p {
-  width: 100%;
-  margin-top: -8px;
+  overflow-wrap: anywhere;
 }
 
 @media (max-width: 1024px) {
@@ -273,15 +147,11 @@
     padding: 116px 0 72px;
   }
 
-  .row,
-  .galleryGrid {
-    grid-template-columns: 1fr;
+  .trustCard {
+    padding: 22px;
   }
 
-  .form,
-  .trustCard,
-  .switchCard,
-  .success {
-    padding: 22px;
+  .galleryGrid {
+    grid-template-columns: 1fr;
   }
 }

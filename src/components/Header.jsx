@@ -61,11 +61,11 @@ function Header() {
         <nav className={styles.desktopNav} aria-label="Main navigation">
           {isCleaning ? (
             <>
-              <a href="/cleaning" className={`${styles.navLink} ${pathname === '/cleaning' ? styles.active : ''}`}>Home</a>
-              <a href="/cleaning#services" className={styles.navLink}>Services</a>
-              <a href="/cleaning#reviews" className={styles.navLink}>Reviews</a>
-              <a href="/cleaning#gallery" className={styles.navLink}>Gallery</a>
-              <a href="/cleaning#join-team" className={styles.navLink}>Join the Team</a>
+              <NavLink to="/cleaning" end className={navClass}>Home</NavLink>
+              <NavLink to="/cleaning/services" className={navClass}>Services</NavLink>
+              <NavLink to="/cleaning/gallery" className={navClass}>Gallery</NavLink>
+              <NavLink to="/cleaning/contact" className={navClass}>Contact</NavLink>
+              <NavLink to="/cleaning/join" className={navClass}>Join the Team</NavLink>
             </>
           ) : (
             <>
@@ -118,7 +118,7 @@ function Header() {
           <Link to="/select-service" className={styles.switchGhost} aria-label="Choose service">
             Switch
           </Link>
-          <Link to={isCleaning ? '/cleaning#enquiry' : '/contact'} className={styles.ctaBtn} aria-label="Get a quote">
+          <Link to={isCleaning ? '/cleaning/contact' : '/contact'} className={styles.ctaBtn} aria-label="Get a quote">
             {isCleaning ? 'Book Cleaning' : 'Get a Quote'}
           </Link>
         </div>
@@ -145,45 +145,45 @@ function Header() {
         <div className={styles.mobileLinks}>
           {isCleaning ? (
             <>
-              <a href="/cleaning" className={styles.mobileLink} onClick={close} style={{ '--item-i': 0 }}>
+              <NavLink to="/cleaning" end className={mobileLinkClass} onClick={close} style={{ '--item-i': 0 }}>
                 <span className={styles.mobileNum}>01</span>
                 <span className={styles.mobileTxt}>Cleaning Home</span>
                 <svg className={styles.mobileArrow} width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                   <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
-              </a>
+              </NavLink>
 
-              <a href="/cleaning#services" className={styles.mobileLink} onClick={close} style={{ '--item-i': 1 }}>
+              <NavLink to="/cleaning/services" className={mobileLinkClass} onClick={close} style={{ '--item-i': 1 }}>
                 <span className={styles.mobileNum}>02</span>
                 <span className={styles.mobileTxt}>Services</span>
                 <svg className={styles.mobileArrow} width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                   <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
-              </a>
+              </NavLink>
 
-              <a href="/cleaning#reviews" className={styles.mobileLink} onClick={close} style={{ '--item-i': 2 }}>
+              <NavLink to="/cleaning/gallery" className={mobileLinkClass} onClick={close} style={{ '--item-i': 2 }}>
                 <span className={styles.mobileNum}>03</span>
-                <span className={styles.mobileTxt}>Reviews</span>
-                <svg className={styles.mobileArrow} width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </a>
-
-              <a href="/cleaning#gallery" className={styles.mobileLink} onClick={close} style={{ '--item-i': 3 }}>
-                <span className={styles.mobileNum}>04</span>
                 <span className={styles.mobileTxt}>Gallery</span>
                 <svg className={styles.mobileArrow} width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                   <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
-              </a>
+              </NavLink>
 
-              <a href="/cleaning#join-team" className={styles.mobileLink} onClick={close} style={{ '--item-i': 4 }}>
+              <NavLink to="/cleaning/contact" className={mobileLinkClass} onClick={close} style={{ '--item-i': 3 }}>
+                <span className={styles.mobileNum}>04</span>
+                <span className={styles.mobileTxt}>Contact</span>
+                <svg className={styles.mobileArrow} width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </NavLink>
+
+              <NavLink to="/cleaning/join" className={mobileLinkClass} onClick={close} style={{ '--item-i': 4 }}>
                 <span className={styles.mobileNum}>05</span>
                 <span className={styles.mobileTxt}>Join the Team</span>
                 <svg className={styles.mobileArrow} width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                   <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
-              </a>
+              </NavLink>
 
               <NavLink
                 to="/"
@@ -282,7 +282,7 @@ function Header() {
         </div>
 
         <div className={styles.mobileFooter}>
-          <Link to={isCleaning ? '/cleaning#enquiry' : '/contact'} className={styles.mobileCta} onClick={close}>
+          <Link to={isCleaning ? '/cleaning/contact' : '/contact'} className={styles.mobileCta} onClick={close}>
             {isCleaning ? 'Book Cleaning Service' : 'Get a Free Quote'}
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
               <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>

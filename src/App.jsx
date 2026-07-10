@@ -19,6 +19,10 @@ const Electrics   = lazy(() => import('./pages/Electrics'))
 const Plumbing    = lazy(() => import('./pages/Plumbing'))
 const JoinTeam    = lazy(() => import('./pages/JoinTeam'))
 const Cleaning    = lazy(() => import('./pages/Cleaning'))
+const CleaningServices = lazy(() => import('./pages/CleaningServices'))
+const CleaningGallery = lazy(() => import('./pages/CleaningGallery'))
+const CleaningContact = lazy(() => import('./pages/CleaningContact'))
+const CleaningJoin = lazy(() => import('./pages/CleaningJoin'))
 const ServiceSelection = lazy(() => import('./pages/ServiceSelection'))
 
 const SEO_BY_PATH = {
@@ -33,6 +37,22 @@ const SEO_BY_PATH = {
   '/cleaning': {
     title: 'CF Hub & Co. Cleaning Services | Trusted Cleaners UK',
     description: 'Professional cleaning services including end of tenancy cleaning, deep cleans, commercial cleaning, Airbnb cleaning and move in cleans across the UK.',
+  },
+  '/cleaning/services': {
+    title: 'Cleaning Services | CF Hub & Co.',
+    description: 'Explore end of tenancy cleaning, deep cleans, commercial cleaning, after build cleaning, move in cleans and Airbnb cleaning services.',
+  },
+  '/cleaning/gallery': {
+    title: 'Cleaning Gallery | CF Hub & Co.',
+    description: 'View cleaning gallery sections for end of tenancy, deep clean, commercial and after build cleaning projects.',
+  },
+  '/cleaning/contact': {
+    title: 'Book Cleaning | CF Hub & Co.',
+    description: 'Book cleaning services and send enquiries to CF Hub & Co. Cleaning Services for homes and businesses.',
+  },
+  '/cleaning/join': {
+    title: 'Join Cleaning Team | CF Hub & Co.',
+    description: 'Apply to join CF Hub & Co. Cleaning Services as a cleaner with CV upload and application form.',
   },
   '/about': {
     title: 'About Us | CF HUB UK',
@@ -178,6 +198,10 @@ function App() {
             />
             <Route path="/select-service" element={<ServiceSelection onSelect={handleServiceSelect} />} />
             <Route path="/cleaning" element={<Cleaning />} />
+            <Route path="/cleaning/services" element={<CleaningServices />} />
+            <Route path="/cleaning/gallery" element={<CleaningGallery />} />
+            <Route path="/cleaning/contact" element={<CleaningContact />} />
+            <Route path="/cleaning/join" element={<CleaningJoin />} />
             <Route path="/about" element={<About />} />
             <Route path="/services" element={<Services />} />
             <Route path="/services/renovations" element={<Renovations />} />

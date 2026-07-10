@@ -19,6 +19,30 @@
     <priority>0.9</priority>
   </url>
   <url>
+    <loc>https://www.cfhubuk.com/cleaning/services</loc>
+    <lastmod>2026-07-10</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.cfhubuk.com/cleaning/gallery</loc>
+    <lastmod>2026-07-10</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.cfhubuk.com/cleaning/contact</loc>
+    <lastmod>2026-07-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.cfhubuk.com/cleaning/join</loc>
+    <lastmod>2026-07-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://www.cfhubuk.com/about</loc>
     <lastmod>2026-04-11</lastmod>
     <changefreq>monthly</changefreq>
