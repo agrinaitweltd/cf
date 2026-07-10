@@ -37,7 +37,7 @@ function Cleaning() {
                     src={src}
                     alt={`Featured cleaning result ${idx + 1}`}
                     loading="eager"
-                    decoding="async"
+                    decoding="sync"
                     onError={handleHeroImageError}
                   />
                 </figure>

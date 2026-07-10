@@ -26,7 +26,7 @@ function CleaningBanner({ title, subtitle, tone = 'default', images = [] }) {
                     src={src}
                     alt={`${title} highlight ${idx + 1}`}
                     loading="eager"
-                    decoding="async"
+                    decoding="sync"
                     onError={handleHeroImageError}
                   />
                 </figure>
