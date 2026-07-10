@@ -3,14 +3,15 @@
   border: 1px solid var(--border);
   border-radius: var(--r-md);
   padding: 24px;
-  transition: border-color var(--t-fast), transform var(--t-fast);
+  transition: border-color var(--t-fast), transform var(--t-fast), box-shadow var(--t-fast);
   animation: fadeInUp 0.72s cubic-bezier(0.2, 0.8, 0.2, 1) both;
   animation-delay: var(--card-delay, 0s);
 }
 
 .card:hover {
   border-color: var(--border-hover);
-  transform: translateY(-2px);
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.28);
 }
 
 .card h3 {
@@ -38,6 +39,7 @@
   border: 1px solid var(--border);
   border-radius: var(--r-md);
   overflow: hidden;
+  transition: transform var(--t-fast), border-color var(--t-fast), box-shadow var(--t-fast);
   animation: scaleIn 0.72s cubic-bezier(0.2, 0.8, 0.2, 1) both;
   animation-delay: var(--card-delay, 0s);
 }
@@ -46,6 +48,18 @@
   width: 100%;
   height: 220px;
   object-fit: cover;
+  transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1), filter var(--t-fast);
+}
+
+.galleryItem:hover {
+  border-color: var(--border-hover);
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.28);
+}
+
+.galleryItem:hover img {
+  transform: scale(1.05);
+  filter: brightness(1.03);
 }
 
 .galleryItem figcaption {
@@ -88,6 +102,12 @@
 
   .galleryItem img {
     height: 200px;
+  }
+
+  .galleryItem:hover,
+  .card:hover {
+    transform: none;
+    box-shadow: none;
   }
 
   .inlineActions {
