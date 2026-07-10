@@ -11,7 +11,10 @@
   align-items: center;
   background-size: cover;
   background-position: center;
+  background-attachment: fixed;
   background-color: #1a0d00;
+  background-repeat: no-repeat;
+  width: 100%;
 }
 
 .heroOverlay {
