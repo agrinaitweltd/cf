@@ -60,6 +60,7 @@ function CleaningContact() {
 	const [sending, setSending] = useState(false)
 	const [serverError, setServerError] = useState('')
 	const showcaseSections = cleaningGallerySections.slice(4, 6)
+	const bannerImages = showcaseSections.flatMap(section => section.images).slice(0, 4)
 
 	const validate = () => {
 		const nextErrors = {}
@@ -129,6 +130,7 @@ function CleaningContact() {
 				title="Book Cleaning"
 				subtitle="Arrange a trusted cleaning service or request a quote for your property."
 				tone="contact"
+				images={bannerImages}
 			/>
 
 			<section className="section">
@@ -296,7 +298,6 @@ function CleaningContact() {
 							{section.images.map((src, idx) => (
 								<figure key={src} className={galleryStyles.galleryItem} style={{ '--card-delay': `${idx * 0.07}s` }}>
 									<img src={src} alt={`${section.title} ${idx + 1}`} loading="lazy" decoding="async" />
-									<figcaption>{src}</figcaption>
 								</figure>
 							))}
 						</div>

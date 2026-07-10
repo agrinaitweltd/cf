@@ -3,12 +3,15 @@ import { cleaningGallerySections } from '../data/cleaning'
 import styles from './CleaningGallery.module.css'
 
 function CleaningGallery() {
+  const bannerImages = cleaningGallerySections[0]?.images || []
+
   return (
     <>
       <CleaningBanner
         title="Cleaning Gallery"
         subtitle="Upload your own work photos into these path references in the public folder."
         tone="gallery"
+        images={bannerImages}
       />
 
       {cleaningGallerySections.map(section => (
@@ -23,7 +26,6 @@ function CleaningGallery() {
               {section.images.map((src, idx) => (
                 <figure key={src} className={styles.galleryItem} style={{ '--card-delay': `${idx * 0.07}s` }}>
                   <img src={src} alt={`${section.title} ${idx + 1}`} loading="lazy" decoding="async" />
-                  <figcaption>{src}</figcaption>
                 </figure>
               ))}
             </div>

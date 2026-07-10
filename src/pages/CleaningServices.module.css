@@ -49,6 +49,7 @@
   height: 220px;
   object-fit: cover;
   transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1), filter var(--t-fast);
+  animation: imageBreathe 10s ease-in-out infinite alternate;
 }
 
 .galleryItem:hover {
@@ -60,14 +61,12 @@
 .galleryItem:hover img {
   transform: scale(1.05);
   filter: brightness(1.03);
+  animation-play-state: paused;
 }
 
-.galleryItem figcaption {
-  padding: 10px 12px;
-  font-size: 0.74rem;
-  color: var(--text-secondary);
-  border-top: 1px solid var(--border);
-  overflow-wrap: anywhere;
+@keyframes imageBreathe {
+  from { transform: scale(1); }
+  to { transform: scale(1.03); }
 }
 
 .ctaRow {
@@ -108,6 +107,20 @@
   .card:hover {
     transform: none;
     box-shadow: none;
+  }
+
+  .galleryItem img {
+    animation: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .galleryItem,
+  .galleryItem img,
+  .headAnimated {
+    animation: none !important;
+    transition: none !important;
   }
 
   .inlineActions {

@@ -6,6 +6,7 @@ import styles from './CleaningServices.module.css'
 
 function CleaningServices() {
   const serviceGallery = cleaningGallerySections.slice(2, 4)
+  const bannerImages = serviceGallery.flatMap(section => section.images).slice(0, 4)
 
   return (
     <>
@@ -13,6 +14,7 @@ function CleaningServices() {
         title="Cleaning Services"
         subtitle="Professional cleaning services tailored for homes, landlords and businesses."
         tone="services"
+        images={bannerImages}
       />
 
       <section className="section">
@@ -64,7 +66,6 @@ function CleaningServices() {
               {section.images.map((src, idx) => (
                 <figure key={src} className={styles.galleryItem} style={{ '--card-delay': `${idx * 0.07}s` }}>
                   <img src={src} alt={`${section.title} ${idx + 1}`} loading="lazy" decoding="async" />
-                  <figcaption>{src}</figcaption>
                 </figure>
               ))}
             </div>

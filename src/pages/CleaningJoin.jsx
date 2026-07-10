@@ -44,6 +44,7 @@ function CleaningJoin() {
 	const [serverError, setServerError] = useState('')
 	const fileRef = useRef()
 	const showcaseSection = cleaningGallerySections.slice(-1)[0]
+	const bannerImages = showcaseSection?.images || []
 
 	const validate = () => {
 		const nextErrors = {}
@@ -143,6 +144,7 @@ function CleaningJoin() {
 				title="Want To Join The Team?"
 				subtitle="Apply to work with CF Hub & Co. Cleaning Services as a trusted cleaner."
 				tone="join"
+				images={bannerImages}
 			/>
 
 			<section className="section">
@@ -312,7 +314,6 @@ function CleaningJoin() {
 							{showcaseSection.images.map((src, idx) => (
 								<figure key={src} className={galleryStyles.galleryItem} style={{ '--card-delay': `${idx * 0.07}s` }}>
 									<img src={src} alt={`${showcaseSection.title} ${idx + 1}`} loading="lazy" decoding="async" />
-									<figcaption>{src}</figcaption>
 								</figure>
 							))}
 						</div>

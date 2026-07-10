@@ -5,22 +5,32 @@ import styles from './Cleaning.module.css'
 
 function Cleaning() {
   const homeGallery = cleaningGallerySections.slice(0, 2)
+  const heroImages = homeGallery.flatMap(section => section.images).slice(0, 4)
 
   return (
     <>
       <section className={`${styles.hero} animate-fadein-up`} aria-label="CF Hub & Co. Cleaning Services hero">
         <div className={styles.heroOverlay} aria-hidden="true" />
         <div className="container">
-          <div className={styles.heroContent}>
-            <span className="label">CF Hub & Co. Cleaning Services</span>
-            <h1>Reliable, Professional and Trusted Cleaning Services</h1>
-            <p>
-              High-standard residential and commercial cleaning delivered by trained,
-              fully insured and trusted cleaning professionals.
-            </p>
-            <div className={styles.heroActions}>
-              <Link to="/cleaning/contact" className="btn btn-primary">Book a Cleaning Service</Link>
-              <Link to="/cleaning/services" className="btn btn-outline">Explore Cleaning Services</Link>
+          <div className={styles.heroLayout}>
+            <div className={styles.heroContent}>
+              <span className="label">CF Hub & Co. Cleaning Services</span>
+              <h1>Reliable, Professional and Trusted Cleaning Services</h1>
+              <p>
+                High-standard residential and commercial cleaning delivered by trained,
+                fully insured and trusted cleaning professionals.
+              </p>
+              <div className={styles.heroActions}>
+                <Link to="/cleaning/contact" className="btn btn-primary">Book a Cleaning Service</Link>
+                <Link to="/cleaning/services" className="btn btn-outline">Explore Cleaning Services</Link>
+              </div>
+            </div>
+            <div className={styles.heroGallery} aria-label="Featured cleaning work">
+              {heroImages.map((src, idx) => (
+                <figure key={src} className={styles.heroGalleryItem} style={{ '--hero-delay': `${idx * 0.09}s` }}>
+                  <img src={src} alt={`Featured cleaning result ${idx + 1}`} loading="eager" decoding="async" />
+                </figure>
+              ))}
             </div>
           </div>
         </div>
@@ -89,7 +99,6 @@ function Cleaning() {
               {section.images.map((src, idx) => (
                 <figure key={src} className={styles.galleryItem} style={{ '--card-delay': `${idx * 0.07}s` }}>
                   <img src={src} alt={`${section.title} ${idx + 1}`} loading="lazy" decoding="async" />
-                  <figcaption>{src}</figcaption>
                 </figure>
               ))}
             </div>
