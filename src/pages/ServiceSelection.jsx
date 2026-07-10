@@ -14,6 +14,9 @@ function ServiceSelection({ onSelect }) {
 
           <div className={styles.grid}>
             <article className={styles.card}>
+              <div className={styles.logoWrap}>
+                <img src="/logo.png" alt="CF Hub UK" className={styles.cardLogo} loading="lazy" decoding="async" />
+              </div>
               <span className={styles.kicker}>CF Hub UK</span>
               <h2 className={styles.cardTitle}>CF Hub Handyman Services</h2>
               <p className={styles.cardText}>
@@ -29,6 +32,9 @@ function ServiceSelection({ onSelect }) {
             </article>
 
             <article className={styles.card}>
+              <div className={styles.logoWrap}>
+                <img src="/logo2.png" alt="CF Hub & Co. Cleaning Services" className={styles.cardLogo} loading="lazy" decoding="async" />
+              </div>
               <span className={styles.kicker}>CF Hub & Co.</span>
               <h2 className={styles.cardTitle}>CF Hub & Co. Cleaning Services</h2>
               <p className={styles.cardText}>

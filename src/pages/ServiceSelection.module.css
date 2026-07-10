@@ -50,6 +50,19 @@
   box-shadow: var(--shadow-md);
 }
 
+.logoWrap {
+  display: flex;
+  align-items: center;
+  min-height: 62px;
+  margin-bottom: 14px;
+}
+
+.cardLogo {
+  height: 56px;
+  width: auto;
+  object-fit: contain;
+}
+
 .kicker {
   display: inline-block;
   margin-bottom: 16px;

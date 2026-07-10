@@ -48,7 +48,13 @@ function Header() {
 
         {/* Logo */}
         <Link to={isCleaning ? '/cleaning' : '/'} className={styles.logo} onClick={close}>
-          <img src="/logo.png" alt="CF Hub UK" className={styles.logoImg + ' animate-fadein'} loading="lazy" decoding="async" />
+          <img
+            src={isCleaning ? '/logo2.png' : '/logo.png'}
+            alt={isCleaning ? 'CF Hub & Co. Cleaning Services' : 'CF Hub UK'}
+            className={styles.logoImg + ' animate-fadein'}
+            loading="lazy"
+            decoding="async"
+          />
         </Link>
 
         {/* Desktop Nav */}

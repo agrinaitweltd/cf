@@ -17,7 +17,7 @@ function Footer() {
 
               <div className={styles.brand}>
                 <Link to="/cleaning" className={styles.logo}>
-                  <img src="/logo.png" alt="CF Hub UK" className={styles.logoImg + ' animate-fadein'} loading="lazy" decoding="async" />
+                  <img src="/logo2.png" alt="CF Hub & Co. Cleaning Services" className={styles.logoImg + ' animate-fadein'} loading="lazy" decoding="async" />
                 </Link>
                 <p className={styles.tagline}>
                   CF Hub & Co. Cleaning Services. Reliable, professional and trusted cleaners for homes and businesses.
