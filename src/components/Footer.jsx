@@ -1,9 +1,89 @@
 import { Link } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import styles from './Footer.module.css'
 import { services } from '../data/services'
 
 function Footer() {
+  const { pathname } = useLocation()
+  const isCleaning = pathname.startsWith('/cleaning')
   const year = new Date().getFullYear()
+
+  if (isCleaning) {
+    return (
+      <footer className={styles.footer}>
+        <div className={styles.top}>
+          <div className="container">
+            <div className={styles.grid}>
+
+              <div className={styles.brand}>
+                <Link to="/cleaning" className={styles.logo}>
+                  <img src="/logo.png" alt="CF Hub UK" className={styles.logoImg + ' animate-fadein'} loading="lazy" decoding="async" />
+                </Link>
+                <p className={styles.tagline}>
+                  CF Hub & Co. Cleaning Services. Reliable, professional and trusted cleaners for homes and businesses.
+                </p>
+              </div>
+
+              <div className={styles.col}>
+                <h4 className={styles.colTitle}>Cleaning Navigation</h4>
+                <nav>
+                  <a href="/cleaning" className={styles.footerLink}>Cleaning Home</a>
+                  <a href="/cleaning#services" className={styles.footerLink}>Cleaning Services</a>
+                  <a href="/cleaning#reviews" className={styles.footerLink}>Reviews</a>
+                  <a href="/cleaning#gallery" className={styles.footerLink}>Gallery</a>
+                  <a href="/cleaning#join-team" className={styles.footerLink}>Join the Team</a>
+                </nav>
+              </div>
+
+              <div className={styles.col}>
+                <h4 className={styles.colTitle}>Switch Service</h4>
+                <nav>
+                  <Link
+                    to="/"
+                    className={styles.footerLink}
+                    onClick={() => window.localStorage.setItem('cf-service-selection', 'handyman')}
+                  >
+                    CF Hub Handyman Services
+                  </Link>
+                  <Link to="/select-service" className={styles.footerLink}>Service Selection Page</Link>
+                </nav>
+              </div>
+
+              <div className={styles.col}>
+                <h4 className={styles.colTitle}>Get in Touch</h4>
+                <div className={styles.contactList}>
+                  <div className={styles.contactItem}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                      <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 .18h3a2 2 0 012 1.72c.127.96.36 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.34 1.85.573 2.81.7A2 2 0 0122 14.92z"/>
+                    </svg>
+                    <a href="tel:07960481933" className={styles.contactLink}>07960481933</a>
+                  </div>
+                  <div className={styles.contactItem}>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                      <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                      <polyline points="22,6 12,13 2,6"/>
+                    </svg>
+                    <a href="mailto:enquiries@cfhubuk.com" className={styles.contactLink}>enquiries@cfhubuk.com</a>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <div className={styles.bottom}>
+          <div className="container">
+            <div className={styles.bottomInner}>
+              <p className={styles.copy}>
+                &copy; {year} CF Hub & Co. Cleaning Services. All rights reserved.
+              </p>
+            </div>
+          </div>
+        </div>
+      </footer>
+    )
+  }
 
   return (
     <footer className={styles.footer}>

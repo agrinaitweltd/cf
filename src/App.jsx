@@ -1,5 +1,5 @@
 import { lazy, Suspense, useState, useEffect, useLayoutEffect, useRef, useCallback } from 'react'
-import { Routes, Route, useLocation } from 'react-router-dom'
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import ScrollToTop from './components/ScrollToTop'
@@ -18,11 +18,21 @@ const Handyman    = lazy(() => import('./pages/Handyman'))
 const Electrics   = lazy(() => import('./pages/Electrics'))
 const Plumbing    = lazy(() => import('./pages/Plumbing'))
 const JoinTeam    = lazy(() => import('./pages/JoinTeam'))
+const Cleaning    = lazy(() => import('./pages/Cleaning'))
+const ServiceSelection = lazy(() => import('./pages/ServiceSelection'))
 
 const SEO_BY_PATH = {
   '/': {
-    title: 'CF HUB UK | Property Improvement Experts',
-    description: 'Trusted property improvement experts for renovations, painting & decorating, carpentry, handyman services, electrics and plumbing across the UK.',
+    title: 'CF Hub UK | Choose Your Service',
+    description: 'Choose between CF Hub Handyman Services and CF Hub & Co. Cleaning Services for trusted, professional support across the UK.',
+  },
+  '/select-service': {
+    title: 'Choose Service | CF Hub UK',
+    description: 'Select CF Hub Handyman Services or CF Hub & Co. Cleaning Services to continue to the right website section.',
+  },
+  '/cleaning': {
+    title: 'CF Hub & Co. Cleaning Services | Trusted Cleaners UK',
+    description: 'Professional cleaning services including end of tenancy cleaning, deep cleans, commercial cleaning, Airbnb cleaning and move in cleans across the UK.',
   },
   '/about': {
     title: 'About Us | CF HUB UK',
@@ -72,7 +82,9 @@ const SEO_BY_PATH = {
 
 function App() {
   const { pathname } = useLocation()
+  const navigate = useNavigate()
   const [loading, setLoading] = useState(true);
+  const [selectedService, setSelectedService] = useState(() => window.localStorage.getItem('cf-service-selection') || '');
   const previousPathRef = useRef(pathname);
 
   const handleFinish = useCallback(() => setLoading(false), []);
@@ -141,14 +153,31 @@ function App() {
     return <LoadingScreen key={pathname} onFinish={handleFinish} />;
   }
 
+  const isSelectionPage = pathname === '/select-service' || (pathname === '/' && !selectedService)
+
+  const handleServiceSelect = (service) => {
+    window.localStorage.setItem('cf-service-selection', service)
+    setSelectedService(service)
+    if (service === 'cleaning') {
+      navigate('/cleaning')
+      return
+    }
+    navigate('/')
+  }
+
   return (
     <>
       <ScrollToTop />
-      <Header />
+      {!isSelectionPage && <Header />}
       <Suspense fallback={<main className="pageFallback" aria-hidden="true" />}>
         <main>
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route
+              path="/"
+              element={selectedService ? <Home /> : <ServiceSelection onSelect={handleServiceSelect} />}
+            />
+            <Route path="/select-service" element={<ServiceSelection onSelect={handleServiceSelect} />} />
+            <Route path="/cleaning" element={<Cleaning />} />
             <Route path="/about" element={<About />} />
             <Route path="/services" element={<Services />} />
             <Route path="/services/renovations" element={<Renovations />} />
@@ -162,7 +191,7 @@ function App() {
             <Route path="/join" element={<JoinTeam />} />
           </Routes>
         </main>
-        <Footer />
+        {!isSelectionPage && <Footer />}
       </Suspense>
       <CookieConsent />
     </>
