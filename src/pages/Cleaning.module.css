@@ -33,15 +33,13 @@
 .heroGallery {
   position: absolute;
   inset: 0;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(2, 1fr);
-  gap: 0;
+  display: flex;
   z-index: 0;
 }
 
 .heroGalleryItem {
-  position: relative;
+  position: absolute;
+  inset: 0;
   overflow: hidden;
   width: 100%;
   height: 100%;
@@ -49,7 +47,7 @@
   align-items: center;
   justify-content: center;
   animation: heroFadeInUp 0.85s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-  animation-delay: calc(0.25s + var(--hero-delay, 0s));
+  animation-delay: 0.25s;
 }
 
 .heroGalleryItem img {
@@ -71,13 +69,26 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.heroContent span {
+  animation: slideUp 0.72s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
 .heroContent h1 {
   margin-bottom: 16px;
+  animation: slideUp 0.78s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  animation-delay: 0.08s;
 }
 
 .heroContent p {
   max-width: 640px;
   font-size: 1.05rem;
+  animation: fadeInUp 0.78s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  animation-delay: 0.14s;
 }
 
 .heroActions {
