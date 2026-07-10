@@ -4,6 +4,8 @@
   border-radius: var(--r-md);
   padding: 24px;
   transition: border-color var(--t-fast), transform var(--t-fast);
+  animation: fadeInUp 0.72s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  animation-delay: var(--card-delay, 0s);
 }
 
 .card:hover {
@@ -36,6 +38,8 @@
   border: 1px solid var(--border);
   border-radius: var(--r-md);
   overflow: hidden;
+  animation: scaleIn 0.72s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  animation-delay: var(--card-delay, 0s);
 }
 
 .galleryItem img {
@@ -63,6 +67,10 @@
   justify-content: center;
 }
 
+.headAnimated {
+  animation: fadeInUp 0.74s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
 @media (max-width: 1024px) {
   .galleryGrid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -70,7 +78,24 @@
 }
 
 @media (max-width: 768px) {
+  .card {
+    padding: 20px;
+  }
+
   .galleryGrid {
     grid-template-columns: 1fr;
+  }
+
+  .galleryItem img {
+    height: 200px;
+  }
+
+  .inlineActions {
+    flex-direction: column;
+  }
+
+  .inlineActions :global(.btn) {
+    width: 100%;
+    justify-content: center;
   }
 }

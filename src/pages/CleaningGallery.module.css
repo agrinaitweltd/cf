@@ -4,11 +4,17 @@
   gap: 16px;
 }
 
+.headAnimated {
+  animation: fadeInUp 0.74s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
 .galleryItem {
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: var(--r-md);
   overflow: hidden;
+  animation: scaleIn 0.72s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  animation-delay: var(--card-delay, 0s);
 }
 
 .galleryItem img {
@@ -34,5 +40,9 @@
 @media (max-width: 768px) {
   .galleryGrid {
     grid-template-columns: 1fr;
+  }
+
+  .galleryItem img {
+    height: 210px;
   }
 }

@@ -39,7 +39,7 @@ function Cleaning() {
 
       <section className="section">
         <div className="container">
-          <div className="section-head section-head--center">
+          <div className={`section-head section-head--center ${styles.headAnimated}`}>
             <span className="label">Core Services</span>
             <h2>Cleaning Services Built Around Your Property</h2>
             <p>
@@ -47,8 +47,8 @@ function Cleaning() {
             </p>
           </div>
           <div className="grid-3">
-            {mainCleaningServices.map(service => (
-              <article key={service} className={styles.serviceCard}>
+            {mainCleaningServices.map((service, index) => (
+              <article key={service} className={styles.serviceCard} style={{ '--card-delay': `${index * 0.08}s` }}>
                 <h3>{service}</h3>
                 <p>Delivered by trusted, detail-focused cleaners with professional standards throughout.</p>
               </article>
@@ -62,13 +62,13 @@ function Cleaning() {
 
       <section className={`section section--alt ${styles.reviewSection}`}>
         <div className="container">
-          <div className="section-head section-head--center">
+          <div className={`section-head section-head--center ${styles.headAnimated}`}>
             <span className="label">Reviews & Testimonials</span>
             <h2>Trusted By Homeowners, Landlords and Businesses</h2>
           </div>
           <div className="grid-3">
-            {cleaningTestimonials.map(item => (
-              <article key={item.quote} className={styles.reviewCard}>
+            {cleaningTestimonials.map((item, index) => (
+              <article key={item.quote} className={styles.reviewCard} style={{ '--card-delay': `${index * 0.08}s` }}>
                 <p className={styles.reviewQuote}>"{item.quote}"</p>
                 <span className={styles.reviewName}>{item.name}</span>
               </article>
@@ -80,14 +80,14 @@ function Cleaning() {
       {homeGallery.map(section => (
         <section key={section.id} className="section">
           <div className="container">
-            <div className="section-head">
+            <div className={`section-head ${styles.headAnimated}`}>
               <span className="label">Image Section</span>
               <h2>{section.title}</h2>
               <p>{section.text}</p>
             </div>
             <div className={styles.galleryGrid}>
               {section.images.map((src, idx) => (
-                <figure key={src} className={styles.galleryItem}>
+                <figure key={src} className={styles.galleryItem} style={{ '--card-delay': `${idx * 0.07}s` }}>
                   <img src={src} alt={`${section.title} ${idx + 1}`} loading="lazy" decoding="async" />
                   <figcaption>{src}</figcaption>
                 </figure>

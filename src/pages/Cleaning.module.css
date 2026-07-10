@@ -20,6 +20,7 @@
   position: relative;
   z-index: 1;
   max-width: 760px;
+  animation: fadeInUp 0.78s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 
 .heroContent h1 {
@@ -36,6 +37,18 @@
   flex-wrap: wrap;
   gap: 14px;
   margin-top: 32px;
+}
+
+.heroActions :global(.btn) {
+  animation: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.heroActions :global(.btn):nth-child(1) {
+  animation-delay: 0.12s;
+}
+
+.heroActions :global(.btn):nth-child(2) {
+  animation-delay: 0.2s;
 }
 
 .trustSection {
@@ -61,6 +74,8 @@
   border-radius: var(--r-md);
   padding: 24px;
   transition: border-color var(--t-fast), transform var(--t-fast);
+  animation: fadeInUp 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  animation-delay: var(--card-delay, 0s);
 }
 
 .serviceCard:hover {
@@ -91,6 +106,8 @@
   border: 1px solid var(--border);
   border-radius: var(--r-md);
   padding: 24px;
+  animation: fadeInUp 0.72s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  animation-delay: var(--card-delay, 0s);
 }
 
 .reviewQuote {
@@ -119,6 +136,8 @@
   border: 1px solid var(--border);
   border-radius: var(--r-md);
   overflow: hidden;
+  animation: scaleIn 0.72s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  animation-delay: var(--card-delay, 0s);
 }
 
 .galleryItem img {
@@ -135,6 +154,10 @@
   overflow-wrap: anywhere;
 }
 
+.headAnimated {
+  animation: fadeInUp 0.74s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
 @media (max-width: 1024px) {
   .galleryGrid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -147,11 +170,37 @@
     padding: 116px 0 72px;
   }
 
+  .heroContent p {
+    max-width: 100%;
+    font-size: 0.98rem;
+  }
+
+  .heroActions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .heroActions :global(.btn) {
+    justify-content: center;
+    width: 100%;
+  }
+
   .trustCard {
     padding: 22px;
   }
 
+  .serviceCard,
+  .reviewCard,
+  .galleryItem {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
   .galleryGrid {
     grid-template-columns: 1fr;
+  }
+
+  .galleryItem img {
+    height: 200px;
   }
 }

@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react'
-import PageBanner from '../components/PageBanner'
+import CleaningBanner from '../components/CleaningBanner'
 import CTABanner from '../components/CTABanner'
 import { cleaningGallerySections } from '../data/cleaning'
 import styles from './JoinTeam.module.css'
@@ -139,10 +139,10 @@ function CleaningJoin() {
 
 	return (
 		<>
-			<PageBanner
+			<CleaningBanner
 				title="Want To Join The Team?"
 				subtitle="Apply to work with CF Hub & Co. Cleaning Services as a trusted cleaner."
-				image="/contact-banner.png"
+				tone="join"
 			/>
 
 			<section className="section">
@@ -303,14 +303,14 @@ function CleaningJoin() {
 			{showcaseSection && (
 				<section className="section section--alt">
 					<div className="container">
-						<div className="section-head">
+						<div className={`${galleryStyles.headAnimated} section-head`}>
 							<span className="label">Cleaning Image Section</span>
 							<h2>{showcaseSection.title}</h2>
 							<p>{showcaseSection.text}</p>
 						</div>
 						<div className={galleryStyles.galleryGrid}>
 							{showcaseSection.images.map((src, idx) => (
-								<figure key={src} className={galleryStyles.galleryItem}>
+								<figure key={src} className={galleryStyles.galleryItem} style={{ '--card-delay': `${idx * 0.07}s` }}>
 									<img src={src} alt={`${showcaseSection.title} ${idx + 1}`} loading="lazy" decoding="async" />
 									<figcaption>{src}</figcaption>
 								</figure>

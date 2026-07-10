@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import PageBanner from '../components/PageBanner'
+import CleaningBanner from '../components/CleaningBanner'
 import CTABanner from '../components/CTABanner'
 import { mainCleaningServices, additionalCleaningServices, cleaningGallerySections } from '../data/cleaning'
 import styles from './Contact.module.css'
@@ -125,10 +125,10 @@ function CleaningContact() {
 
 	return (
 		<>
-			<PageBanner
+			<CleaningBanner
 				title="Book Cleaning"
 				subtitle="Arrange a trusted cleaning service or request a quote for your property."
-				image="/contact-banner.png"
+				tone="contact"
 			/>
 
 			<section className="section">
@@ -287,14 +287,14 @@ function CleaningContact() {
 			{showcaseSections.map(section => (
 				<section key={section.id} className="section section--alt">
 					<div className="container">
-						<div className="section-head">
+						<div className={`${galleryStyles.headAnimated} section-head`}>
 							<span className="label">Cleaning Image Section</span>
 							<h2>{section.title}</h2>
 							<p>{section.text}</p>
 						</div>
 						<div className={galleryStyles.galleryGrid}>
 							{section.images.map((src, idx) => (
-								<figure key={src} className={galleryStyles.galleryItem}>
+								<figure key={src} className={galleryStyles.galleryItem} style={{ '--card-delay': `${idx * 0.07}s` }}>
 									<img src={src} alt={`${section.title} ${idx + 1}`} loading="lazy" decoding="async" />
 									<figcaption>{src}</figcaption>
 								</figure>
