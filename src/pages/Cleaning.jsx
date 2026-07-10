@@ -58,6 +58,8 @@ function Cleaning() {
         </div>
       </section>
 
+      {/* Core Services Section */}
+
       <section className="section">
         <div className="container">
           <div className={`section-head section-head--center ${styles.headAnimated}`}>

@@ -7,6 +7,7 @@
     radial-gradient(circle at 84% 22%, rgba(255, 255, 255, 0.06), transparent 26%),
     linear-gradient(145deg, #0f0f0f 0%, #171717 46%, #101010 100%);
   border-bottom: 1px solid var(--border);
+  contain: layout style paint;
 }
 
 .default {}

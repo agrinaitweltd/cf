@@ -9,6 +9,7 @@
               linear-gradient(150deg, #101010, #1b1b1b 44%, #111111 100%);
   overflow: hidden;
   width: 100%;
+  contain: layout style paint;
 }
 
 .heroOverlay {
@@ -65,6 +66,11 @@
 .heroGalleryItem:hover img {
   transform: scale(1.08);
   filter: saturate(1) contrast(1.06) brightness(1);
+}
+
+.heroGalleryItem img {
+  will-change: transform;
+  contain: layout style paint;
 }
 
 @keyframes heroFadeInUp {
