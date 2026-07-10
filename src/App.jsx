@@ -106,6 +106,11 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [selectedService, setSelectedService] = useState(() => window.localStorage.getItem('cf-service-selection') || '');
   const previousPathRef = useRef(pathname);
+  const isCleaningRoute = pathname.startsWith('/cleaning')
+  const isSelectionRoute = pathname === '/select-service' || (pathname === '/' && !selectedService)
+
+  const loadingLogoSrc = isCleaningRoute ? '/logo2.png' : '/logo.png'
+  const loadingLogoAlt = isCleaningRoute ? 'CF Hub & Co. Cleaning Services' : 'CF HUB UK'
 
   const handleFinish = useCallback(() => setLoading(false), []);
 
@@ -170,10 +175,10 @@ function App() {
   }, [pathname]);
 
   if (loading) {
-    return <LoadingScreen key={pathname} onFinish={handleFinish} />;
+    return <LoadingScreen key={pathname} onFinish={handleFinish} logoSrc={loadingLogoSrc} logoAlt={loadingLogoAlt} />;
   }
 
-  const isSelectionPage = pathname === '/select-service' || (pathname === '/' && !selectedService)
+  const isSelectionPage = isSelectionRoute
 
   const handleServiceSelect = (service) => {
     window.localStorage.setItem('cf-service-selection', service)

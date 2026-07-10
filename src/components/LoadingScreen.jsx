@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import styles from './LoadingScreen.module.css';
 
-export default function LoadingScreen({ onFinish }) {
+export default function LoadingScreen({ onFinish, logoSrc = '/logo.png', logoAlt = 'CF HUB UK' }) {
   const [phase, setPhase] = useState('spin'); // spin → swipe → done
   const calledRef = useRef(false);
 
@@ -31,8 +31,8 @@ export default function LoadingScreen({ onFinish }) {
     <div className={styles.loadingRoot} aria-live="polite">
       <div className={styles.centeredLogo}>
         <img
-          src="/logo.png"
-          alt="CF HUB UK"
+          src={logoSrc}
+          alt={logoAlt}
           className={styles.logoImg}
           draggable="false"
         />
