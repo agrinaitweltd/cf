@@ -16,6 +16,19 @@ function Cleaning() {
     <>
       <section className={`${styles.hero} animate-fadein-up`} aria-label="CF Hub & Co. Cleaning Services hero">
         <div className={styles.heroOverlay} aria-hidden="true" />
+        <div className={styles.heroGallery} aria-label="Featured cleaning work background">
+          {heroImages.map((src, idx) => (
+            <figure key={src} className={styles.heroGalleryItem} style={{ '--hero-delay': `${idx * 0.09}s` }}>
+              <img
+                src={src}
+                alt={`Featured cleaning result ${idx + 1}`}
+                loading="eager"
+                decoding="sync"
+                onError={handleHeroImageError}
+              />
+            </figure>
+          ))}
+        </div>
         <div className="container">
           <div className={styles.heroLayout}>
             <div className={styles.heroContent}>
@@ -29,19 +42,6 @@ function Cleaning() {
                 <Link to="/cleaning/contact" className="btn btn-primary">Book a Cleaning Service</Link>
                 <Link to="/cleaning/services" className="btn btn-outline">Explore Cleaning Services</Link>
               </div>
-            </div>
-            <div className={styles.heroGallery} aria-label="Featured cleaning work">
-              {heroImages.map((src, idx) => (
-                <figure key={src} className={styles.heroGalleryItem} style={{ '--hero-delay': `${idx * 0.09}s` }}>
-                  <img
-                    src={src}
-                    alt={`Featured cleaning result ${idx + 1}`}
-                    loading="eager"
-                    decoding="sync"
-                    onError={handleHeroImageError}
-                  />
-                </figure>
-              ))}
             </div>
           </div>
         </div>
