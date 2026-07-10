@@ -9,8 +9,11 @@
   min-height: 100vh;
   display: flex;
   align-items: center;
+  background-size: cover;
+  background-position: center;
+  background-color: #1a0d00;
+  background-repeat: no-repeat;
   width: 100%;
-  overflow: hidden;
 }
 
 .heroBg {
@@ -26,7 +29,7 @@
 .heroOverlay {
   position: absolute;
   inset: 0;
-  z-index: 1;
+  z-index: 0;
   background: linear-gradient(
     110deg,
     rgba(8, 5, 1, 0.95) 0%,
@@ -335,13 +338,6 @@
   .aboutGrid { grid-template-columns: 1fr; gap: 48px; }
   .aboutImage { height: 400px; }
   .aboutBadge { right: 20px; }
-}
-
-@media (max-width: 900px) {
-  .hero {
-    background-size: cover;
-    background-position: center;
-  }
 }
 
 @media (max-width: 768px) {
