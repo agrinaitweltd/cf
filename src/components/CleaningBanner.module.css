@@ -140,21 +140,63 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
+@keyframes typewriter {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
 .title {
   font-size: clamp(2.2rem, 4.5vw, 3.8rem);
   line-height: 1.08;
   letter-spacing: -0.03em;
   margin-bottom: 16px;
-  animation: slideUp 0.78s cubic-bezier(0.2, 0.8, 0.2, 1) both;
-  animation-delay: 0.08s;
+  animation: slideUp 0.78s cubic-bezier(0.2, 0.8, 0.2, 1) both, typewriter 2s steps(45, end) both;
+  animation-delay: 0.08s, 0.85s;
+  overflow: hidden;
+  white-space: normal;
+  border-right: 3px solid rgba(255, 255, 255, 0.7);
+  padding-right: 4px;
+  position: relative;
+}
+
+.title::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: rgba(255, 255, 255, 0.7);
+  animation: blink 0.7s infinite 2.85s;
 }
 
 .subtitle {
   font-size: 1.04rem;
   color: rgba(255, 255, 255, 0.72);
   line-height: 1.75;
-  animation: slideUp 0.78s cubic-bezier(0.2, 0.8, 0.2, 1) both;
-  animation-delay: 0.14s;
+  animation: slideUp 0.78s cubic-bezier(0.2, 0.8, 0.2, 1) both, typewriter 1.6s steps(60, end) both;
+  animation-delay: 0.14s, 2.9s;
+  overflow: hidden;
+  white-space: normal;
+  border-right: 2px solid rgba(255, 255, 255, 0.6);
+  padding-right: 3px;
+  position: relative;
+}
+
+.subtitle::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: rgba(255, 255, 255, 0.6);
+  animation: blink 0.7s infinite 4.5s;
 }
 
 @keyframes floatOrb {
