@@ -110,8 +110,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  animation: bannerHeroFadeInUp 0.85s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  animation: bannerHeroFadeInUp 0.85s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
   animation-delay: calc(0.25s + var(--hero-delay, 0s));
+  opacity: 0;
 }
 
 .heroGalleryItem img {
