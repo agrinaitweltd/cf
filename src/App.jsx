@@ -30,6 +30,10 @@ const SEO_BY_PATH = {
     title: 'CF Hub UK | Choose Your Service',
     description: 'Choose between CF Hub Handyman Services and CF Hub & Co. Cleaning Services for trusted, professional support across the UK.',
   },
+  '/handyman': {
+    title: 'CF HUB UK | Handyman Services',
+    description: 'Reliable handyman, renovations, painting, carpentry, electrics and plumbing services across the UK.',
+  },
   '/select-service': {
     title: 'Choose Service | CF Hub UK',
     description: 'Select CF Hub Handyman Services or CF Hub & Co. Cleaning Services to continue to the right website section.',
@@ -104,10 +108,9 @@ function App() {
   const { pathname } = useLocation()
   const navigate = useNavigate()
   const [loading, setLoading] = useState(true);
-  const [selectedService, setSelectedService] = useState(() => window.localStorage.getItem('cf-service-selection') || '');
   const previousPathRef = useRef(pathname);
   const isCleaningRoute = pathname.startsWith('/cleaning')
-  const isSelectionRoute = pathname === '/select-service' || (pathname === '/' && !selectedService)
+  const isSelectionRoute = pathname === '/select-service' || pathname === '/'
 
   const loadingLogoSrc = isCleaningRoute ? '/logo2.png' : '/logo.png'
   const loadingLogoAlt = isCleaningRoute ? 'CF Hub & Co. Cleaning Services' : 'CF HUB UK'
@@ -182,12 +185,11 @@ function App() {
 
   const handleServiceSelect = (service) => {
     window.localStorage.setItem('cf-service-selection', service)
-    setSelectedService(service)
     if (service === 'cleaning') {
       navigate('/cleaning')
       return
     }
-    navigate('/')
+    navigate('/handyman')
   }
 
   return (
@@ -199,9 +201,10 @@ function App() {
           <Routes>
             <Route
               path="/"
-              element={selectedService ? <Home /> : <ServiceSelection onSelect={handleServiceSelect} />}
+              element={<ServiceSelection onSelect={handleServiceSelect} />}
             />
             <Route path="/select-service" element={<ServiceSelection onSelect={handleServiceSelect} />} />
+            <Route path="/handyman" element={<Home />} />
             <Route path="/cleaning" element={<Cleaning />} />
             <Route path="/cleaning/services" element={<CleaningServices />} />
             <Route path="/cleaning/gallery" element={<CleaningGallery />} />

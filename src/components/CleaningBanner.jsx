@@ -1,6 +1,11 @@
 import styles from './CleaningBanner.module.css'
 
 function CleaningBanner({ title, subtitle, tone = 'default', images = [] }) {
+  const handleHeroImageError = ({ currentTarget }) => {
+    if (currentTarget.src.includes('/cleaning/gallery/photo1.png')) return
+    currentTarget.src = '/cleaning/gallery/photo1.png'
+  }
+
   return (
     <section className={`${styles.banner} ${styles[tone] || ''} animate-mobile-fadeup`} aria-label={`${title} page banner`}>
       <div className={styles.orbOne} aria-hidden="true" />
@@ -17,7 +22,13 @@ function CleaningBanner({ title, subtitle, tone = 'default', images = [] }) {
             <div className={styles.heroGallery} aria-label="Featured cleaning images">
               {images.slice(0, 4).map((src, idx) => (
                 <figure key={src} className={styles.heroGalleryItem} style={{ '--hero-delay': `${idx * 0.09}s` }}>
-                  <img src={src} alt={`${title} highlight ${idx + 1}`} loading="eager" decoding="async" />
+                  <img
+                    src={src}
+                    alt={`${title} highlight ${idx + 1}`}
+                    loading="eager"
+                    decoding="async"
+                    onError={handleHeroImageError}
+                  />
                 </figure>
               ))}
             </div>

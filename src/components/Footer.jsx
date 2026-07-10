@@ -39,7 +39,7 @@ function Footer() {
                 <h4 className={styles.colTitle}>Switch Service</h4>
                 <nav>
                   <Link
-                    to="/"
+                    to="/handyman"
                     className={styles.footerLink}
                     onClick={() => window.localStorage.setItem('cf-service-selection', 'handyman')}
                   >
@@ -93,7 +93,7 @@ function Footer() {
 
             {/* Brand */}
             <div className={styles.brand}>
-              <Link to="/" className={styles.logo}>
+              <Link to="/handyman" className={styles.logo}>
                 <img src="/logo.png" alt="CF Hub UK" className={styles.logoImg + ' animate-fadein'} loading="lazy" decoding="async" />
               </Link>
               <p className={styles.tagline}>
@@ -143,7 +143,7 @@ function Footer() {
             <div className={styles.col}>
               <h4 className={styles.colTitle}>Quick Links</h4>
               <nav>
-                <Link to="/" className={styles.footerLink}>Home</Link>
+                <Link to="/handyman" className={styles.footerLink}>Home</Link>
                 <Link to="/about" className={styles.footerLink}>About Us</Link>
                 <Link to="/services" className={styles.footerLink}>Our Services</Link>
                 <Link to="/projects" className={styles.footerLink}>Projects</Link>

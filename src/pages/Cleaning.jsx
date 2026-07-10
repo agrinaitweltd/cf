@@ -5,7 +5,12 @@ import styles from './Cleaning.module.css'
 
 function Cleaning() {
   const homeGallery = cleaningGallerySections.slice(0, 2)
-  const heroImages = ['/cleaning/gallery/hero41.png']
+  const heroImages = ['/cleaning/gallery/hero41.png', ...homeGallery.flatMap(section => section.images)].slice(0, 4)
+
+  const handleHeroImageError = ({ currentTarget }) => {
+    if (currentTarget.src.includes('/cleaning/gallery/photo1.png')) return
+    currentTarget.src = '/cleaning/gallery/photo1.png'
+  }
 
   return (
     <>
@@ -28,7 +33,13 @@ function Cleaning() {
             <div className={styles.heroGallery} aria-label="Featured cleaning work">
               {heroImages.map((src, idx) => (
                 <figure key={src} className={styles.heroGalleryItem} style={{ '--hero-delay': `${idx * 0.09}s` }}>
-                  <img src={src} alt={`Featured cleaning result ${idx + 1}`} loading="eager" decoding="async" />
+                  <img
+                    src={src}
+                    alt={`Featured cleaning result ${idx + 1}`}
+                    loading="eager"
+                    decoding="async"
+                    onError={handleHeroImageError}
+                  />
                 </figure>
               ))}
             </div>

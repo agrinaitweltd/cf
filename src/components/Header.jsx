@@ -47,7 +47,7 @@ function Header() {
       <div className={styles.inner}>
 
         {/* Logo */}
-        <Link to={isCleaning ? '/cleaning' : '/'} className={styles.logo} onClick={close}>
+        <Link to={isCleaning ? '/cleaning' : '/handyman'} className={styles.logo} onClick={close}>
           <img
             src={isCleaning ? '/logo2.png' : '/logo.png'}
             alt={isCleaning ? 'CF Hub & Co. Cleaning Services' : 'CF Hub UK'}
@@ -69,7 +69,7 @@ function Header() {
             </>
           ) : (
             <>
-              <NavLink to="/" end className={navClass}>Home</NavLink>
+              <NavLink to="/handyman" end className={navClass}>Home</NavLink>
               <NavLink to="/about" className={navClass}>About</NavLink>
 
               {/* Services dropdown */}
@@ -108,7 +108,7 @@ function Header() {
 
         <div className={styles.headerActions}>
           <Link
-            to={isCleaning ? '/' : '/cleaning'}
+            to={isCleaning ? '/handyman' : '/cleaning'}
             className={styles.switchBtn}
             aria-label="Switch services"
             onClick={persistSelection(isCleaning ? 'handyman' : 'cleaning')}
@@ -186,7 +186,7 @@ function Header() {
               </NavLink>
 
               <NavLink
-                to="/"
+                to="/handyman"
                 end
                 className={mobileLinkClass}
                 onClick={() => {
@@ -204,7 +204,7 @@ function Header() {
             </>
           ) : (
             <>
-              <NavLink to="/" end className={mobileLinkClass} onClick={close} style={{ '--item-i': 0 }}>
+              <NavLink to="/handyman" end className={mobileLinkClass} onClick={close} style={{ '--item-i': 0 }}>
             <span className={styles.mobileNum}>01</span>
             <span className={styles.mobileTxt}>Home</span>
             <svg className={styles.mobileArrow} width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
