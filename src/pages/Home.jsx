@@ -82,7 +82,14 @@ function Home() {
   return (
     <>
       {/* ── Hero ── */}
-      <section className={styles.hero + ' animate-zoomout animate-fadein-up'} style={{ backgroundImage: 'url(/hero-meain.png)' }} aria-label="Hero">
+      <section className={styles.hero} aria-label="Hero">
+        <img
+          src="/hero-meain.png"
+          alt=""
+          className={styles.heroBg}
+          loading="eager"
+          fetchpriority="high"
+        />
         <div className={styles.heroOverlay} aria-hidden="true" />
         <div className="container">
           <div className={styles.heroContent}>
