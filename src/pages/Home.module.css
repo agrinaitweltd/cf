@@ -12,7 +12,7 @@
   background-size: contain;
   background-position: top center;
   background-color: #1a0d00;
-  background-repeat: no-repeat;
+  overflow: hidden;
   width: 100%;
 }
 
@@ -26,6 +26,11 @@
   background-position: center;
   animation: bannerZoom 12s ease-in-out infinite alternate;
   z-index: 0;
+}
+
+@keyframes bannerZoom {
+  from { transform: scale(1); }
+  to   { transform: scale(1.06); }
 }
 
 .heroOverlay {
@@ -361,11 +366,6 @@
     bottom: -24px;
     animation: none;
   }
-}
-
-@keyframes bannerZoom {
-  from { transform: scale(1); }
-  to   { transform: scale(1.06); }
 }
 
 @keyframes float {
