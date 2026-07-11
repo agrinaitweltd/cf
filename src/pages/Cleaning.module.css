@@ -3,7 +3,7 @@
   min-height: 78vh;
   display: flex;
   align-items: center;
-  padding: 130px 0 90px;
+  padding: 130px 28px 90px;
   background: radial-gradient(circle at 15% 20%, rgba(255, 255, 255, 0.08), transparent 45%),
               radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.05), transparent 40%),
               linear-gradient(150deg, #101010, #1b1b1b 44%, #111111 100%);
@@ -12,6 +12,12 @@
   left: 50%;
   transform: translateX(-50%);
   contain: layout style paint;
+}
+
+.hero .container {
+  width: 100%;
+  max-width: 100%;
+  padding: 0;
 }
 
 .heroOverlay {
@@ -23,7 +29,7 @@
 .heroContent {
   position: relative;
   z-index: 1;
-  max-width: 760px;
+  max-width: 100%;
   animation: fadeInUp 0.78s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 
@@ -282,15 +288,11 @@
     width: 100vw;
     left: 50%;
     transform: translateX(-50%);
+    padding: 130px 28px 90px;
   }
 
-  .heroLayout {
-    width: 100%;
-    max-width: 100%;
-  }
-
-  .heroContent {
-    max-width: 100%;
+  .hero .container {
+    padding: 0;
   }
 
   .galleryGrid {
@@ -301,19 +303,14 @@
 @media (max-width: 768px) {
   .hero {
     min-height: auto;
-    padding: 116px 0 72px;
+    padding: 116px 20px 72px;
     width: 100vw;
     left: 50%;
     transform: translateX(-50%);
   }
 
-  .heroLayout {
-    width: 100%;
-    max-width: 100%;
-  }
-
-  .heroContent {
-    max-width: 100%;
+  .hero .container {
+    padding: 0;
   }
 
   .heroContent p {
