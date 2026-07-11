@@ -5,7 +5,7 @@ import styles from './Cleaning.module.css'
 
 function Cleaning() {
   const homeGallery = cleaningGallerySections.slice(0, 2)
-  const heroImages = ['/cleaning/gallery/hero41.png']
+  const heroImage = '/cleaning/gallery/hero41.png'
 
   const handleHeroImageError = ({ currentTarget }) => {
     if (currentTarget.src.includes('/cleaning/gallery/photo1.png')) return
@@ -14,34 +14,19 @@ function Cleaning() {
 
   return (
     <>
-      <section className={`${styles.hero} animate-fadein-up`} aria-label="CF Hub & Co. Cleaning Services hero">
+      <section className={`${styles.hero} animate-fadein-up`} style={{ backgroundImage: `url(${heroImage})` }} aria-label="CF Hub & Co. Cleaning Services hero">
         <div className={styles.heroOverlay} aria-hidden="true" />
-        <div className={styles.heroGallery} aria-label="Featured cleaning work background">
-          {heroImages.map((src, idx) => (
-            <figure key={src} className={styles.heroGalleryItem} style={{ '--hero-delay': `${idx * 0.09}s` }}>
-              <img
-                src={src}
-                alt={`Featured cleaning result ${idx + 1}`}
-                loading="eager"
-                decoding="sync"
-                onError={handleHeroImageError}
-              />
-            </figure>
-          ))}
-        </div>
         <div className="container">
-          <div className={styles.heroLayout}>
-            <div className={styles.heroContent}>
-              <span className="label">CF Hub & Co. Cleaning Services</span>
-              <h1>Reliable, Professional and Trusted Cleaning Services</h1>
-              <p>
-                High-standard residential and commercial cleaning delivered by trained,
-                fully insured and trusted cleaning professionals.
-              </p>
-              <div className={styles.heroActions}>
-                <Link to="/cleaning/contact" className="btn btn-primary">Book a Cleaning Service</Link>
-                <Link to="/cleaning/services" className="btn btn-outline">Explore Cleaning Services</Link>
-              </div>
+          <div className={styles.heroContent}>
+            <span className="label">CF Hub & Co. Cleaning Services</span>
+            <h1>Reliable, Professional and Trusted Cleaning Services</h1>
+            <p>
+              High-standard residential and commercial cleaning delivered by trained,
+              fully insured and trusted cleaning professionals.
+            </p>
+            <div className={styles.heroActions}>
+              <Link to="/cleaning/contact" className="btn btn-primary">Book a Cleaning Service</Link>
+              <Link to="/cleaning/services" className="btn btn-outline">Explore Cleaning Services</Link>
             </div>
           </div>
         </div>
