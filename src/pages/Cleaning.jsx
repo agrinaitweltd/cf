@@ -1,11 +1,45 @@
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import CTABanner from '../components/CTABanner'
 import { mainCleaningServices, cleaningTestimonials, cleaningGallerySections } from '../data/cleaning'
 import styles from './Cleaning.module.css'
 
+const CYCLE_WORDS = ['Residential', 'Commercial', 'Deep Clean', 'End of Tenancy', 'Office', 'Carpet']
+
+function useTypewriter(words, typingSpeed = 80, deletingSpeed = 50, pause = 1800) {
+  const [display, setDisplay] = useState('')
+  const [wordIdx, setWordIdx] = useState(0)
+  const [phase, setPhase] = useState('typing')
+
+  useEffect(() => {
+    const word = words[wordIdx]
+    let timeout
+
+    if (phase === 'typing') {
+      if (display.length < word.length) {
+        timeout = setTimeout(() => setDisplay(word.slice(0, display.length + 1)), typingSpeed)
+      } else {
+        timeout = setTimeout(() => setPhase('deleting'), pause)
+      }
+    } else if (phase === 'deleting') {
+      if (display.length > 0) {
+        timeout = setTimeout(() => setDisplay(display.slice(0, -1)), deletingSpeed)
+      } else {
+        setWordIdx((i) => (i + 1) % words.length)
+        setPhase('typing')
+      }
+    }
+
+    return () => clearTimeout(timeout)
+  }, [display, phase, wordIdx, words, typingSpeed, deletingSpeed, pause])
+
+  return display
+}
+
 function Cleaning() {
   const homeGallery = cleaningGallerySections.slice(0, 2)
   const heroImage = '/cleaning/gallery/hero41.png'
+  const typedWord = useTypewriter(CYCLE_WORDS)
 
   const handleHeroImageError = ({ currentTarget }) => {
     if (currentTarget.src.includes('/cleaning/gallery/photo1.png')) return
@@ -19,7 +53,12 @@ function Cleaning() {
         <div className="container">
           <div className={styles.heroContent}>
             <span className="label">CF Hub & Co. Cleaning Services</span>
-            <h1>Reliable, Professional and Trusted Cleaning Services</h1>
+            <h1>
+              Reliable, Professional and Trusted{' '}
+              <span className={styles.heroTyped}>{typedWord}</span>
+              <span className={styles.heroCursor} aria-hidden="true" />
+              <br />Cleaning Services
+            </h1>
             <p>
               High-standard residential and commercial cleaning delivered by trained,
               fully insured and trusted cleaning professionals.

@@ -58,6 +58,24 @@
   animation: fadeInUp 0.75s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
 }
 
+.heroTyped {
+  color: var(--accent);
+}
+
+.heroCursor {
+  display: inline-block;
+  width: 3px;
+  height: 1em;
+  background: rgba(255, 255, 255, 0.7);
+  margin-left: 2px;
+  animation: blink 0.7s infinite;
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
 .heroContent p {
   font-size: 1.05rem;
   color: rgba(255, 255, 255, 0.65);
