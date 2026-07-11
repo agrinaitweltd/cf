@@ -1,6 +1,11 @@
 import { Resend } from 'resend';
 
 function internalEmail({ name, email, phone, service, propertyType, postcode, budget, preferredContact, timeline, message }) {
+  const isCleaningService = service && service.toLowerCase().includes('cleaning');
+  const contactEmail = isCleaningService ? 'info@cleanfreakshub.co.uk' : 'enquiries@cfhubuk.com';
+  const companyLabel = isCleaningService ? 'CF Hub & Co. Cleaning Services' : 'CF HUB UK';
+  const companyTagline = isCleaningService ? 'Professional Cleaning Services' : 'Property Improvement Experts';
+
   const rows = [
     ['Full Name',          name],
     ['Email',              `<a href="mailto:${email}" style="color:#0D0D0D;font-weight:600;">${email}</a>`],
@@ -17,7 +22,7 @@ function internalEmail({ name, email, phone, service, propertyType, postcode, bu
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>New Enquiry — CF HUB UK</title>
+  <title>New Enquiry — ${companyLabel}</title>
 </head>
 <body style="margin:0;padding:0;background:#EBEBEB;font-family:'Helvetica Neue',Arial,sans-serif;-webkit-font-smoothing:antialiased;">
   <table width="100%" cellpadding="0" cellspacing="0" style="background:#EBEBEB;padding:48px 16px 64px;">
@@ -29,8 +34,8 @@ function internalEmail({ name, email, phone, service, propertyType, postcode, bu
         <!-- Header -->
         <tr>
           <td style="background:#0D0D0D;padding:36px 48px 32px;text-align:center;">
-            <img src="https://www.cfhubuk.com/logo.png" alt="CF HUB UK" height="72" style="display:block;margin:0 auto 16px;" />
-            <p style="margin:0;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.45);font-weight:600;">Property Improvement Experts</p>
+            <img src="https://www.cfhubuk.com/logo.png" alt="${companyLabel}" height="72" style="display:block;margin:0 auto 16px;" />
+            <p style="margin:0;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.45);font-weight:600;">${companyTagline}</p>
           </td>
         </tr>
 
@@ -65,16 +70,16 @@ function internalEmail({ name, email, phone, service, propertyType, postcode, bu
         <!-- Reply CTA -->
         <tr>
           <td style="padding:28px 48px 40px;text-align:center;">
-            <a href="mailto:${email}?subject=Re: Your CF HUB UK Enquiry" style="display:inline-block;background:#0D0D0D;color:#ffffff;text-decoration:none;font-size:14px;font-weight:700;padding:14px 32px;border-radius:8px;letter-spacing:0.4px;">Reply to ${name}</a>
+            <a href="mailto:${email}?subject=Re: Your ${companyLabel} Enquiry" style="display:inline-block;background:#0D0D0D;color:#ffffff;text-decoration:none;font-size:14px;font-weight:700;padding:14px 32px;border-radius:8px;letter-spacing:0.4px;">Reply to ${name}</a>
           </td>
         </tr>
 
         <!-- Footer -->
         <tr>
           <td style="background:#F5F5F5;padding:20px 48px;text-align:center;border-top:1px solid #EEEEEE;">
-            <p style="margin:0 0 4px;font-size:12px;color:#AAAAAA;font-weight:600;letter-spacing:1px;text-transform:uppercase;">CF HUB UK</p>
+            <p style="margin:0 0 4px;font-size:12px;color:#AAAAAA;font-weight:600;letter-spacing:1px;text-transform:uppercase;">${companyLabel}</p>
             <p style="margin:0;font-size:12px;color:#CCCCCC;">
-              <a href="mailto:enquiries@cfhubuk.com" style="color:#AAAAAA;text-decoration:none;">enquiries@cfhubuk.com</a>
+              <a href="mailto:${contactEmail}" style="color:#AAAAAA;text-decoration:none;">${contactEmail}</a>
               &nbsp;&middot;&nbsp;
               <a href="https://www.cfhubuk.com" style="color:#AAAAAA;text-decoration:none;">cfhubuk.com</a>
             </p>
@@ -89,12 +94,17 @@ function internalEmail({ name, email, phone, service, propertyType, postcode, bu
 }
 
 function confirmationEmail({ name, service }) {
+  const isCleaningService = service && service.toLowerCase().includes('cleaning');
+  const contactEmail = isCleaningService ? 'info@cleanfreakshub.co.uk' : 'enquiries@cfhubuk.com';
+  const companyLabel = isCleaningService ? 'CF Hub & Co. Cleaning Services' : 'CF HUB UK';
+  const companyTagline = isCleaningService ? 'Professional Cleaning Services' : 'Property Improvement Experts';
+
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Enquiry Received — CF HUB UK</title>
+  <title>Enquiry Received — ${companyLabel}</title>
 </head>
 <body style="margin:0;padding:0;background:#EBEBEB;font-family:'Helvetica Neue',Arial,sans-serif;-webkit-font-smoothing:antialiased;">
   <table width="100%" cellpadding="0" cellspacing="0" style="background:#EBEBEB;padding:48px 16px 64px;">
@@ -106,8 +116,8 @@ function confirmationEmail({ name, service }) {
         <!-- Header -->
         <tr>
           <td style="background:#0D0D0D;padding:40px 48px 36px;text-align:center;">
-            <img src="https://www.cfhubuk.com/logo.png" alt="CF HUB UK" height="72" style="display:block;margin:0 auto 16px;" />
-            <p style="margin:0;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.45);font-weight:600;">Property Improvement Experts</p>
+            <img src="https://www.cfhubuk.com/logo.png" alt="${companyLabel}" height="72" style="display:block;margin:0 auto 16px;" />
+            <p style="margin:0;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.45);font-weight:600;">${companyTagline}</p>
           </td>
         </tr>
 
@@ -186,9 +196,9 @@ function confirmationEmail({ name, service }) {
         <!-- Footer -->
         <tr>
           <td style="background:#F5F5F5;padding:20px 48px;text-align:center;border-top:1px solid #EEEEEE;">
-            <p style="margin:0 0 4px;font-size:12px;color:#AAAAAA;font-weight:600;letter-spacing:1px;text-transform:uppercase;">CF HUB UK</p>
+            <p style="margin:0 0 4px;font-size:12px;color:#AAAAAA;font-weight:600;letter-spacing:1px;text-transform:uppercase;">${companyLabel}</p>
             <p style="margin:0;font-size:12px;color:#CCCCCC;">
-              <a href="mailto:enquiries@cfhubuk.com" style="color:#AAAAAA;text-decoration:none;">enquiries@cfhubuk.com</a>
+              <a href="mailto:${contactEmail}" style="color:#AAAAAA;text-decoration:none;">${contactEmail}</a>
               &nbsp;&middot;&nbsp;
               <a href="https://www.cfhubuk.com" style="color:#AAAAAA;text-decoration:none;">cfhubuk.com</a>
             </p>
@@ -229,8 +239,15 @@ export default async function handler(req, res) {
   const adminEmail = (
     process.env.ADMIN_EMAIL || 'enquiries@cfhubuk.com'
   ).trim();
+  const cleaningAdminEmail = (
+    process.env.CLEANING_ADMIN_EMAIL || 'info@cleanfreakshub.co.uk'
+  ).trim();
 
   const { name, email, phone, service, propertyType, postcode, budget, preferredContact, timeline, message } = req.body ?? {};
+
+  // Use cleaning email for cleaning-related services
+  const isCleaningService = service && service.toLowerCase().includes('cleaning');
+  const targetAdminEmail = isCleaningService ? cleaningAdminEmail : adminEmail;
 
   // Server-side validation
   if (
@@ -253,7 +270,7 @@ export default async function handler(req, res) {
   // Send both emails independently — a failure in one must not block the other
   const adminResult = await resend.emails.send({
     from: fromEmail,
-    to: adminEmail,
+    to: targetAdminEmail,
     replyTo: email,
     subject: `New Enquiry: ${service} — ${name}`,
     html: internalEmail({
