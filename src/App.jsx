@@ -104,10 +104,51 @@ const SEO_BY_PATH = {
   },
 }
 
+const CONSTRUCTION_MARKER = 'CF_HUB_UNDER_CONSTRUCTION'
+
+function ConstructionPage() {
+  return (
+    <main
+      style={{
+        minHeight: '100vh',
+        display: 'grid',
+        placeItems: 'center',
+        background: '#000',
+        color: '#fff',
+        padding: '24px',
+        textAlign: 'center',
+      }}
+    >
+      <div>
+        <h1
+          style={{
+            margin: 0,
+            fontSize: 'clamp(2rem, 6vw, 4.5rem)',
+            fontWeight: 700,
+            letterSpacing: 0,
+          }}
+        >
+          We're currently under construction
+        </h1>
+        <p
+          style={{
+            margin: '16px 0 0',
+            fontSize: 'clamp(1rem, 3vw, 1.5rem)',
+            lineHeight: 1.5,
+          }}
+        >
+          making the site better for our customers
+        </p>
+      </div>
+    </main>
+  )
+}
+
 function App() {
   const { pathname } = useLocation()
   const navigate = useNavigate()
   const [loading, setLoading] = useState(true);
+  const [isUnderConstruction, setIsUnderConstruction] = useState(null);
   const previousPathRef = useRef(pathname);
   const isCleaningRoute = pathname.startsWith('/cleaning')
   const isSelectionRoute = pathname === '/select-service' || pathname === '/'
@@ -116,6 +157,27 @@ function App() {
   const loadingLogoAlt = isCleaningRoute ? 'CF Hub & Co. Cleaning Services' : 'CF HUB UK'
 
   const handleFinish = useCallback(() => setLoading(false), []);
+
+  useEffect(() => {
+    let isMounted = true
+
+    fetch(`/construction?t=${Date.now()}`, { cache: 'no-store' })
+      .then((response) => (response.ok ? response.text() : ''))
+      .then((text) => {
+        if (isMounted) {
+          setIsUnderConstruction(text.includes(CONSTRUCTION_MARKER))
+        }
+      })
+      .catch(() => {
+        if (isMounted) {
+          setIsUnderConstruction(false)
+        }
+      })
+
+    return () => {
+      isMounted = false
+    }
+  }, [])
 
   useLayoutEffect(() => {
     if (previousPathRef.current !== pathname) {
@@ -176,6 +238,14 @@ function App() {
     }
     canonical.setAttribute('href', canonicalUrl)
   }, [pathname]);
+
+  if (isUnderConstruction === null) {
+    return <main style={{ minHeight: '100vh', background: '#000' }} />;
+  }
+
+  if (isUnderConstruction) {
+    return <ConstructionPage />;
+  }
 
   if (loading) {
     return <LoadingScreen key={pathname} onFinish={handleFinish} logoSrc={loadingLogoSrc} logoAlt={loadingLogoAlt} />;
