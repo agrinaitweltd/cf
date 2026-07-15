@@ -111,7 +111,7 @@ function Home() {
             <div className={styles.heroStats}>
               <div className={styles.heroStat}><strong>250+</strong><span>Renovations Completed</span></div>
               <div className={styles.heroStatDivider} aria-hidden="true" />
-              <div className={styles.heroStat}><strong>5+</strong><span>Years Experience</span></div>
+              <div cladssName={styles.heroStat}><strong>5+</strong><span>Years Experience</span></div>
               <div className={styles.heroStatDivider} aria-hidden="true" />
               <div className={styles.heroStat}><strong>100%</strong><span>Fully Insured</span></div>
               <div className={styles.heroStatDivider} aria-hidden="true" />
