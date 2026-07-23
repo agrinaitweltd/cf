@@ -73,7 +73,7 @@ export default function ResetPassword() {
     <section className="section">
       <div className="container">
         <div className={styles.wrap}>
-          <div className={styles.card}>
+          <div className={`${styles.card} animate-scalein ${error ? styles.shake : ''}`}>
             <span className="label">Clean Club</span>
             <h1 className={styles.title}>Reset Password</h1>
             <p className={styles.intro}>Enter the 6-digit code sent to <strong>{email}</strong>, then choose a new password.</p>

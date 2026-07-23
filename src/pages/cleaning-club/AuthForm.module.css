@@ -31,7 +31,31 @@
   box-shadow: 0 24px 80px rgba(0, 0, 0, 0.55);
   position: relative;
   z-index: 1;
+  transition: box-shadow var(--t-slow);
 }
+.card:hover { box-shadow: 0 28px 90px rgba(0, 0, 0, 0.6); }
+
+.form .field {
+  animation: fieldIn 0.5s var(--t-base) both;
+}
+.form .field:nth-child(1) { animation-delay: 0.05s; }
+.form .field:nth-child(2) { animation-delay: 0.1s; }
+.form .field:nth-child(3) { animation-delay: 0.15s; }
+.form .field:nth-child(4) { animation-delay: 0.2s; }
+.form .field:nth-child(5) { animation-delay: 0.25s; }
+.form .field:nth-child(6) { animation-delay: 0.3s; }
+@keyframes fieldIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: none; }
+}
+
+@keyframes shake {
+  10%, 90% { transform: translateX(-1px); }
+  20%, 80% { transform: translateX(2px); }
+  30%, 50%, 70% { transform: translateX(-4px); }
+  40%, 60% { transform: translateX(4px); }
+}
+.shake { animation: shake 0.45s cubic-bezier(0.36, 0.07, 0.19, 0.97) both; }
 
 .title {
   margin-bottom: 8px;
@@ -96,6 +120,11 @@
   font-size: 0.78rem;
   color: #f05050;
   margin-top: 2px;
+  animation: errorIn 0.3s var(--t-base) both;
+}
+@keyframes errorIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: none; }
 }
 
 .submitBtn {
@@ -104,7 +133,9 @@
   padding: 14px 18px;
   border-radius: 10px;
   font-size: 0.9rem;
+  transition: transform 0.15s ease, box-shadow var(--t-fast), opacity var(--t-fast);
 }
+.submitBtn:not(:disabled):active { transform: scale(0.98); }
 
 .divider {
   display: flex;
@@ -137,8 +168,10 @@
   cursor: pointer;
   transition: border-color var(--t-fast), background var(--t-fast);
 }
-.googleBtn:hover { border-color: var(--border-hover); background: var(--bg-elevated); }
+.googleBtn:hover { border-color: var(--border-hover); background: var(--bg-elevated); transform: translateY(-1px); }
+.googleBtn:active:not(:disabled) { transform: translateY(0) scale(0.98); }
 .googleBtn:disabled { opacity: 0.6; cursor: not-allowed; }
+.googleBtn { transition: border-color var(--t-fast), background var(--t-fast), transform 0.15s ease; }
 
 .footNote {
   margin-top: 28px;

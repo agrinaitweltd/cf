@@ -53,7 +53,7 @@ export default function OtpInput({ length = 6, onComplete, onChange, error }: Ot
   const half = length / 2
 
   return (
-    <div className={styles.group}>
+    <div className={`${styles.group} ${error ? styles.groupError : ''}`}>
       <div className={styles.half}>
         {values.slice(0, half).map((value, i) => (
           <input

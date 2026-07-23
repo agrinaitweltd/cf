@@ -61,7 +61,7 @@ export default function SignUp() {
     <section className="section">
       <div className="container">
         <div className={styles.wrap}>
-          <div className={styles.card}>
+          <div className={`${styles.card} animate-scalein ${error ? styles.shake : ''}`}>
             <span className="label">Clean Club</span>
             <h1 className={styles.title}>Create Your Account</h1>
             <p className={styles.intro}>Join The Clean Club to manage your membership, cleans and billing in one place.</p>

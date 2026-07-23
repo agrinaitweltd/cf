@@ -32,7 +32,7 @@ export default function ForgotPassword() {
     <section className="section">
       <div className="container">
         <div className={styles.wrap}>
-          <div className={styles.card}>
+          <div className={`${styles.card} animate-scalein ${error ? styles.shake : ''}`}>
             <span className="label">Clean Club</span>
             <h1 className={styles.title}>Forgot Password</h1>
             <p className={styles.intro}>Enter your account email and we&rsquo;ll send you a 6-digit code to reset your password.</p>

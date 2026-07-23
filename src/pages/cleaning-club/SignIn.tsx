@@ -46,7 +46,7 @@ export default function SignIn() {
     <section className="section">
       <div className="container">
         <div className={styles.wrap}>
-          <div className={styles.card}>
+          <div className={`${styles.card} animate-scalein ${error ? styles.shake : ''}`}>
             <span className="label">Clean Club</span>
             <h1 className={styles.title}>Sign in to your account</h1>
             <p className={styles.intro}>Sign in to manage your Clean Club membership, cleans and billing.</p>

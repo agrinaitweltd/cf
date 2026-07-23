@@ -66,7 +66,7 @@ export default function VerifyEmail() {
     <section className="section">
       <div className="container">
         <div className={styles.wrap}>
-          <div className={styles.card}>
+          <div className={`${styles.card} animate-scalein ${error ? styles.shake : ''}`}>
             <span className="label">Clean Club</span>
             <h1 className={styles.title}>We sent a code to your email</h1>
             <p className={styles.intro}>
