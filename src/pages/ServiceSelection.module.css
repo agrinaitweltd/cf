@@ -86,6 +86,16 @@
   font-size: 0.96rem;
 }
 
+.about {
+  margin-top: 56px;
+  padding-top: 44px;
+  border-top: 1px solid var(--border);
+}
+
+.aboutTitle {
+  margin-bottom: 14px;
+}
+
 @media (max-width: 900px) {
   .grid {
     grid-template-columns: 1fr;
