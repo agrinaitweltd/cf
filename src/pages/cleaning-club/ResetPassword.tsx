@@ -87,7 +87,7 @@ export default function ResetPassword() {
               <form className={styles.form} onSubmit={handleSubmit} noValidate>
                 <div className={styles.field}>
                   <label className={styles.label}>Verification Code <span className={styles.req}>*</span></label>
-                  <OtpInput key={otpKey} onComplete={setCode} error={Boolean(error)} />
+                  <OtpInput key={otpKey} onComplete={setCode} onChange={setCode} error={Boolean(error)} />
                 </div>
                 <div className={styles.field}>
                   <label htmlFor="password" className={styles.label}>New Password <span className={styles.req}>*</span></label>

@@ -5,19 +5,39 @@
   position: relative;
 }
 
+/* soft ambient glow behind the card, echoing the gradient backdrop of the reference design */
+.wrap::before {
+  content: '';
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(640px, 90%);
+  height: 420px;
+  background:
+    radial-gradient(ellipse at 30% 20%, rgba(255, 255, 255, 0.07), transparent 60%),
+    radial-gradient(ellipse at 75% 70%, rgba(255, 255, 255, 0.05), transparent 55%);
+  filter: blur(10px);
+  pointer-events: none;
+}
+
 .card {
   width: 100%;
-  max-width: 460px;
+  max-width: 440px;
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: var(--r-lg);
-  padding: 48px 40px;
-  box-shadow: var(--shadow-lg);
+  padding: 52px 44px;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.55);
   position: relative;
   z-index: 1;
 }
 
-.title { margin-bottom: 8px; }
+.title {
+  margin-bottom: 8px;
+  font-size: 1.5rem;
+  letter-spacing: -0.01em;
+}
 
 .labelRow {
   display: flex;
@@ -46,11 +66,8 @@
 .field { display: flex; flex-direction: column; gap: 8px; }
 
 .label {
-  font-family: var(--font-heading);
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  font-size: 0.88rem;
+  font-weight: 600;
   color: var(--text-primary);
 }
 
@@ -59,18 +76,19 @@
 .input {
   background: var(--bg-primary);
   border: 1px solid var(--border);
-  border-radius: var(--r-sm);
-  padding: 14px 18px;
+  border-radius: 10px;
+  padding: 13px 16px;
   color: var(--text-primary);
-  font-size: 0.92rem;
+  font-size: 0.94rem;
   transition: border-color var(--t-fast), box-shadow var(--t-fast);
   outline: none;
   width: 100%;
 }
 .input:focus {
-  border-color: rgba(255, 255, 255, 0.50);
-  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.55);
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.08);
 }
+.input:hover:not(:focus) { border-color: var(--border-hover); }
 .input::placeholder { color: var(--text-muted); }
 .inputError { border-color: #e84040; }
 
@@ -80,7 +98,13 @@
   margin-top: 2px;
 }
 
-.submitBtn { width: 100%; margin-top: 8px; }
+.submitBtn {
+  width: 100%;
+  margin-top: 8px;
+  padding: 14px 18px;
+  border-radius: 10px;
+  font-size: 0.9rem;
+}
 
 .divider {
   display: flex;
@@ -88,9 +112,7 @@
   gap: 14px;
   margin: 28px 0;
   color: var(--text-muted);
-  font-size: 0.78rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
+  font-size: 0.82rem;
 }
 .divider::before, .divider::after {
   content: '';
@@ -106,7 +128,7 @@
   justify-content: center;
   gap: 10px;
   padding: 13px 18px;
-  border-radius: var(--r-sm);
+  border-radius: 10px;
   border: 1px solid var(--border);
   background: var(--bg-primary);
   color: var(--text-primary);

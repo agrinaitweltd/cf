@@ -71,7 +71,7 @@ export default function SignIn() {
               </button>
             </form>
 
-            <div className={styles.divider}>or</div>
+            <div className={styles.divider}>Or sign in with</div>
 
             <button type="button" className={styles.googleBtn} onClick={handleGoogle} disabled={googleSending}>
               <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">

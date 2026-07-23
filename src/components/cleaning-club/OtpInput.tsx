@@ -4,15 +4,17 @@ import styles from './OtpInput.module.css'
 interface OtpInputProps {
   length?: number
   onComplete: (code: string) => void
+  onChange?: (code: string) => void
   error?: boolean
 }
 
-export default function OtpInput({ length = 6, onComplete, error }: OtpInputProps) {
+export default function OtpInput({ length = 6, onComplete, onChange, error }: OtpInputProps) {
   const [values, setValues] = useState<string[]>(Array(length).fill(''))
   const inputRefs = useRef<Array<HTMLInputElement | null>>([])
 
   const emitIfComplete = (next: string[]) => {
     const code = next.join('')
+    onChange?.(code)
     if (code.length === length && next.every(v => v !== '')) {
       onComplete(code)
     }
