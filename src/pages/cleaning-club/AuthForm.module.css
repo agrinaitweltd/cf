@@ -2,6 +2,7 @@
   display: flex;
   justify-content: center;
   padding: 60px 0;
+  position: relative;
 }
 
 .card {
@@ -9,11 +10,29 @@
   max-width: 460px;
   background: var(--bg-card);
   border: 1px solid var(--border);
-  border-radius: var(--r-md);
+  border-radius: var(--r-lg);
   padding: 48px 40px;
+  box-shadow: var(--shadow-lg);
+  position: relative;
+  z-index: 1;
 }
 
 .title { margin-bottom: 8px; }
+
+.labelRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.forgotLink {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--accent);
+  white-space: nowrap;
+}
+.forgotLink:hover { text-decoration: underline; }
 
 .intro {
   font-size: 0.95rem;

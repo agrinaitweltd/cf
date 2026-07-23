@@ -1,13 +1,14 @@
 import { useEffect, useState, type FormEvent } from 'react'
-import { Link } from 'react-router-dom'
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import { supabase } from '../../lib/supabase'
 import { membershipPlans, preferredDayOptions, preferredTimeOptions } from '../../data/membership'
 import type { MembershipTier, PreferredDay, PreferredTime } from '../../types/membership'
+import PostcodeAddressField from '../../components/cleaning-club/PostcodeAddressField'
 import styles from './MembershipSignup.module.css'
-import authStyles from './AuthForm.module.css'
 
-const STEP_LABELS = ['Account', 'Details', 'Membership', 'Schedule', 'Checkout']
+const STEP_LABELS = ['Details', 'Membership', 'Schedule', 'Checkout']
+const WIZARD_PATH = '/cleaning/membership/join'
 
 interface DetailsForm {
   fullName: string
@@ -24,43 +25,48 @@ interface ScheduleForm {
   specialInstructions: string
 }
 
+interface WizardLocationState {
+  tier?: MembershipTier
+}
+
 const INITIAL_DETAILS: DetailsForm = { fullName: '', email: '', phone: '', address: '', postcode: '' }
 const INITIAL_SCHEDULE: ScheduleForm = { preferredDay: '', preferredTime: '', preferredStartDate: '', specialInstructions: '' }
 
 export default function MembershipSignup() {
-  const { user, signUp, signInWithGoogle } = useAuth()
+  const { user, loading: authLoading } = useAuth()
+  const navigate = useNavigate()
+  const location = useLocation()
+  const [searchParams] = useSearchParams()
+  const locationState = (location.state as WizardLocationState | null) ?? null
+  const initialTier = (locationState?.tier || (searchParams.get('tier') as MembershipTier | null)) ?? ''
+
   const [step, setStep] = useState(1)
 
-  // step 1
-  const [accFullName, setAccFullName] = useState('')
-  const [accEmail, setAccEmail] = useState('')
-  const [accPassword, setAccPassword] = useState('')
-  const [accError, setAccError] = useState('')
-  const [accSending, setAccSending] = useState(false)
-  const [accSubmitted, setAccSubmitted] = useState(false)
-  const [googleSending, setGoogleSending] = useState(false)
-
-  // step 2
+  // step 1 (details)
   const [details, setDetails] = useState<DetailsForm>(INITIAL_DETAILS)
   const [detailsErrors, setDetailsErrors] = useState<Partial<Record<keyof DetailsForm, string>>>({})
   const [detailsSaving, setDetailsSaving] = useState(false)
 
-  // step 3
-  const [selectedTier, setSelectedTier] = useState<MembershipTier | ''>('')
+  // step 2 (membership)
+  const [selectedTier, setSelectedTier] = useState<MembershipTier | ''>(initialTier)
 
-  // step 4
+  // step 3 (schedule)
   const [schedule, setSchedule] = useState<ScheduleForm>(INITIAL_SCHEDULE)
   const [scheduleErrors, setScheduleErrors] = useState<Partial<Record<keyof ScheduleForm, string>>>({})
 
-  // step 5
+  // step 4 (checkout)
   const [checkoutError, setCheckoutError] = useState('')
   const [checkoutSending, setCheckoutSending] = useState(false)
 
   useEffect(() => {
-    if (user && step === 1) {
-      setStep(2)
+    if (authLoading) return
+    if (!user) {
+      navigate('/cleaning/sign-up', {
+        replace: true,
+        state: { tier: selectedTier || undefined, redirect: `${WIZARD_PATH}${selectedTier ? `?tier=${selectedTier}` : ''}` },
+      })
     }
-  }, [user, step])
+  }, [authLoading, user, navigate, selectedTier])
 
   useEffect(() => {
     if (!user) return
@@ -83,27 +89,6 @@ export default function MembershipSignup() {
         }
       })
   }, [user])
-
-  const handleAccountSubmit = async (e: FormEvent) => {
-    e.preventDefault()
-    setAccError('')
-    if (!accFullName.trim()) return setAccError('Please enter your full name.')
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(accEmail)) return setAccError('Please enter a valid email address.')
-    if (accPassword.length < 8) return setAccError('Password must be at least 8 characters.')
-
-    setAccSending(true)
-    const { error } = await signUp(accEmail, accPassword, accFullName)
-    setAccSending(false)
-    if (error) return setAccError(error)
-    setAccSubmitted(true)
-  }
-
-  const handleGoogle = async () => {
-    setGoogleSending(true)
-    const { error } = await signInWithGoogle()
-    setGoogleSending(false)
-    if (error) setAccError(error)
-  }
 
   const validateDetails = () => {
     const errors: Partial<Record<keyof DetailsForm, string>> = {}
@@ -133,12 +118,12 @@ export default function MembershipSignup() {
       postcode: details.postcode,
     }).eq('id', user.id)
     setDetailsSaving(false)
-    setStep(3)
+    setStep(2)
   }
 
   const handleSelectPlan = (tier: MembershipTier) => {
     setSelectedTier(tier)
-    setStep(4)
+    setStep(3)
   }
 
   const validateSchedule = () => {
@@ -156,7 +141,7 @@ export default function MembershipSignup() {
       setScheduleErrors(errors)
       return
     }
-    setStep(5)
+    setStep(4)
   }
 
   const handleCheckout = async () => {
@@ -191,6 +176,10 @@ export default function MembershipSignup() {
 
   const selectedPlan = membershipPlans.find(p => p.tier === selectedTier)
 
+  if (!user) {
+    return <main style={{ minHeight: '60vh' }} />
+  }
+
   return (
     <section className="section">
       <div className="container">
@@ -210,50 +199,6 @@ export default function MembershipSignup() {
           {step === 1 && (
             <div className={styles.panel}>
               <span className="label">Step 1</span>
-              <h1 className={styles.panelTitle}>Create Your Account</h1>
-              <p className={styles.panelIntro}>Start by creating your Clean Club account.</p>
-
-              {accSubmitted ? (
-                <div className={authStyles.success} role="alert">
-                  <h3>Check your inbox</h3>
-                  <p>We&rsquo;ve sent a confirmation link to {accEmail}. Confirm your email, then sign in to continue your membership signup.</p>
-                  <p style={{ marginTop: 16 }}><Link to="/cleaning/sign-in">Go to Sign In</Link></p>
-                </div>
-              ) : (
-                <>
-                  <form className={styles.form} onSubmit={handleAccountSubmit} noValidate>
-                    <div className={styles.field}>
-                      <label htmlFor="accFullName" className={styles.label}>Full Name <span className={styles.req}>*</span></label>
-                      <input id="accFullName" type="text" value={accFullName} onChange={e => setAccFullName(e.target.value)} placeholder="Jane Smith" className={styles.input} autoComplete="name" />
-                    </div>
-                    <div className={styles.field}>
-                      <label htmlFor="accEmail" className={styles.label}>Email Address <span className={styles.req}>*</span></label>
-                      <input id="accEmail" type="email" value={accEmail} onChange={e => setAccEmail(e.target.value)} placeholder="jane@example.co.uk" className={styles.input} autoComplete="email" />
-                    </div>
-                    <div className={styles.field}>
-                      <label htmlFor="accPassword" className={styles.label}>Password <span className={styles.req}>*</span></label>
-                      <input id="accPassword" type="password" value={accPassword} onChange={e => setAccPassword(e.target.value)} placeholder="At least 8 characters" className={styles.input} autoComplete="new-password" />
-                    </div>
-                    {accError && <p className={styles.error} role="alert">{accError}</p>}
-                    <button type="submit" className="btn btn-primary" disabled={accSending}>
-                      {accSending ? 'Creating Account…' : 'Continue'}
-                    </button>
-                  </form>
-                  <div className={authStyles.divider}>or</div>
-                  <button type="button" className={authStyles.googleBtn} onClick={handleGoogle} disabled={googleSending}>
-                    {googleSending ? 'Redirecting…' : 'Continue with Google'}
-                  </button>
-                  <p className={authStyles.footNote}>
-                    Already have an account? <Link to="/cleaning/sign-in" state={{ from: '/cleaning/membership' }}>Sign In</Link>
-                  </p>
-                </>
-              )}
-            </div>
-          )}
-
-          {step === 2 && (
-            <div className={styles.panel}>
-              <span className="label">Step 2</span>
               <h1 className={styles.panelTitle}>Customer Details</h1>
               <p className={styles.panelIntro}>Tell us about you and your property.</p>
 
@@ -270,26 +215,28 @@ export default function MembershipSignup() {
                     {detailsErrors.email && <span className={styles.error}>{detailsErrors.email}</span>}
                   </div>
                 </div>
-                <div className={styles.row}>
-                  <div className={styles.field}>
-                    <label htmlFor="phone" className={styles.label}>Phone <span className={styles.req}>*</span></label>
-                    <input id="phone" type="tel" value={details.phone} onChange={e => setDetails({ ...details, phone: e.target.value })} className={`${styles.input} ${detailsErrors.phone ? styles.inputError : ''}`} />
-                    {detailsErrors.phone && <span className={styles.error}>{detailsErrors.phone}</span>}
-                  </div>
-                  <div className={styles.field}>
-                    <label htmlFor="postcode" className={styles.label}>Postcode <span className={styles.req}>*</span></label>
-                    <input id="postcode" value={details.postcode} onChange={e => setDetails({ ...details, postcode: e.target.value })} className={`${styles.input} ${detailsErrors.postcode ? styles.inputError : ''}`} />
-                    {detailsErrors.postcode && <span className={styles.error}>{detailsErrors.postcode}</span>}
-                  </div>
-                </div>
                 <div className={styles.field}>
-                  <label htmlFor="address" className={styles.label}>Property Address <span className={styles.req}>*</span></label>
-                  <input id="address" value={details.address} onChange={e => setDetails({ ...details, address: e.target.value })} className={`${styles.input} ${detailsErrors.address ? styles.inputError : ''}`} />
-                  {detailsErrors.address && <span className={styles.error}>{detailsErrors.address}</span>}
+                  <label htmlFor="phone" className={styles.label}>Phone <span className={styles.req}>*</span></label>
+                  <input id="phone" type="tel" value={details.phone} onChange={e => setDetails({ ...details, phone: e.target.value })} className={`${styles.input} ${detailsErrors.phone ? styles.inputError : ''}`} />
+                  {detailsErrors.phone && <span className={styles.error}>{detailsErrors.phone}</span>}
                 </div>
 
+                <PostcodeAddressField
+                  postcode={details.postcode}
+                  onPostcodeChange={value => setDetails({ ...details, postcode: value })}
+                  address={details.address}
+                  onAddressChange={value => setDetails({ ...details, address: value })}
+                  fieldClassName={styles.field}
+                  labelClassName={styles.label}
+                  inputClassName={styles.input}
+                  reqClassName={styles.req}
+                  errorClassName={styles.error}
+                  postcodeError={detailsErrors.postcode}
+                  addressError={detailsErrors.address}
+                />
+
                 <div className={styles.actions}>
-                  <button type="button" className="btn btn-ghost" onClick={() => setStep(1)}>Back</button>
+                  <span />
                   <button type="submit" className="btn btn-primary" disabled={detailsSaving}>
                     {detailsSaving ? 'Saving…' : 'Continue'}
                   </button>
@@ -298,9 +245,9 @@ export default function MembershipSignup() {
             </div>
           )}
 
-          {step === 3 && (
+          {step === 2 && (
             <div className={styles.panel}>
-              <span className="label">Step 3</span>
+              <span className="label">Step 2</span>
               <h1 className={styles.panelTitle}>Choose Membership</h1>
               <p className={styles.panelIntro}>Select the plan that best suits your home.</p>
 
@@ -313,22 +260,22 @@ export default function MembershipSignup() {
                       {plan.features.map(feature => <li key={feature}>{feature}</li>)}
                     </ul>
                     <button type="button" className={`btn btn-primary ${styles.planSelectBtn}`} onClick={() => handleSelectPlan(plan.tier)}>
-                      Select Membership
+                      {selectedTier === plan.tier ? 'Selected — Continue' : 'Select Membership'}
                     </button>
                   </div>
                 ))}
               </div>
 
               <div className={styles.actions}>
-                <button type="button" className="btn btn-ghost" onClick={() => setStep(2)}>Back</button>
+                <button type="button" className="btn btn-ghost" onClick={() => setStep(1)}>Back</button>
                 <span />
               </div>
             </div>
           )}
 
-          {step === 4 && (
+          {step === 3 && (
             <div className={styles.panel}>
-              <span className="label">Step 4</span>
+              <span className="label">Step 3</span>
               <h1 className={styles.panelTitle}>Preferred Schedule</h1>
               <p className={styles.panelIntro}>Let us know when you&rsquo;d like your cleans.</p>
 
@@ -362,16 +309,16 @@ export default function MembershipSignup() {
                 </div>
 
                 <div className={styles.actions}>
-                  <button type="button" className="btn btn-ghost" onClick={() => setStep(3)}>Back</button>
+                  <button type="button" className="btn btn-ghost" onClick={() => setStep(2)}>Back</button>
                   <button type="submit" className="btn btn-primary">Continue</button>
                 </div>
               </form>
             </div>
           )}
 
-          {step === 5 && (
+          {step === 4 && (
             <div className={styles.panel}>
-              <span className="label">Step 5</span>
+              <span className="label">Step 4</span>
               <h1 className={styles.panelTitle}>Confirm & Pay</h1>
               <p className={styles.panelIntro}>Review your membership before you&rsquo;re taken to secure checkout.</p>
 
@@ -393,7 +340,7 @@ export default function MembershipSignup() {
               {checkoutError && <p className={styles.error} role="alert">{checkoutError}</p>}
 
               <div className={styles.actions}>
-                <button type="button" className="btn btn-ghost" onClick={() => setStep(4)}>Back</button>
+                <button type="button" className="btn btn-ghost" onClick={() => setStep(3)}>Back</button>
                 <button type="button" className="btn btn-primary" onClick={handleCheckout} disabled={checkoutSending}>
                   {checkoutSending ? 'Redirecting to Stripe…' : 'Proceed to Payment'}
                 </button>

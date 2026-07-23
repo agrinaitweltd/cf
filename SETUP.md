@@ -28,6 +28,7 @@ Add these to your `.env.local` (for local dev) and to your Vercel project's Envi
 | `STRIPE_PRICE_SILVER` | Stripe Price ID for the Silver plan (£149/month) |
 | `STRIPE_PRICE_GOLD` | Stripe Price ID for the Gold plan (£279/month) |
 | `STRIPE_PRICE_PLATINUM` | Stripe Price ID for the Platinum plan (£399/month) |
+| `IDEAL_POSTCODES_API_KEY` | API key for [Ideal Postcodes](https://ideal-postcodes.co.uk) — powers the postcode → address lookup on sign-up |
 
 Existing variables (`RESEND_API_KEY`, etc.) are unchanged.
 
@@ -39,8 +40,23 @@ Existing variables (`RESEND_API_KEY`, etc.) are unchanged.
    - `supabase db push` if you use the Supabase CLI locally.
 3. This creates: `profiles`, `memberships`, `subscriptions`, `bookings`, `payments`, `cleaners`, `admin_users`, all with Row Level Security enabled and a trigger that auto-creates a `profiles` row whenever a new `auth.users` row is created (covers both email/password and Google sign-ups).
 4. **Enable Google OAuth**: Supabase Dashboard → Authentication → Providers → Google. Add your Google OAuth Client ID/Secret, and add your site's callback URL to the Google Cloud Console's authorized redirect URIs (Supabase shows the exact callback URL to use).
-5. **Email templates**: under Authentication → Email Templates, confirm the "Confirm signup" and "Reset password" templates point users back to your site (the app already sets `redirectTo: /cleaning/reset-password` for password resets).
-6. Copy the Project URL and anon key into `VITE_SUPABASE_URL` / `VITE_SUPABASE_ANON_KEY`, and the service role key into `SUPABASE_SERVICE_ROLE_KEY` (+ `SUPABASE_URL`).
+5. Copy the Project URL and anon key into `VITE_SUPABASE_URL` / `VITE_SUPABASE_ANON_KEY`, and the service role key into `SUPABASE_SERVICE_ROLE_KEY` (+ `SUPABASE_URL`).
+
+## 2a. Email OTP via Resend (required — manual, one-time)
+
+Sign-up verification and password reset both use a 6-digit code emailed through your existing Resend account, delivered via Supabase's built-in OTP support. Two manual steps in the Supabase Dashboard (not automatable via API):
+
+1. **Custom SMTP**: Project Settings → Authentication → SMTP Settings → enable custom SMTP:
+   - Host: `smtp.resend.com`
+   - Port: `465`
+   - Username: `resend`
+   - Password: your `RESEND_API_KEY`
+   - Sender email: a verified address on your Resend domain (e.g. `noreply@cfhubuk.com`)
+2. **Email templates**: Authentication → Email Templates:
+   - "Confirm signup" → edit the body to include `{{ .Token }}` (the 6-digit code) instead of the default `{{ .ConfirmationURL }}` link.
+   - "Reset password" (Magic Link/Recovery template) → same change, use `{{ .Token }}`.
+
+Until both steps are done, Supabase's default email templates will still send a link instead of a code, and the app's OTP entry screens (`/cleaning/verify-email`, `/cleaning/reset-password`) won't have a matching code to check against.
 
 ## 3. Stripe setup
 
@@ -68,10 +84,15 @@ Existing variables (`RESEND_API_KEY`, etc.) are unchanged.
 
 Note: because Bacs Direct Debit payments take several days to confirm, `checkout.session.completed` activates the membership optimistically; `invoice.paid` / `invoice.payment_failed` and `customer.subscription.updated` keep status in sync afterwards.
 
-## 5. What's included in this phase
+## 5. Ideal Postcodes (address lookup)
 
-- Supabase auth: sign up, sign in, Google OAuth, forgot/reset password, sign out.
-- Guided membership signup wizard at `/cleaning/membership` (account → details → plan → schedule → Stripe Checkout).
+1. Get an API key from [ideal-postcodes.co.uk](https://ideal-postcodes.co.uk) and put it in `IDEAL_POSTCODES_API_KEY` (server-side only — never `VITE_`-prefixed, so it's never exposed to the browser).
+2. No further setup needed — `/api/postcode-lookup` proxies requests server-side.
+
+## 6. What's included in this phase
+
+- Supabase auth: sign up (with phone + postcode/address lookup), sign in, Google OAuth, forgot/reset password (both via 6-digit email OTP), sign out.
+- Clean Club pricing page at `/cleaning/membership` (public) with "Start Now" per plan → the guided signup wizard at `/cleaning/membership/join` (details → plan confirm → schedule → Stripe Checkout).
 - Customer dashboard at `/cleaning/dashboard` (overview, membership management/upgrade/downgrade/cancel via Stripe Billing Portal, upcoming cleans, payment history, profile).
 - Database schema + RLS for `profiles`, `memberships`, `subscriptions`, `bookings`, `payments`, plus future-proofed `cleaners` and `admin_users` tables (no client access yet).
 

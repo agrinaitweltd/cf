@@ -12,12 +12,19 @@ interface AuthContextValue {
   user: User | null
   session: Session | null
   loading: boolean
-  signUp: (email: string, password: string, fullName: string) => Promise<{ error: string | null }>
+  signUp: (
+    email: string,
+    password: string,
+    profile: { fullName: string; phone?: string; postcode?: string; address?: string }
+  ) => Promise<{ error: string | null; userId: string | null }>
   signIn: (email: string, password: string) => Promise<{ error: string | null }>
   signInWithGoogle: () => Promise<{ error: string | null }>
   signOut: () => Promise<void>
   resetPassword: (email: string) => Promise<{ error: string | null }>
   updatePassword: (password: string) => Promise<{ error: string | null }>
+  verifySignupOtp: (email: string, token: string) => Promise<{ error: string | null }>
+  verifyRecoveryOtp: (email: string, token: string) => Promise<{ error: string | null }>
+  resendSignupOtp: (email: string) => Promise<{ error: string | null }>
 }
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined)
@@ -42,13 +49,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return () => listener.subscription.unsubscribe()
   }, [])
 
-  const signUp: AuthContextValue['signUp'] = async (email, password, fullName) => {
-    const { error } = await supabase.auth.signUp({
+  const signUp: AuthContextValue['signUp'] = async (email, password, profile) => {
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
-      options: { data: { full_name: fullName } },
+      options: {
+        data: {
+          full_name: profile.fullName,
+          phone: profile.phone ?? null,
+          postcode: profile.postcode ?? null,
+          address: profile.address ?? null,
+        },
+      },
     })
-    return { error: error?.message ?? null }
+    return { error: error?.message ?? null, userId: data.user?.id ?? null }
   }
 
   const signIn: AuthContextValue['signIn'] = async (email, password) => {
@@ -80,6 +94,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return { error: error?.message ?? null }
   }
 
+  const verifySignupOtp: AuthContextValue['verifySignupOtp'] = async (email, token) => {
+    const { error } = await supabase.auth.verifyOtp({ email, token, type: 'signup' })
+    return { error: error?.message ?? null }
+  }
+
+  const verifyRecoveryOtp: AuthContextValue['verifyRecoveryOtp'] = async (email, token) => {
+    const { error } = await supabase.auth.verifyOtp({ email, token, type: 'recovery' })
+    return { error: error?.message ?? null }
+  }
+
+  const resendSignupOtp: AuthContextValue['resendSignupOtp'] = async (email) => {
+    const { error } = await supabase.auth.resend({ type: 'signup', email })
+    return { error: error?.message ?? null }
+  }
+
   return (
     <AuthContext.Provider
       value={{
@@ -92,6 +121,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         signOut,
         resetPassword,
         updatePassword,
+        verifySignupOtp,
+        verifyRecoveryOtp,
+        resendSignupOtp,
       }}
     >
       {children}

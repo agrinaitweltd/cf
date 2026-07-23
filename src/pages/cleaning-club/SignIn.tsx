@@ -13,7 +13,8 @@ export default function SignIn() {
   const [sending, setSending] = useState(false)
   const [googleSending, setGoogleSending] = useState(false)
 
-  const redirectTo = (location.state as { from?: string } | null)?.from || '/cleaning/dashboard'
+  const locationState = location.state as { from?: string; redirect?: string; tier?: string } | null
+  const redirectTo = locationState?.redirect || locationState?.from || '/cleaning/dashboard'
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
@@ -47,7 +48,7 @@ export default function SignIn() {
         <div className={styles.wrap}>
           <div className={styles.card}>
             <span className="label">Clean Club</span>
-            <h1 className={styles.title}>Sign In</h1>
+            <h1 className={styles.title}>Sign in to your account</h1>
             <p className={styles.intro}>Sign in to manage your Clean Club membership, cleans and billing.</p>
 
             <form className={styles.form} onSubmit={handleSubmit} noValidate>
@@ -56,7 +57,10 @@ export default function SignIn() {
                 <input id="email" name="email" type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="jane@example.co.uk" className={styles.input} autoComplete="email" />
               </div>
               <div className={styles.field}>
-                <label htmlFor="password" className={styles.label}>Password <span className={styles.req}>*</span></label>
+                <div className={styles.labelRow}>
+                  <label htmlFor="password" className={styles.label}>Password <span className={styles.req}>*</span></label>
+                  <Link to="/cleaning/forgot-password" className={styles.forgotLink}>Forgot your password?</Link>
+                </div>
                 <input id="password" name="password" type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Your password" className={styles.input} autoComplete="current-password" />
               </div>
 
@@ -80,10 +84,7 @@ export default function SignIn() {
             </button>
 
             <p className={styles.footNote}>
-              <Link to="/cleaning/forgot-password">Forgot your password?</Link>
-            </p>
-            <p className={styles.footNote}>
-              New to Clean Club? <Link to="/cleaning/membership">Join Membership</Link>
+              New to Clean Club? <Link to="/cleaning/sign-up" state={locationState}>Create Account</Link>
             </p>
           </div>
         </div>

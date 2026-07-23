@@ -27,8 +27,10 @@ const ServiceSelection = lazy(() => import('./pages/ServiceSelection'))
 
 const SignIn = lazy(() => import('./pages/cleaning-club/SignIn'))
 const SignUp = lazy(() => import('./pages/cleaning-club/SignUp'))
+const VerifyEmail = lazy(() => import('./pages/cleaning-club/VerifyEmail'))
 const ForgotPassword = lazy(() => import('./pages/cleaning-club/ForgotPassword'))
 const ResetPassword = lazy(() => import('./pages/cleaning-club/ResetPassword'))
+const MembershipLanding = lazy(() => import('./pages/cleaning-club/MembershipLanding'))
 const MembershipSignup = lazy(() => import('./pages/cleaning-club/MembershipSignup'))
 const DashboardLayout = lazy(() => import('./pages/cleaning-club/dashboard/DashboardLayout'))
 const Dashboard = lazy(() => import('./pages/cleaning-club/dashboard/Dashboard'))
@@ -72,8 +74,12 @@ const SEO_BY_PATH = {
     description: 'Apply to join CF Hub & Co. Cleaning Services as a cleaner with CV upload and application form.',
   },
   '/cleaning/membership': {
-    title: 'Join The Clean Club | CF Hub & Co.',
+    title: 'The Clean Club | CF Hub & Co.',
     description: 'Join The Clean Club membership for regular, priority cleaning visits with exclusive discounts.',
+  },
+  '/cleaning/membership/join': {
+    title: 'Join The Clean Club | CF Hub & Co.',
+    description: 'Set up your Clean Club membership: customer details, plan, schedule and secure payment.',
   },
   '/cleaning/sign-in': {
     title: 'Sign In | The Clean Club',
@@ -82,6 +88,10 @@ const SEO_BY_PATH = {
   '/cleaning/sign-up': {
     title: 'Create Account | The Clean Club',
     description: 'Create your Clean Club account to manage your cleaning membership online.',
+  },
+  '/cleaning/verify-email': {
+    title: 'Verify Your Email | The Clean Club',
+    description: 'Enter the verification code sent to your email to activate your Clean Club account.',
   },
   '/cleaning/forgot-password': {
     title: 'Forgot Password | The Clean Club',
@@ -317,9 +327,11 @@ function App() {
             <Route path="/cleaning/gallery" element={<CleaningGallery />} />
             <Route path="/cleaning/contact" element={<CleaningContact />} />
             <Route path="/cleaning/join" element={<CleaningJoin />} />
-            <Route path="/cleaning/membership" element={<MembershipSignup />} />
+            <Route path="/cleaning/membership" element={<MembershipLanding />} />
+            <Route path="/cleaning/membership/join" element={<MembershipSignup />} />
             <Route path="/cleaning/sign-in" element={<SignIn />} />
             <Route path="/cleaning/sign-up" element={<SignUp />} />
+            <Route path="/cleaning/verify-email" element={<VerifyEmail />} />
             <Route path="/cleaning/forgot-password" element={<ForgotPassword />} />
             <Route path="/cleaning/reset-password" element={<ResetPassword />} />
             <Route path="/cleaning/dashboard" element={

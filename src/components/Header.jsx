@@ -68,9 +68,7 @@ function Header() {
               <NavLink to="/cleaning/gallery" className={navClass}>Gallery</NavLink>
               <NavLink to="/cleaning/contact" className={navClass}>Contact</NavLink>
               <NavLink to="/cleaning/join" className={navClass}>Join the Team</NavLink>
-              <NavLink to={user ? '/cleaning/dashboard' : '/cleaning/membership'} className={navClass}>
-                {user ? 'My Account' : 'Clean Club'}
-              </NavLink>
+              <NavLink to="/cleaning/membership" className={navClass}>Clean Club</NavLink>
             </>
           ) : (
             <>
@@ -123,6 +121,15 @@ function Header() {
           <Link to="/select-service" className={styles.switchGhost} aria-label="Choose service">
             Switch
           </Link>
+          {isCleaning && (
+            <Link to={user ? '/cleaning/dashboard' : '/cleaning/sign-in'} className={styles.signInLink} aria-label={user ? 'My account' : 'Sign in'}>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M20 21a8 8 0 10-16 0" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                <circle cx="12" cy="7" r="4" stroke="currentColor" strokeWidth="2"/>
+              </svg>
+              {user ? 'My Account' : 'Sign In'}
+            </Link>
+          )}
           <Link to={isCleaning ? '/cleaning/contact' : '/contact'} className={styles.ctaBtn} aria-label="Get a quote">
             {isCleaning ? 'Book Cleaning' : 'Get a Quote'}
           </Link>
@@ -190,9 +197,17 @@ function Header() {
                 </svg>
               </NavLink>
 
-              <NavLink to={user ? '/cleaning/dashboard' : '/cleaning/membership'} className={mobileLinkClass} onClick={close} style={{ '--item-i': 5 }}>
+              <NavLink to="/cleaning/membership" className={mobileLinkClass} onClick={close} style={{ '--item-i': 5 }}>
                 <span className={styles.mobileNum}>06</span>
-                <span className={styles.mobileTxt}>{user ? 'My Account' : 'Clean Club'}</span>
+                <span className={styles.mobileTxt}>Clean Club</span>
+                <svg className={styles.mobileArrow} width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </NavLink>
+
+              <NavLink to={user ? '/cleaning/dashboard' : '/cleaning/sign-in'} className={mobileLinkClass} onClick={close} style={{ '--item-i': 6 }}>
+                <span className={styles.mobileNum}>07</span>
+                <span className={styles.mobileTxt}>{user ? 'My Account' : 'Sign In'}</span>
                 <svg className={styles.mobileArrow} width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                   <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
@@ -206,9 +221,9 @@ function Header() {
                   persistSelection('handyman')()
                   close()
                 }}
-                style={{ '--item-i': 6 }}
+                style={{ '--item-i': 7 }}
               >
-                <span className={styles.mobileNum}>07</span>
+                <span className={styles.mobileNum}>08</span>
                 <span className={styles.mobileTxt}>Handyman Services</span>
                 <svg className={styles.mobileArrow} width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                   <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>

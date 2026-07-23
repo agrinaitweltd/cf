@@ -192,6 +192,28 @@
   border-color: var(--border-hover);
 }
 
+.signInLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 14px;
+  border-radius: var(--r-sm);
+  font-family: var(--font-heading);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+  background: transparent;
+  transition: all var(--t-fast);
+  white-space: nowrap;
+}
+.signInLink:hover {
+  color: var(--white);
+  border-color: var(--border-hover);
+}
+
 /* Hamburger */
 .hamburger {
   display: none;
