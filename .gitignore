@@ -7,3 +7,5 @@ npm-debug.log*
 .env.local
 .vscode/
 *.orig
+.claude/
+supabase/.temp/
