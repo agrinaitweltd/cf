@@ -43,7 +43,7 @@ const ProtectedRoute = lazy(() => import('./components/cleaning-club/ProtectedRo
 const SEO_BY_PATH = {
   '/': {
     title: 'CF Hub UK | Choose Your Service',
-    description: 'Choose between CF Hub Handyman Services and CF Hub & Co. Cleaning Services for trusted, professional support across the UK.',
+    description: 'CF Hub UK is an online platform to browse and book trusted handyman, maintenance, cleaning, gardening, decorating, plumbing, electrical, removals and other property services — create an account, manage bookings and pay securely online.',
   },
   '/handyman': {
     title: 'CF HUB UK | Handyman Services',

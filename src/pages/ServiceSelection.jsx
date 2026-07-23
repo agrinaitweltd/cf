@@ -9,6 +9,12 @@ function ServiceSelection({ onSelect }) {
           <span className="label">Welcome To CF Hub UK</span>
           <h1 className={styles.title}>Choose Your Service</h1>
           <p className={styles.subtitle}>
+            CF Hub UK is an online platform where customers can browse and book trusted handyman,
+            maintenance, cleaning, gardening, decorating, plumbing, electrical, removals and other
+            property services across the UK. Create an account, sign in, manage your bookings and
+            pay for services securely online.
+          </p>
+          <p className={styles.subtitle}>
             Select the service website you would like to continue to.
           </p>
 
