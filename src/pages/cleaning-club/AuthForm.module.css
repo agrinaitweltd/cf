@@ -148,6 +148,16 @@
 }
 .footNote a { color: var(--accent); font-weight: 600; }
 
+.privacyNote {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 0.76rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+.privacyNote a { color: var(--text-secondary); text-decoration: underline; }
+.privacyNote a:hover { color: var(--accent); }
+
 .success {
   background: var(--bg-primary);
   border: 1px solid var(--accent-border);

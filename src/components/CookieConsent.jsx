@@ -35,7 +35,7 @@ export default function CookieConsent() {
           &ldquo;Allow All Cookies&rdquo; to agree, &ldquo;Reject Non-Essential Cookies&rdquo; to
           decline non-essential cookies, or &ldquo;Manage Preferences&rdquo; to manage cookie
           preferences. You can find out more by viewing our{' '}
-          <a href="#" className={styles.policyLink}>Cookie Policy</a>.
+          <a href="/privacy-policy" className={styles.policyLink}>Cookie Policy</a>.
         </p>
         <div className={styles.actions}>
           <button className={styles.btnPrimary} onClick={() => accept('all')}>

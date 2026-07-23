@@ -86,6 +86,12 @@ export default function SignIn() {
             <p className={styles.footNote}>
               New to Clean Club? <Link to="/cleaning/sign-up" state={locationState}>Create Account</Link>
             </p>
+
+            <p className={styles.privacyNote}>
+              We only use your Google account details (name, email and profile photo) to sign you in and
+              manage your CF Hub UK account. See our <Link to="/privacy-policy">Privacy Policy</Link> for
+              details.
+            </p>
           </div>
         </div>
       </div>

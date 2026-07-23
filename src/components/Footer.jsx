@@ -78,6 +78,10 @@ function Footer() {
               <p className={styles.copy}>
                 &copy; {year} CF Hub & Co. Cleaning Services. All rights reserved.
               </p>
+              <div className={styles.bottomLinks}>
+                <Link to="/privacy-policy" className={styles.bottomLink}>Privacy Policy</Link>
+                <Link to="/terms-of-service" className={styles.bottomLink}>Terms of Service</Link>
+              </div>
             </div>
           </div>
         </div>
@@ -205,8 +209,8 @@ function Footer() {
 
             </p>
             <div className={styles.bottomLinks}>
-              <a href="#" className={styles.bottomLink}>Privacy Policy</a>
-              <a href="#" className={styles.bottomLink}>Terms of Service</a>
+              <Link to="/privacy-policy" className={styles.bottomLink}>Privacy Policy</Link>
+              <Link to="/terms-of-service" className={styles.bottomLink}>Terms of Service</Link>
             </div>
           </div>
         </div>

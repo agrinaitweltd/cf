@@ -24,6 +24,8 @@ const CleaningGallery = lazy(() => import('./pages/CleaningGallery'))
 const CleaningContact = lazy(() => import('./pages/CleaningContact'))
 const CleaningJoin = lazy(() => import('./pages/CleaningJoin'))
 const ServiceSelection = lazy(() => import('./pages/ServiceSelection'))
+const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'))
+const TermsOfService = lazy(() => import('./pages/TermsOfService'))
 
 const SignIn = lazy(() => import('./pages/cleaning-club/SignIn'))
 const SignUp = lazy(() => import('./pages/cleaning-club/SignUp'))
@@ -148,6 +150,14 @@ const SEO_BY_PATH = {
   '/join': {
     title: 'Join Our Team | CF HUB UK',
     description: 'Apply to join CF HUB UK as a skilled tradesperson and work on projects across the UK.',
+  },
+  '/privacy-policy': {
+    title: 'Privacy Policy | CF Hub UK',
+    description: 'Read the CF Hub UK privacy policy: what personal data we collect, how it is used, and your rights.',
+  },
+  '/terms-of-service': {
+    title: 'Terms of Service | CF Hub UK',
+    description: 'Read the CF Hub UK terms of service governing use of the platform, bookings, memberships and payments.',
   },
 }
 
@@ -356,6 +366,8 @@ function App() {
             <Route path="/projects" element={<Projects />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/join" element={<JoinTeam />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/terms-of-service" element={<TermsOfService />} />
           </Routes>
         </main>
         {!isSelectionPage && <Footer />}

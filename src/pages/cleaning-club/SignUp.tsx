@@ -119,6 +119,12 @@ export default function SignUp() {
             <p className={styles.footNote}>
               Already have an account? <Link to="/cleaning/sign-in" state={locationState}>Sign In</Link>
             </p>
+
+            <p className={styles.privacyNote}>
+              By creating an account you agree to our <Link to="/terms-of-service">Terms of Service</Link> and{' '}
+              <Link to="/privacy-policy">Privacy Policy</Link>. If you sign up with Google, we only use your
+              name, email and profile photo to create and manage your account.
+            </p>
           </div>
         </div>
       </div>

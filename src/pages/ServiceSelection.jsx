@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import styles from './ServiceSelection.module.css'
 
 function ServiceSelection({ onSelect }) {
@@ -54,6 +55,12 @@ function ServiceSelection({ onSelect }) {
                 Enter Cleaning Services
               </button>
             </article>
+          </div>
+
+          <div className={styles.legalLinks}>
+            <span>&copy; {new Date().getFullYear()} CF Hub UK. All rights reserved.</span>
+            <Link to="/privacy-policy">Privacy Policy</Link>
+            <Link to="/terms-of-service">Terms of Service</Link>
           </div>
         </div>
       </div>
