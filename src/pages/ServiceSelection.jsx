@@ -6,8 +6,14 @@ function ServiceSelection({ onSelect }) {
       <div className={styles.bgLayer} aria-hidden="true" />
       <div className="container">
         <div className={styles.content}>
-          <span className="label">Welcome To CF Hub UK</span>
-          <h1 className={styles.title}>Choose Your Service</h1>
+          <span className="label">About CF Hub UK</span>
+          <h1 className={styles.title}>Welcome to CF Hub UK</h1>
+          <p className={styles.subtitle}>
+            CF Hub UK is an online platform where customers can browse, book and manage professional
+            property services such as cleaning, plumbing, electrical, gardening, decorating, removals
+            and maintenance. Create an account, sign in, manage your bookings, view your booking
+            history and pay securely online.
+          </p>
           <p className={styles.subtitle}>
             Select the service website you would like to continue to.
           </p>
@@ -48,17 +54,6 @@ function ServiceSelection({ onSelect }) {
                 Enter Cleaning Services
               </button>
             </article>
-          </div>
-
-          <div className={styles.about}>
-            <span className="label">About This Platform</span>
-            <h2 className={styles.aboutTitle}>Welcome to CF Hub UK</h2>
-            <p className={styles.subtitle}>
-              CF Hub UK is an online platform where customers can browse, book and manage professional
-              property services such as cleaning, plumbing, electrical, gardening, decorating, removals
-              and maintenance. Create an account, sign in, manage your bookings, view your booking
-              history and securely pay for services online.
-            </p>
           </div>
         </div>
       </div>
