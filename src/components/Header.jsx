@@ -2,9 +2,11 @@ import { useState, useEffect } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import styles from './Header.module.css'
 import { services } from '../data/services'
+import { useAuth } from '../context/AuthContext'
 
 function Header() {
   const { pathname } = useLocation()
+  const { user } = useAuth()
   const isCleaning = pathname.startsWith('/cleaning')
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
@@ -66,6 +68,9 @@ function Header() {
               <NavLink to="/cleaning/gallery" className={navClass}>Gallery</NavLink>
               <NavLink to="/cleaning/contact" className={navClass}>Contact</NavLink>
               <NavLink to="/cleaning/join" className={navClass}>Join the Team</NavLink>
+              <NavLink to={user ? '/cleaning/dashboard' : '/cleaning/membership'} className={navClass}>
+                {user ? 'My Account' : 'Clean Club'}
+              </NavLink>
             </>
           ) : (
             <>
@@ -185,6 +190,14 @@ function Header() {
                 </svg>
               </NavLink>
 
+              <NavLink to={user ? '/cleaning/dashboard' : '/cleaning/membership'} className={mobileLinkClass} onClick={close} style={{ '--item-i': 5 }}>
+                <span className={styles.mobileNum}>06</span>
+                <span className={styles.mobileTxt}>{user ? 'My Account' : 'Clean Club'}</span>
+                <svg className={styles.mobileArrow} width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </NavLink>
+
               <NavLink
                 to="/handyman"
                 end
@@ -193,9 +206,9 @@ function Header() {
                   persistSelection('handyman')()
                   close()
                 }}
-                style={{ '--item-i': 5 }}
+                style={{ '--item-i': 6 }}
               >
-                <span className={styles.mobileNum}>06</span>
+                <span className={styles.mobileNum}>07</span>
                 <span className={styles.mobileTxt}>Handyman Services</span>
                 <svg className={styles.mobileArrow} width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                   <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>

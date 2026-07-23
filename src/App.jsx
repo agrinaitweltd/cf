@@ -25,6 +25,19 @@ const CleaningContact = lazy(() => import('./pages/CleaningContact'))
 const CleaningJoin = lazy(() => import('./pages/CleaningJoin'))
 const ServiceSelection = lazy(() => import('./pages/ServiceSelection'))
 
+const SignIn = lazy(() => import('./pages/cleaning-club/SignIn'))
+const SignUp = lazy(() => import('./pages/cleaning-club/SignUp'))
+const ForgotPassword = lazy(() => import('./pages/cleaning-club/ForgotPassword'))
+const ResetPassword = lazy(() => import('./pages/cleaning-club/ResetPassword'))
+const MembershipSignup = lazy(() => import('./pages/cleaning-club/MembershipSignup'))
+const DashboardLayout = lazy(() => import('./pages/cleaning-club/dashboard/DashboardLayout'))
+const Dashboard = lazy(() => import('./pages/cleaning-club/dashboard/Dashboard'))
+const MembershipPage = lazy(() => import('./pages/cleaning-club/dashboard/Membership'))
+const UpcomingCleans = lazy(() => import('./pages/cleaning-club/dashboard/UpcomingCleans'))
+const PaymentHistory = lazy(() => import('./pages/cleaning-club/dashboard/PaymentHistory'))
+const CustomerProfile = lazy(() => import('./pages/cleaning-club/dashboard/Profile'))
+const ProtectedRoute = lazy(() => import('./components/cleaning-club/ProtectedRoute'))
+
 const SEO_BY_PATH = {
   '/': {
     title: 'CF Hub UK | Choose Your Service',
@@ -57,6 +70,30 @@ const SEO_BY_PATH = {
   '/cleaning/join': {
     title: 'Join Cleaning Team | CF Hub & Co.',
     description: 'Apply to join CF Hub & Co. Cleaning Services as a cleaner with CV upload and application form.',
+  },
+  '/cleaning/membership': {
+    title: 'Join The Clean Club | CF Hub & Co.',
+    description: 'Join The Clean Club membership for regular, priority cleaning visits with exclusive discounts.',
+  },
+  '/cleaning/sign-in': {
+    title: 'Sign In | The Clean Club',
+    description: 'Sign in to manage your Clean Club membership, upcoming cleans and billing.',
+  },
+  '/cleaning/sign-up': {
+    title: 'Create Account | The Clean Club',
+    description: 'Create your Clean Club account to manage your cleaning membership online.',
+  },
+  '/cleaning/forgot-password': {
+    title: 'Forgot Password | The Clean Club',
+    description: 'Reset your Clean Club account password.',
+  },
+  '/cleaning/reset-password': {
+    title: 'Reset Password | The Clean Club',
+    description: 'Choose a new password for your Clean Club account.',
+  },
+  '/cleaning/dashboard': {
+    title: 'My Dashboard | The Clean Club',
+    description: 'View your Clean Club membership, upcoming cleans and payment history.',
   },
   '/about': {
     title: 'About Us | CF HUB UK',
@@ -280,6 +317,22 @@ function App() {
             <Route path="/cleaning/gallery" element={<CleaningGallery />} />
             <Route path="/cleaning/contact" element={<CleaningContact />} />
             <Route path="/cleaning/join" element={<CleaningJoin />} />
+            <Route path="/cleaning/membership" element={<MembershipSignup />} />
+            <Route path="/cleaning/sign-in" element={<SignIn />} />
+            <Route path="/cleaning/sign-up" element={<SignUp />} />
+            <Route path="/cleaning/forgot-password" element={<ForgotPassword />} />
+            <Route path="/cleaning/reset-password" element={<ResetPassword />} />
+            <Route path="/cleaning/dashboard" element={
+              <ProtectedRoute>
+                <DashboardLayout />
+              </ProtectedRoute>
+            }>
+              <Route index element={<Dashboard />} />
+              <Route path="membership" element={<MembershipPage />} />
+              <Route path="upcoming-cleans" element={<UpcomingCleans />} />
+              <Route path="payments" element={<PaymentHistory />} />
+              <Route path="profile" element={<CustomerProfile />} />
+            </Route>
             <Route path="/about" element={<About />} />
             <Route path="/services" element={<Services />} />
             <Route path="/services/renovations" element={<Renovations />} />

@@ -1,0 +1,54 @@
+.welcome { margin-bottom: 8px; }
+.subIntro { font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 36px; }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 20px;
+  margin-bottom: 36px;
+}
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  padding: 24px;
+}
+
+.cardLabel {
+  font-family: var(--font-heading);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+}
+
+.cardValue { font-size: 1.4rem; font-weight: 700; color: var(--white); }
+.cardValueSm { font-size: 1.05rem; font-weight: 600; color: var(--text-primary); }
+
+.statusBadge {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: var(--r-full);
+  background: var(--accent-dim);
+  color: var(--accent);
+  border: 1px solid var(--accent-border);
+}
+
+.emptyState {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  padding: 40px;
+  text-align: center;
+  color: var(--text-secondary);
+}
+.emptyState a { color: var(--accent); font-weight: 600; }
+
+.quickActions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 8px; }
