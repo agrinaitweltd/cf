@@ -96,9 +96,23 @@ Note: because Bacs Direct Debit payments take several days to confirm, `checkout
 - Customer dashboard at `/cleaning/dashboard` (overview, membership management/upgrade/downgrade/cancel via Stripe Billing Portal, upcoming cleans, payment history, profile).
 - Database schema + RLS for `profiles`, `memberships`, `subscriptions`, `bookings`, `payments`, plus future-proofed `cleaners` and `admin_users` tables (no client access yet).
 
-**Not included in this phase**: the admin dashboard (customer/booking/payment management, calendar, cleaner assignment). The schema already supports it — it will be built as a follow-up phase.
+- Notifications system: `notifications` table + live bell in the customer dashboard (Supabase Realtime), triggered by payment/membership/booking events.
+- Transactional emails via Resend for membership activation, payment success/failure, and cancellation.
+- Admin dashboard at `/admin` (login at `/admin/login`) — Dashboard stats, Customers (search), Bookings (create/assign/complete/cancel), Payments. Admin access is granted by inserting a row into `admin_users` with the person's `profile_id` (no self-service admin signup).
 
-## 6. Local development
+## 6a. IMPORTANT — cfhubuk.com is currently gated to "Under Construction"
+
+`api/construction.js` shows a construction page to anyone visiting `cfhubuk.com` / `www.cfhubuk.com`. The real site still works normally at **https://cf-gold.vercel.app** (an alias to the same deployment) and at any other preview URL.
+
+**To bring cfhubuk.com back online, you do NOT need a code change or redeploy** — just set this in Vercel (Production environment) and it takes effect on the very next request:
+
+```
+FORCE_SITE_LIVE=true
+```
+
+To re-gate it later, remove that variable (or set it to anything other than `true`).
+
+## 7. Local development
 
 ```bash
 npm install
