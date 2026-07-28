@@ -47,6 +47,7 @@ const AdminProtectedRoute = lazy(() => import('./pages/admin/AdminProtectedRoute
 const AdminLayout = lazy(() => import('./pages/admin/AdminLayout'))
 const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard'))
 const AdminCustomers = lazy(() => import('./pages/admin/AdminCustomers'))
+const AdminMemberships = lazy(() => import('./pages/admin/AdminMemberships'))
 const AdminBookings = lazy(() => import('./pages/admin/AdminBookings'))
 const AdminPayments = lazy(() => import('./pages/admin/AdminPayments'))
 
@@ -373,6 +374,7 @@ function App() {
             }>
               <Route index element={<AdminDashboard />} />
               <Route path="customers" element={<AdminCustomers />} />
+              <Route path="memberships" element={<AdminMemberships />} />
               <Route path="bookings" element={<AdminBookings />} />
               <Route path="payments" element={<AdminPayments />} />
             </Route>

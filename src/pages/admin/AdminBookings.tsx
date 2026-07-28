@@ -1,10 +1,12 @@
 import { useMemo, useState } from 'react'
 import { useAdminData, postAdminAction, type AdminBooking } from './useAdminData'
+import BookingsCalendar from './BookingsCalendar'
 import styles from './AdminPages.module.css'
 
 export default function AdminBookings() {
   const { bookings, profiles, cleaners, loading, error, refresh } = useAdminData()
   const [tab, setTab] = useState<'upcoming' | 'completed' | 'cancelled'>('upcoming')
+  const [view, setView] = useState<'list' | 'calendar'>('list')
   const [assignTarget, setAssignTarget] = useState<AdminBooking | null>(null)
   const [cleanerName, setCleanerName] = useState('')
   const [creating, setCreating] = useState(false)
@@ -21,7 +23,7 @@ export default function AdminBookings() {
     setActionError('')
     setBusyId(bookingId)
     try {
-      await postAdminAction('/api/admin/booking-action', { action, bookingId, ...extra })
+      await postAdminAction('/api/admin/action', { resource: 'booking', action, bookingId, ...extra })
       await refresh()
     } catch (err) {
       setActionError(err instanceof Error ? err.message : 'Something went wrong.')
@@ -44,7 +46,8 @@ export default function AdminBookings() {
     }
     setActionError('')
     try {
-      await postAdminAction('/api/admin/booking-action', {
+      await postAdminAction('/api/admin/action', {
+        resource: 'booking',
         action: 'create',
         profileId: newBooking.profileId,
         scheduledDate: newBooking.scheduledDate,
@@ -84,11 +87,15 @@ export default function AdminBookings() {
         </div>
 
         <div className={styles.toolbar}>
+          <button type="button" className={styles.actionBtn} onClick={() => setView('list')} disabled={view === 'list'}>List</button>
+          <button type="button" className={styles.actionBtn} onClick={() => setView('calendar')} disabled={view === 'calendar'}>Calendar</button>
           <span style={{ flex: 1 }} />
           <button type="button" className="btn btn-primary" onClick={() => setCreating(true)}>+ New Booking</button>
         </div>
 
-        {filtered.length === 0 ? (
+        {view === 'calendar' ? (
+          <BookingsCalendar bookings={bookings} profileById={profileById} />
+        ) : filtered.length === 0 ? (
           <div className={styles.empty}>No {tab} bookings.</div>
         ) : (
           <div className={styles.tableWrap}>

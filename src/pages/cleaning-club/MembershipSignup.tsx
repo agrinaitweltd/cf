@@ -6,6 +6,7 @@ import { membershipPlans, preferredDayOptions, preferredTimeOptions } from '../.
 import type { MembershipTier, PreferredDay, PreferredTime } from '../../types/membership'
 import PostcodeAddressField from '../../components/cleaning-club/PostcodeAddressField'
 import EmbeddedCheckout from '../../components/cleaning-club/EmbeddedCheckout'
+import PropertyCleaningDetails, { type PropertyCleaningDetailsValue } from '../../components/cleaning-club/PropertyCleaningDetails'
 import styles from './MembershipSignup.module.css'
 
 const STEP_LABELS = ['Details', 'Membership', 'Schedule', 'Checkout']
@@ -32,6 +33,7 @@ interface WizardLocationState {
 
 const INITIAL_DETAILS: DetailsForm = { fullName: '', email: '', phone: '', address: '', postcode: '' }
 const INITIAL_SCHEDULE: ScheduleForm = { preferredDay: '', preferredTime: '', preferredStartDate: '', specialInstructions: '' }
+const INITIAL_PROPERTY_DETAILS: PropertyCleaningDetailsValue = { bedrooms: 1, bathrooms: 1, tasks: [] }
 
 export default function MembershipSignup() {
   const { user, loading: authLoading } = useAuth()
@@ -54,6 +56,7 @@ export default function MembershipSignup() {
   // step 3 (schedule)
   const [schedule, setSchedule] = useState<ScheduleForm>(INITIAL_SCHEDULE)
   const [scheduleErrors, setScheduleErrors] = useState<Partial<Record<keyof ScheduleForm, string>>>({})
+  const [propertyDetails, setPropertyDetails] = useState<PropertyCleaningDetailsValue>(INITIAL_PROPERTY_DETAILS)
 
   // step 4 (checkout)
   const [checkoutError, setCheckoutError] = useState('')
@@ -146,6 +149,14 @@ export default function MembershipSignup() {
     setStep(4)
   }
 
+  const buildFullInstructions = () => {
+    const parts: string[] = []
+    parts.push(`Bedrooms: ${propertyDetails.bedrooms} | Bathrooms: ${propertyDetails.bathrooms}`)
+    if (propertyDetails.tasks.length) parts.push(`Tasks requested: ${propertyDetails.tasks.join(', ')}`)
+    if (schedule.specialInstructions.trim()) parts.push(schedule.specialInstructions.trim())
+    return parts.join('\n')
+  }
+
   const handleCheckout = async () => {
     if (!user || !selectedTier) return
     setCheckoutSending(true)
@@ -164,7 +175,7 @@ export default function MembershipSignup() {
           preferredDay: schedule.preferredDay,
           preferredTime: schedule.preferredTime,
           preferredStartDate: schedule.preferredStartDate,
-          specialInstructions: schedule.specialInstructions,
+          specialInstructions: buildFullInstructions(),
         }),
       })
       const data = await res.json()
@@ -306,6 +317,16 @@ export default function MembershipSignup() {
                   <input id="preferredStartDate" type="date" value={schedule.preferredStartDate} onChange={e => setSchedule({ ...schedule, preferredStartDate: e.target.value })} className={`${styles.input} ${scheduleErrors.preferredStartDate ? styles.inputError : ''}`} min={new Date().toISOString().slice(0, 10)} />
                   {scheduleErrors.preferredStartDate && <span className={styles.error}>{scheduleErrors.preferredStartDate}</span>}
                 </div>
+                <div className={styles.field}>
+                  <label className={styles.label}>Property & Cleaning Details</label>
+                </div>
+                <PropertyCleaningDetails
+                  value={propertyDetails}
+                  onChange={setPropertyDetails}
+                  fieldClassName={styles.field}
+                  labelClassName={styles.label}
+                />
+
                 <div className={styles.field}>
                   <label htmlFor="specialInstructions" className={styles.label}>Special Instructions</label>
                   <textarea id="specialInstructions" rows={6} value={schedule.specialInstructions} onChange={e => setSchedule({ ...schedule, specialInstructions: e.target.value })} placeholder="Access details, pets, areas to focus on…" className={`${styles.input} ${styles.textarea}`} />

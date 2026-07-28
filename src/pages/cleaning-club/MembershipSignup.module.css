@@ -80,17 +80,19 @@
 
 .plans {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 24px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
 }
 
 .planCard {
   background: var(--bg-primary);
   border: 1px solid var(--border);
   border-radius: var(--r-md);
-  padding: 28px 24px;
+  padding: 26px 20px;
   display: flex;
   flex-direction: column;
+  min-width: 0;
+  overflow-wrap: break-word;
   transition: border-color var(--t-fast), transform var(--t-fast);
 }
 .planCard:hover { transform: translateY(-4px); border-color: var(--border-hover); }

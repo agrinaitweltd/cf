@@ -1,0 +1,110 @@
+.wrap { margin-top: 6px; }
+
+.counters {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.counterField { display: flex; flex-direction: column; gap: 8px; }
+
+.stepper {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  width: fit-content;
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  overflow: hidden;
+}
+.stepperBtn {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-primary);
+  border: none;
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+.stepperBtn:hover:not(:disabled) { background: var(--bg-elevated); color: var(--text-primary); }
+.stepperBtn:disabled { opacity: 0.35; cursor: not-allowed; }
+.stepperValue {
+  width: 44px;
+  text-align: center;
+  font-weight: 700;
+  color: var(--text-primary);
+  border-left: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card {
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  overflow: hidden;
+}
+
+.cardHead {
+  padding: 18px 20px 14px;
+  border-bottom: 1px solid var(--border);
+}
+.cardTitle { font-size: 0.95rem; font-weight: 700; color: var(--white); margin-bottom: 3px; }
+.cardSub { font-size: 0.8rem; color: var(--text-muted); }
+
+.tabs {
+  display: flex;
+  overflow-x: auto;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-primary);
+}
+.tab {
+  flex-shrink: 0;
+  padding: 12px 18px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.tab:hover { color: var(--text-secondary); }
+.tabActive { color: var(--white); border-bottom-color: var(--accent); }
+
+.taskList { padding: 8px 20px; max-height: 260px; overflow-y: auto; }
+.taskRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--border);
+}
+.taskRow:last-child { border-bottom: none; }
+.taskLabel { font-size: 0.86rem; color: var(--text-primary); }
+
+.toggle {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+.selectedSummary {
+  padding: 14px 20px;
+  border-top: 1px solid var(--border);
+  background: var(--bg-primary);
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+@media (max-width: 480px) {
+  .counters { grid-template-columns: 1fr; }
+}

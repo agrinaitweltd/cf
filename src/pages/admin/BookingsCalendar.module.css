@@ -1,0 +1,67 @@
+.calHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 0 16px;
+}
+.calTitle { font-size: 0.95rem; font-weight: 700; color: var(--white); }
+.calNav { display: flex; gap: 8px; }
+.calNavBtn {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--border);
+  background: var(--bg-primary);
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+.calNavBtn:hover { color: var(--text-primary); border-color: var(--border-hover); }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+}
+
+.dayName {
+  text-align: center;
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding-bottom: 6px;
+}
+
+.cell {
+  min-height: 74px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  padding: 6px 8px;
+  background: var(--bg-primary);
+  cursor: pointer;
+  transition: border-color var(--t-fast), background var(--t-fast);
+}
+.cell:hover { border-color: var(--border-hover); }
+.cellEmpty { background: transparent; border-color: transparent; cursor: default; }
+.cellToday { border-color: var(--accent-border); }
+.cellSelected { border-color: var(--accent); background: var(--accent-dim); }
+
+.cellNum { font-size: 0.78rem; font-weight: 600; color: var(--text-secondary); }
+.cellDots { display: flex; gap: 3px; margin-top: 6px; flex-wrap: wrap; }
+.cellDot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+
+.dayPanel {
+  margin-top: 20px;
+  border-top: 1px solid var(--border);
+  padding-top: 18px;
+}
+.dayPanelTitle { font-size: 0.86rem; font-weight: 700; color: var(--white); margin-bottom: 12px; }
+
+@media (max-width: 700px) {
+  .cell { min-height: 52px; padding: 4px 6px; }
+  .dayName { font-size: 0.58rem; }
+}

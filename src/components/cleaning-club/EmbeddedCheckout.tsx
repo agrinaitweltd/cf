@@ -16,8 +16,7 @@ export default function EmbeddedCheckout({ clientSecret }: EmbeddedCheckoutProps
     getStripeClient().then(async stripe => {
       if (!stripe || cancelled || !containerRef.current) return
       try {
-        // @ts-expect-error initEmbeddedCheckout is part of Stripe's embedded checkout API
-        checkout = await stripe.initEmbeddedCheckout({ clientSecret })
+        checkout = await stripe.createEmbeddedCheckoutPage({ clientSecret })
         if (cancelled) {
           checkout?.destroy()
           return
