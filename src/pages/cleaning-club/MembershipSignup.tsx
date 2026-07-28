@@ -5,6 +5,7 @@ import { supabase } from '../../lib/supabase'
 import { membershipPlans, preferredDayOptions, preferredTimeOptions } from '../../data/membership'
 import type { MembershipTier, PreferredDay, PreferredTime } from '../../types/membership'
 import PostcodeAddressField from '../../components/cleaning-club/PostcodeAddressField'
+import EmbeddedCheckout from '../../components/cleaning-club/EmbeddedCheckout'
 import styles from './MembershipSignup.module.css'
 
 const STEP_LABELS = ['Details', 'Membership', 'Schedule', 'Checkout']
@@ -57,6 +58,7 @@ export default function MembershipSignup() {
   // step 4 (checkout)
   const [checkoutError, setCheckoutError] = useState('')
   const [checkoutSending, setCheckoutSending] = useState(false)
+  const [clientSecret, setClientSecret] = useState('')
 
   useEffect(() => {
     if (authLoading) return
@@ -167,9 +169,10 @@ export default function MembershipSignup() {
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error || 'Something went wrong starting checkout.')
-      window.location.href = data.url
+      setClientSecret(data.clientSecret)
     } catch (err) {
       setCheckoutError(err instanceof Error ? err.message : 'Something went wrong. Please try again.')
+    } finally {
       setCheckoutSending(false)
     }
   }
@@ -320,31 +323,38 @@ export default function MembershipSignup() {
             <div className={styles.panel}>
               <span className="label">Step 4</span>
               <h1 className={styles.panelTitle}>Confirm & Pay</h1>
-              <p className={styles.panelIntro}>Review your membership before you&rsquo;re taken to secure checkout.</p>
 
-              {selectedPlan && (
-                <div className={styles.planCard} style={{ maxWidth: 420, marginBottom: 32 }}>
-                  <div className={styles.planName}>{selectedPlan.name} Membership</div>
-                  <div className={styles.planPrice}>{selectedPlan.priceLabel}</div>
-                  <p style={{ color: 'var(--text-secondary)', fontSize: '0.88rem' }}>
-                    {schedule.preferredDay && schedule.preferredDay[0].toUpperCase() + schedule.preferredDay.slice(1)}s, {schedule.preferredTime}
-                    <br />Starting {schedule.preferredStartDate}
+              {!clientSecret && (
+                <>
+                  <p className={styles.panelIntro}>Review your membership, then set up your monthly Direct Debit below.</p>
+
+                  {selectedPlan && (
+                    <div className={styles.planCard} style={{ maxWidth: 420, marginBottom: 32 }}>
+                      <div className={styles.planName}>{selectedPlan.name} Membership</div>
+                      <div className={styles.planPrice}>{selectedPlan.priceLabel}</div>
+                      <p style={{ color: 'var(--text-secondary)', fontSize: '0.88rem' }}>
+                        {schedule.preferredDay && schedule.preferredDay[0].toUpperCase() + schedule.preferredDay.slice(1)}s, {schedule.preferredTime}
+                        <br />Starting {schedule.preferredStartDate}
+                      </p>
+                    </div>
+                  )}
+
+                  <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: 24 }}>
+                    You&rsquo;ll set up your monthly payment by Bacs Direct Debit right here. Your membership activates once payment is confirmed.
                   </p>
-                </div>
+
+                  {checkoutError && <p className={styles.error} role="alert">{checkoutError}</p>}
+
+                  <div className={styles.actions}>
+                    <button type="button" className="btn btn-ghost" onClick={() => setStep(3)}>Back</button>
+                    <button type="button" className="btn btn-primary" onClick={handleCheckout} disabled={checkoutSending}>
+                      {checkoutSending ? 'Loading payment form…' : 'Proceed to Payment'}
+                    </button>
+                  </div>
+                </>
               )}
 
-              <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: 24 }}>
-                You&rsquo;ll be redirected to Stripe to set up your monthly payment by Bacs Direct Debit. Your membership activates once payment is confirmed.
-              </p>
-
-              {checkoutError && <p className={styles.error} role="alert">{checkoutError}</p>}
-
-              <div className={styles.actions}>
-                <button type="button" className="btn btn-ghost" onClick={() => setStep(3)}>Back</button>
-                <button type="button" className="btn btn-primary" onClick={handleCheckout} disabled={checkoutSending}>
-                  {checkoutSending ? 'Redirecting to Stripe…' : 'Proceed to Payment'}
-                </button>
-              </div>
+              {clientSecret && <EmbeddedCheckout clientSecret={clientSecret} />}
             </div>
           )}
         </div>

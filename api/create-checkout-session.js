@@ -75,11 +75,11 @@ export default async function handler(req, res) {
 
     const session = await stripe.checkout.sessions.create({
       mode: 'subscription',
+      ui_mode: 'embedded',
       customer: customerId,
       payment_method_types: ['bacs_debit'],
       line_items: [{ price: priceId, quantity: 1 }],
-      success_url: `${siteUrl}/cleaning/dashboard?checkout=success`,
-      cancel_url: `${siteUrl}/cleaning/membership?checkout=cancelled`,
+      return_url: `${siteUrl}/cleaning/dashboard?checkout=success`,
       metadata: {
         supabase_user_id: user.id,
         membership_id: membership.id,
@@ -94,7 +94,7 @@ export default async function handler(req, res) {
       },
     });
 
-    return res.status(200).json({ url: session.url });
+    return res.status(200).json({ clientSecret: session.client_secret });
   } catch (err) {
     console.error('create-checkout-session error', err);
     return res.status(500).json({ error: 'Something went wrong starting checkout. Please try again.' });
