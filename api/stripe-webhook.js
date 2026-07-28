@@ -1,5 +1,6 @@
 import { getStripe } from './_lib/stripe.js';
 import { getSupabaseAdmin } from './_lib/supabaseAdmin.js';
+import { notify, sendServiceEmail } from './_lib/notify.js';
 
 export const config = {
   api: { bodyParser: false },
@@ -14,9 +15,15 @@ function readRawBody(req) {
   });
 }
 
+async function getProfile(admin, profileId) {
+  const { data } = await admin.from('profiles').select('email, full_name').eq('id', profileId).maybeSingle();
+  return data;
+}
+
 async function activateMembership(admin, session) {
   const membershipId = session.metadata?.membership_id;
   const profileId = session.metadata?.supabase_user_id;
+  const tier = session.metadata?.tier;
   if (!membershipId || !profileId) return;
 
   await admin.from('memberships').update({ status: 'active' }).eq('id', membershipId);
@@ -34,6 +41,29 @@ async function activateMembership(admin, session) {
     },
     { onConflict: 'stripe_subscription_id' }
   );
+
+  const tierLabel = tier ? tier.charAt(0).toUpperCase() + tier.slice(1) : 'Clean Club';
+
+  await notify(admin, {
+    profileId,
+    type: 'membership_activated',
+    title: 'Membership activated',
+    message: `Your ${tierLabel} membership is now active. Welcome to The Clean Club!`,
+  });
+
+  const profile = await getProfile(admin, profileId);
+  if (profile?.email) {
+    await sendServiceEmail({
+      to: profile.email,
+      subject: 'Your Clean Club membership is active',
+      bodyHtml: `
+        <h2 style="margin:0 0 16px;">Welcome to The Clean Club${profile.full_name ? `, ${profile.full_name}` : ''}!</h2>
+        <p style="line-height:1.6;">Your <strong>${tierLabel}</strong> membership is now active. Your Direct Debit is confirming with your bank, which usually takes a few business days.</p>
+        <p style="line-height:1.6;">You can view your membership, upcoming cleans and payments any time from your dashboard.</p>
+        <p style="margin-top:24px;"><a href="https://www.cfhubuk.com/cleaning/dashboard" style="background:#0D0D0D;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:600;">Go to My Dashboard</a></p>
+      `,
+    });
+  }
 }
 
 async function syncSubscriptionStatus(admin, subscription) {
@@ -41,6 +71,12 @@ async function syncSubscriptionStatus(admin, subscription) {
   const currentPeriodEnd = subscription.current_period_end
     ? new Date(subscription.current_period_end * 1000).toISOString()
     : null;
+
+  const { data: existing } = await admin
+    .from('subscriptions')
+    .select('profile_id, status')
+    .eq('stripe_subscription_id', subscription.id)
+    .maybeSingle();
 
   await admin
     .from('subscriptions')
@@ -52,6 +88,32 @@ async function syncSubscriptionStatus(admin, subscription) {
     if (membershipId) {
       await admin.from('memberships').update({ status: 'cancelled' }).eq('id', membershipId);
     }
+    if (existing?.profile_id) {
+      await notify(admin, {
+        profileId: existing.profile_id,
+        type: 'membership_cancelled',
+        title: 'Membership cancelled',
+        message: 'Your Clean Club membership has been cancelled. No further payments will be taken.',
+      });
+      const profile = await getProfile(admin, existing.profile_id);
+      if (profile?.email) {
+        await sendServiceEmail({
+          to: profile.email,
+          subject: 'Your Clean Club membership has been cancelled',
+          bodyHtml: `
+            <h2 style="margin:0 0 16px;">Membership cancelled</h2>
+            <p style="line-height:1.6;">Your Clean Club membership has been cancelled and no further payments will be taken. We're sorry to see you go — you can rejoin any time from our website.</p>
+          `,
+        });
+      }
+    }
+  } else if (existing?.profile_id && existing.status && existing.status !== status) {
+    await notify(admin, {
+      profileId: existing.profile_id,
+      type: 'membership_updated',
+      title: 'Membership updated',
+      message: `Your membership status changed to "${status}".`,
+    });
   }
 }
 
@@ -80,6 +142,48 @@ async function recordInvoicePayment(admin, invoice, status) {
     },
     { onConflict: 'stripe_invoice_id' }
   );
+
+  const amount = ((invoice.amount_paid || invoice.amount_due || 0) / 100).toFixed(2);
+  const profile = await getProfile(admin, subscription.profile_id);
+
+  if (status === 'paid') {
+    await notify(admin, {
+      profileId: subscription.profile_id,
+      type: 'payment_succeeded',
+      title: 'Payment received',
+      message: `We received your payment of £${amount}. Thank you!`,
+    });
+    if (profile?.email) {
+      await sendServiceEmail({
+        to: profile.email,
+        subject: `Payment receipt — £${amount}`,
+        bodyHtml: `
+          <h2 style="margin:0 0 16px;">Payment received</h2>
+          <p style="line-height:1.6;">We've received your Clean Club payment of <strong>£${amount}</strong>. Thank you!</p>
+          <p style="line-height:1.6;">You can view and download this invoice any time from your dashboard's Payment History.</p>
+          <p style="margin-top:24px;"><a href="https://www.cfhubuk.com/cleaning/dashboard/payments" style="background:#0D0D0D;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:600;">View Payment History</a></p>
+        `,
+      });
+    }
+  } else {
+    await notify(admin, {
+      profileId: subscription.profile_id,
+      type: 'payment_failed',
+      title: 'Payment failed',
+      message: `We couldn't collect your payment of £${amount}. Please check your payment details.`,
+    });
+    if (profile?.email) {
+      await sendServiceEmail({
+        to: profile.email,
+        subject: 'Action needed: payment failed',
+        bodyHtml: `
+          <h2 style="margin:0 0 16px;">We couldn't collect your payment</h2>
+          <p style="line-height:1.6;">A payment of <strong>£${amount}</strong> for your Clean Club membership could not be collected. Please check your payment details to avoid any interruption to your membership.</p>
+          <p style="margin-top:24px;"><a href="https://www.cfhubuk.com/cleaning/dashboard/membership" style="background:#0D0D0D;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:600;">Manage Billing</a></p>
+        `,
+      });
+    }
+  }
 }
 
 export default async function handler(req, res) {

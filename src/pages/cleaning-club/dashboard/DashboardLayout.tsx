@@ -1,5 +1,6 @@
 import { NavLink, Outlet, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../../context/AuthContext'
+import NotificationBell from './NotificationBell'
 import styles from './DashboardLayout.module.css'
 
 const NAV_ITEMS = [
@@ -39,6 +40,9 @@ export default function DashboardLayout() {
             </button>
           </nav>
           <div className={styles.content}>
+            <div className={styles.contentHeader}>
+              <NotificationBell />
+            </div>
             <Outlet />
           </div>
         </div>

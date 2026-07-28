@@ -54,6 +54,12 @@
 
 .content { min-width: 0; }
 
+.contentHeader {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+}
+
 @media (max-width: 900px) {
   .layout { grid-template-columns: 1fr; }
   .sidebar {

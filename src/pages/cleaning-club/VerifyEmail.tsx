@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Navigate, useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
+import { supabase } from '../../lib/supabase'
 import OtpInput from '../../components/cleaning-club/OtpInput'
 import styles from './AuthForm.module.css'
 
@@ -42,6 +43,17 @@ export default function VerifyEmail() {
       setCode('')
       setOtpKey(k => k + 1)
       return
+    }
+
+    const { data: sessionData } = await supabase.auth.getSession()
+    const userId = sessionData.session?.user.id
+    if (userId) {
+      await supabase.from('notifications').insert({
+        profile_id: userId,
+        type: 'email_verified',
+        title: 'Email verified',
+        message: 'Your email address has been verified. Welcome to CF Hub UK!',
+      })
     }
 
     navigate(destination, { replace: true })

@@ -1,5 +1,6 @@
 import { getStripe, getPriceIdForTier } from './_lib/stripe.js';
 import { getSupabaseAdmin, getUserFromRequest } from './_lib/supabaseAdmin.js';
+import { notify } from './_lib/notify.js';
 
 const VALID_TIERS = ['bronze', 'silver', 'gold', 'platinum'];
 
@@ -46,6 +47,14 @@ export default async function handler(req, res) {
       await admin.from('memberships').update({ tier }).eq('id', subscription.membership_id);
     }
     await admin.from('subscriptions').update({ stripe_price_id: priceId }).eq('id', subscription.id);
+
+    const tierLabel = tier.charAt(0).toUpperCase() + tier.slice(1);
+    await notify(admin, {
+      profileId: user.id,
+      type: 'membership_updated',
+      title: 'Membership plan changed',
+      message: `Your membership was switched to the ${tierLabel} plan.`,
+    });
 
     return res.status(200).json({ success: true });
   } catch (err) {
