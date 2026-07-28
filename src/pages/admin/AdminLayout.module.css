@@ -1,58 +1,130 @@
 .shell {
   display: grid;
-  grid-template-columns: 240px 1fr;
+  grid-template-columns: 72px 1fr;
   min-height: 100vh;
   background: var(--bg-primary);
 }
 
-.sidebar {
+/* Icon rail */
+.rail {
   background: var(--bg-card);
   border-right: 1px solid var(--border);
-  padding: 24px 16px;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  align-items: center;
+  padding: 20px 0;
+  gap: 6px;
 }
 
-.brand {
+.railLogo {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--r-sm);
+  background: var(--white);
+  color: #0d0d0d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-family: var(--font-heading);
   font-weight: 800;
-  font-size: 1rem;
-  color: var(--white);
-  padding: 0 12px 24px;
+  font-size: 0.8rem;
+  margin-bottom: 20px;
 }
-.brand span { display: block; font-size: 0.68rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 2px; }
 
-.navLink {
-  display: block;
-  padding: 11px 14px;
+.railLink {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: var(--r-sm);
-  font-size: 0.86rem;
-  font-weight: 600;
-  color: var(--text-secondary);
+  color: var(--text-muted);
+  transition: background var(--t-fast), color var(--t-fast);
+  position: relative;
 }
-.navLink:hover { background: var(--bg-elevated); color: var(--text-primary); }
-.navLinkActive { background: var(--accent-dim); color: var(--white); border: 1px solid var(--accent-border); }
+.railLink:hover { background: var(--bg-elevated); color: var(--text-primary); }
+.railLinkActive { background: var(--accent-dim); color: var(--accent); border: 1px solid var(--accent-border); }
 
-.logoutBtn {
-  margin-top: 12px;
-  text-align: left;
-  padding: 11px 14px;
+.railSpacer { flex: 1; }
+
+.railLogout {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--r-sm);
+  color: var(--text-muted);
   background: none;
   border: none;
-  border-radius: var(--r-sm);
-  font-size: 0.86rem;
-  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--t-fast), color var(--t-fast);
+}
+.railLogout:hover { background: var(--bg-elevated); color: #f05050; }
+
+/* Content */
+.contentWrap { display: flex; flex-direction: column; min-width: 0; }
+
+.topbar {
+  height: 68px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-card);
+}
+
+.topbarSearch {
+  flex: 1;
+  max-width: 360px;
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  border-radius: var(--r-full);
+  padding: 9px 16px;
+  color: var(--text-secondary);
+  font-size: 0.84rem;
+  outline: none;
+}
+.topbarSearch:focus { border-color: var(--border-hover); }
+.topbarSearch::placeholder { color: var(--text-muted); }
+
+.topbarActions { display: flex; align-items: center; gap: 12px; }
+
+.iconBtn {
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--r-full);
+  border: 1px solid var(--border);
+  background: var(--bg-primary);
   color: var(--text-secondary);
   cursor: pointer;
 }
-.logoutBtn:hover { background: var(--bg-elevated); color: #f05050; }
+.iconBtn:hover { color: var(--text-primary); border-color: var(--border-hover); }
 
-.main { padding: 40px 44px; min-width: 0; }
+.avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: var(--r-full);
+  background: var(--accent-dim);
+  border: 1px solid var(--accent-border);
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+
+.main { padding: 36px 32px 48px; min-width: 0; }
 
 @media (max-width: 900px) {
-  .shell { grid-template-columns: 1fr; }
-  .sidebar { flex-direction: row; flex-wrap: wrap; border-right: none; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 10; }
-  .brand { display: none; }
-  .main { padding: 24px 18px; }
+  .shell { grid-template-columns: 56px 1fr; }
+  .topbar { padding: 0 16px; }
+  .topbarSearch { display: none; }
+  .main { padding: 20px 16px; }
 }

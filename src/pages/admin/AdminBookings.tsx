@@ -68,10 +68,13 @@ export default function AdminBookings() {
       {error && <p className={styles.error}>{error}</p>}
       {actionError && <p className={styles.error}>{actionError}</p>}
 
+      <div className={styles.tabRow}>
+        <button type="button" className={`${styles.tabBtn} ${tab === 'upcoming' ? styles.tabBtnActive : ''}`} onClick={() => setTab('upcoming')}>Upcoming</button>
+        <button type="button" className={`${styles.tabBtn} ${tab === 'completed' ? styles.tabBtnActive : ''}`} onClick={() => setTab('completed')}>Completed</button>
+        <button type="button" className={`${styles.tabBtn} ${tab === 'cancelled' ? styles.tabBtnActive : ''}`} onClick={() => setTab('cancelled')}>Cancelled</button>
+      </div>
+
       <div className={styles.toolbar}>
-        <button type="button" className={styles.actionBtn} onClick={() => setTab('upcoming')} disabled={tab === 'upcoming'}>Upcoming</button>
-        <button type="button" className={styles.actionBtn} onClick={() => setTab('completed')} disabled={tab === 'completed'}>Completed</button>
-        <button type="button" className={styles.actionBtn} onClick={() => setTab('cancelled')} disabled={tab === 'cancelled'}>Cancelled</button>
         <span style={{ flex: 1 }} />
         <button type="button" className="btn btn-primary" onClick={() => setCreating(true)}>+ New Booking</button>
       </div>
@@ -104,9 +107,15 @@ export default function AdminBookings() {
                     <td><span className={styles.badge}>{b.status}</span></td>
                     {tab === 'upcoming' && (
                       <td>
-                        <button type="button" className={styles.actionBtn} disabled={busyId === b.id} onClick={() => setAssignTarget(b)}>Assign</button>
-                        <button type="button" className={styles.actionBtn} disabled={busyId === b.id} onClick={() => handleAction('complete', b.id)}>Complete</button>
-                        <button type="button" className={styles.actionBtn} disabled={busyId === b.id} onClick={() => handleAction('cancel', b.id)}>Cancel</button>
+                        <button type="button" className={styles.iconActionBtn} title="Assign cleaner" aria-label="Assign cleaner" disabled={busyId === b.id} onClick={() => setAssignTarget(b)}>
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" /><circle cx="8.5" cy="7" r="4" /><line x1="20" y1="8" x2="20" y2="14" /><line x1="17" y1="11" x2="23" y2="11" /></svg>
+                        </button>
+                        <button type="button" className={styles.iconActionBtn} title="Mark complete" aria-label="Mark complete" disabled={busyId === b.id} onClick={() => handleAction('complete', b.id)}>
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
+                        </button>
+                        <button type="button" className={styles.iconActionBtn} title="Cancel booking" aria-label="Cancel booking" disabled={busyId === b.id} onClick={() => handleAction('cancel', b.id)}>
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
+                        </button>
                       </td>
                     )}
                   </tr>
