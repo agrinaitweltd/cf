@@ -6,9 +6,12 @@ import styles from './DashboardLayout.module.css'
 const NAV_ITEMS = [
   { to: '/cleaning/dashboard', label: 'Dashboard', end: true },
   { to: '/cleaning/dashboard/membership', label: 'Membership' },
-  { to: '/cleaning/dashboard/upcoming-cleans', label: 'Upcoming Cleans' },
+  { to: '/cleaning/dashboard/upcoming-cleans', label: 'My Cleans' },
   { to: '/cleaning/dashboard/payments', label: 'Payment History' },
-  { to: '/cleaning/dashboard/profile', label: 'Profile' },
+  { to: '/cleaning/dashboard/rewards', label: 'Rewards & Vouchers' },
+  { to: '/cleaning/dashboard/notifications', label: 'Notifications' },
+  { to: '/cleaning/dashboard/support', label: 'Support' },
+  { to: '/cleaning/dashboard/profile', label: 'Profile & Security' },
 ]
 
 export default function DashboardLayout() {

@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
+import { supabase } from '../../lib/supabase'
 import styles from './AuthForm.module.css'
 
 export default function SignIn() {
@@ -25,13 +26,30 @@ export default function SignIn() {
 
     setSending(true)
     const { error: signInError } = await signIn(email, password)
-    setSending(false)
 
     if (signInError) {
+      setSending(false)
       setError(signInError)
       return
     }
 
+    // Admin accounts must never land on the customer dashboard — send them to /admin instead.
+    const { data: authData } = await supabase.auth.getUser()
+    if (authData.user) {
+      const { data: adminRow } = await supabase
+        .from('admin_users')
+        .select('id')
+        .eq('profile_id', authData.user.id)
+        .maybeSingle()
+
+      if (adminRow) {
+        setSending(false)
+        navigate('/admin', { replace: true })
+        return
+      }
+    }
+
+    setSending(false)
     navigate(redirectTo, { replace: true })
   }
 

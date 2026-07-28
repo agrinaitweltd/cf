@@ -155,6 +155,136 @@ async function handleRefund(admin, body) {
   return { success: true };
 }
 
+async function handleStaff(admin, body) {
+  const { action, cleanerId, fullName, email, phone } = body;
+  const validActions = ['create', 'update', 'deactivate', 'activate'];
+  if (!validActions.includes(action)) throw { status: 400, message: 'Invalid action.' };
+
+  if (action === 'create') {
+    if (!fullName) throw { status: 400, message: 'fullName is required.' };
+    const { error } = await admin.from('cleaners').insert({ full_name: fullName, email: email || null, phone: phone || null });
+    if (error) throw { status: 500, message: 'Could not create staff member.' };
+    return { success: true };
+  }
+
+  if (!cleanerId) throw { status: 400, message: 'cleanerId is required.' };
+  if (action === 'update') {
+    const payload = {};
+    if (fullName !== undefined) payload.full_name = fullName;
+    if (email !== undefined) payload.email = email;
+    if (phone !== undefined) payload.phone = phone;
+    const { error } = await admin.from('cleaners').update(payload).eq('id', cleanerId);
+    if (error) throw { status: 500, message: 'Could not update staff member.' };
+  } else if (action === 'deactivate') {
+    await admin.from('cleaners').update({ active: false }).eq('id', cleanerId);
+  } else if (action === 'activate') {
+    await admin.from('cleaners').update({ active: true }).eq('id', cleanerId);
+  }
+  return { success: true };
+}
+
+async function handleCoupon(admin, body) {
+  const { action, couponId, code, description, discountPercent, expiresAt, usageLimit } = body;
+  const validActions = ['create', 'update', 'deactivate', 'activate', 'delete'];
+  if (!validActions.includes(action)) throw { status: 400, message: 'Invalid action.' };
+
+  if (action === 'create') {
+    if (!code || !discountPercent) throw { status: 400, message: 'code and discountPercent are required.' };
+    const { error } = await admin.from('coupons').insert({
+      code: code.toUpperCase(),
+      description: description || null,
+      discount_percent: discountPercent,
+      expires_at: expiresAt || null,
+      usage_limit: usageLimit || null,
+    });
+    if (error) throw { status: 500, message: 'Could not create coupon. The code may already exist.' };
+    return { success: true };
+  }
+
+  if (!couponId) throw { status: 400, message: 'couponId is required.' };
+  if (action === 'update') {
+    const payload = {};
+    if (description !== undefined) payload.description = description;
+    if (discountPercent !== undefined) payload.discount_percent = discountPercent;
+    if (expiresAt !== undefined) payload.expires_at = expiresAt;
+    if (usageLimit !== undefined) payload.usage_limit = usageLimit;
+    await admin.from('coupons').update(payload).eq('id', couponId);
+  } else if (action === 'deactivate') {
+    await admin.from('coupons').update({ active: false }).eq('id', couponId);
+  } else if (action === 'activate') {
+    await admin.from('coupons').update({ active: true }).eq('id', couponId);
+  } else if (action === 'delete') {
+    await admin.from('coupons').delete().eq('id', couponId);
+  }
+  return { success: true };
+}
+
+async function handleReview(admin, body) {
+  const { action, reviewId } = body;
+  const validActions = ['hide', 'publish', 'delete'];
+  if (!validActions.includes(action)) throw { status: 400, message: 'Invalid action.' };
+  if (!reviewId) throw { status: 400, message: 'reviewId is required.' };
+
+  if (action === 'hide') await admin.from('reviews').update({ status: 'hidden' }).eq('id', reviewId);
+  else if (action === 'publish') await admin.from('reviews').update({ status: 'published' }).eq('id', reviewId);
+  else if (action === 'delete') await admin.from('reviews').delete().eq('id', reviewId);
+  return { success: true };
+}
+
+async function handleSupportTicket(admin, body) {
+  const { action, ticketId, status, adminReply } = body;
+  if (!ticketId) throw { status: 400, message: 'ticketId is required.' };
+  const { data: ticket } = await admin.from('support_tickets').select('profile_id, subject').eq('id', ticketId).maybeSingle();
+  if (!ticket) throw { status: 404, message: 'Ticket not found.' };
+
+  const payload = { updated_at: new Date().toISOString() };
+  if (status) payload.status = status;
+  if (adminReply !== undefined) payload.admin_reply = adminReply;
+
+  const { error } = await admin.from('support_tickets').update(payload).eq('id', ticketId);
+  if (error) throw { status: 500, message: 'Could not update ticket.' };
+
+  if (action === 'reply' && adminReply) {
+    await notify(admin, { profileId: ticket.profile_id, type: 'support_reply', title: `Reply to: ${ticket.subject}`, message: adminReply });
+  }
+  return { success: true };
+}
+
+async function handleBroadcast(admin, body) {
+  const { title, message } = body;
+  if (!title || !message) throw { status: 400, message: 'title and message are required.' };
+  const { data: profiles } = await admin.from('profiles').select('id');
+  const rows = (profiles ?? []).map(p => ({ profile_id: p.id, type: 'broadcast', title, message }));
+  if (rows.length) {
+    const { error } = await admin.from('notifications').insert(rows);
+    if (error) throw { status: 500, message: 'Could not send broadcast.' };
+  }
+  return { success: true, recipients: rows.length };
+}
+
+async function handleAdminRole(admin, user, body) {
+  const { action, adminId } = body;
+  const validActions = ['revoke', 'restore'];
+  if (!validActions.includes(action)) throw { status: 400, message: 'Invalid action.' };
+  if (!adminId) throw { status: 400, message: 'adminId is required.' };
+
+  const { data: target } = await admin.from('admin_users').select('profile_id').eq('id', adminId).maybeSingle();
+  if (target?.profile_id === user.id && action === 'revoke') {
+    throw { status: 400, message: "You can't revoke your own admin access." };
+  }
+
+  if (action === 'revoke') await admin.from('admin_users').update({ activated: false }).eq('id', adminId);
+  else if (action === 'restore') await admin.from('admin_users').update({ activated: true }).eq('id', adminId);
+
+  await admin.from('audit_logs').insert({
+    actor_email: user.email,
+    action: `admin_${action}`,
+    target_type: 'admin_users',
+    target_id: adminId,
+  });
+  return { success: true };
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -172,6 +302,12 @@ export default async function handler(req, res) {
     else if (resource === 'customer') result = await handleCustomer(admin, user, body);
     else if (resource === 'membership') result = await handleMembership(admin, body);
     else if (resource === 'refund') result = await handleRefund(admin, body);
+    else if (resource === 'staff') result = await handleStaff(admin, body);
+    else if (resource === 'coupon') result = await handleCoupon(admin, body);
+    else if (resource === 'review') result = await handleReview(admin, body);
+    else if (resource === 'support_ticket') result = await handleSupportTicket(admin, body);
+    else if (resource === 'broadcast') result = await handleBroadcast(admin, body);
+    else if (resource === 'admin_role') result = await handleAdminRole(admin, user, body);
     else return res.status(400).json({ error: 'Invalid resource.' });
 
     return res.status(200).json(result);

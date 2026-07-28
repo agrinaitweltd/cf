@@ -16,11 +16,11 @@ export default function AdminProtectedRoute({ children }: { children: ReactNode 
     }
     supabase
       .from('admin_users')
-      .select('id')
+      .select('id, activated')
       .eq('profile_id', user.id)
       .maybeSingle()
       .then(({ data }) => {
-        setIsAdmin(Boolean(data))
+        setIsAdmin(Boolean(data?.activated))
         setChecking(false)
       })
   }, [user, loading])

@@ -48,7 +48,57 @@ export interface AdminPayment {
 export interface AdminCleaner {
   id: string
   full_name: string
+  email: string | null
+  phone: string | null
   active: boolean
+}
+export interface AdminCoupon {
+  id: string
+  code: string
+  description: string | null
+  discount_percent: number
+  active: boolean
+  expires_at: string | null
+  usage_limit: number | null
+  times_used: number
+  created_at: string
+}
+export interface AdminReview {
+  id: string
+  profile_id: string
+  booking_id: string | null
+  rating: number
+  comment: string | null
+  status: string
+  created_at: string
+}
+export interface AdminSupportTicket {
+  id: string
+  profile_id: string
+  subject: string
+  message: string
+  status: string
+  admin_reply: string | null
+  created_at: string
+  updated_at: string
+}
+export interface AdminUserRow {
+  id: string
+  profile_id: string | null
+  invite_email: string | null
+  full_name: string | null
+  role: string
+  activated: boolean
+  created_at: string
+}
+export interface AdminAuditLog {
+  id: string
+  actor_email: string | null
+  action: string
+  target_type: string | null
+  target_id: string | null
+  meta: Record<string, unknown> | null
+  created_at: string
 }
 
 interface AdminData {
@@ -58,9 +108,17 @@ interface AdminData {
   bookings: AdminBooking[]
   payments: AdminPayment[]
   cleaners: AdminCleaner[]
+  coupons: AdminCoupon[]
+  reviews: AdminReview[]
+  supportTickets: AdminSupportTicket[]
+  adminUsers: AdminUserRow[]
+  auditLogs: AdminAuditLog[]
 }
 
-const EMPTY: AdminData = { profiles: [], memberships: [], subscriptions: [], bookings: [], payments: [], cleaners: [] }
+const EMPTY: AdminData = {
+  profiles: [], memberships: [], subscriptions: [], bookings: [], payments: [], cleaners: [],
+  coupons: [], reviews: [], supportTickets: [], adminUsers: [], auditLogs: [],
+}
 
 export function useAdminData() {
   const [data, setData] = useState<AdminData>(EMPTY)

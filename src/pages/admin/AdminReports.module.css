@@ -1,0 +1,49 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.barChart {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  height: 200px;
+  padding-top: 12px;
+}
+
+.barCol {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  gap: 6px;
+}
+
+.barTrack {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+  border-radius: var(--r-sm);
+  overflow: hidden;
+}
+
+.bar {
+  width: 100%;
+  background: linear-gradient(180deg, var(--accent), var(--accent-dim));
+  border-radius: var(--r-sm) var(--r-sm) 2px 2px;
+  transition: height var(--t-mid, 0.3s) ease;
+  min-height: 4px;
+}
+
+.barValue { font-size: 0.7rem; font-weight: 700; color: var(--white); }
+.barLabel { font-size: 0.68rem; color: var(--text-muted); }
+
+.hBarList { display: flex; flex-direction: column; gap: 14px; padding-bottom: 4px; }
+.hBarRow { display: flex; align-items: center; gap: 12px; }
+.hBarLabel { flex: 0 0 110px; font-size: 0.8rem; color: var(--text-secondary); }
+.hBarTrack { flex: 1; height: 10px; background: var(--bg-primary); border-radius: var(--r-full); overflow: hidden; }
+.hBar { height: 100%; background: var(--accent); border-radius: var(--r-full); transition: width var(--t-mid, 0.3s) ease; }
+.hBarValue { flex: 0 0 32px; text-align: right; font-size: 0.82rem; font-weight: 700; color: var(--white); }

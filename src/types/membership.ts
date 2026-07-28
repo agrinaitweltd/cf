@@ -47,7 +47,7 @@ export interface Subscription {
   created_at: string
 }
 
-export type BookingStatus = 'upcoming' | 'completed' | 'cancelled'
+export type BookingStatus = 'upcoming' | 'in_progress' | 'completed' | 'cancelled'
 
 export interface Booking {
   id: string

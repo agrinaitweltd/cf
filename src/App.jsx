@@ -40,9 +40,13 @@ const MembershipPage = lazy(() => import('./pages/cleaning-club/dashboard/Member
 const UpcomingCleans = lazy(() => import('./pages/cleaning-club/dashboard/UpcomingCleans'))
 const PaymentHistory = lazy(() => import('./pages/cleaning-club/dashboard/PaymentHistory'))
 const CustomerProfile = lazy(() => import('./pages/cleaning-club/dashboard/Profile'))
+const Rewards = lazy(() => import('./pages/cleaning-club/dashboard/Rewards'))
+const Notifications = lazy(() => import('./pages/cleaning-club/dashboard/Notifications'))
+const Support = lazy(() => import('./pages/cleaning-club/dashboard/Support'))
 const ProtectedRoute = lazy(() => import('./components/cleaning-club/ProtectedRoute'))
 
 const AdminLogin = lazy(() => import('./pages/admin/AdminLogin'))
+const AdminSetup = lazy(() => import('./pages/admin/AdminSetup'))
 const AdminProtectedRoute = lazy(() => import('./pages/admin/AdminProtectedRoute'))
 const AdminLayout = lazy(() => import('./pages/admin/AdminLayout'))
 const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard'))
@@ -50,6 +54,14 @@ const AdminCustomers = lazy(() => import('./pages/admin/AdminCustomers'))
 const AdminMemberships = lazy(() => import('./pages/admin/AdminMemberships'))
 const AdminBookings = lazy(() => import('./pages/admin/AdminBookings'))
 const AdminPayments = lazy(() => import('./pages/admin/AdminPayments'))
+const AdminStaff = lazy(() => import('./pages/admin/AdminStaff'))
+const AdminCoupons = lazy(() => import('./pages/admin/AdminCoupons'))
+const AdminReviews = lazy(() => import('./pages/admin/AdminReviews'))
+const AdminSupport = lazy(() => import('./pages/admin/AdminSupport'))
+const AdminReports = lazy(() => import('./pages/admin/AdminReports'))
+const AdminAuditLogs = lazy(() => import('./pages/admin/AdminAuditLogs'))
+const AdminRoles = lazy(() => import('./pages/admin/AdminRoles'))
+const AdminSettings = lazy(() => import('./pages/admin/AdminSettings'))
 
 const SEO_BY_PATH = {
   '/': {
@@ -364,9 +376,13 @@ function App() {
               <Route path="membership" element={<MembershipPage />} />
               <Route path="upcoming-cleans" element={<UpcomingCleans />} />
               <Route path="payments" element={<PaymentHistory />} />
+              <Route path="rewards" element={<Rewards />} />
+              <Route path="notifications" element={<Notifications />} />
+              <Route path="support" element={<Support />} />
               <Route path="profile" element={<CustomerProfile />} />
             </Route>
             <Route path="/admin/login" element={<AdminLogin />} />
+            <Route path="/admin/setup" element={<AdminSetup />} />
             <Route path="/admin" element={
               <AdminProtectedRoute>
                 <AdminLayout />
@@ -377,6 +393,14 @@ function App() {
               <Route path="memberships" element={<AdminMemberships />} />
               <Route path="bookings" element={<AdminBookings />} />
               <Route path="payments" element={<AdminPayments />} />
+              <Route path="staff" element={<AdminStaff />} />
+              <Route path="coupons" element={<AdminCoupons />} />
+              <Route path="reviews" element={<AdminReviews />} />
+              <Route path="support" element={<AdminSupport />} />
+              <Route path="reports" element={<AdminReports />} />
+              <Route path="audit-logs" element={<AdminAuditLogs />} />
+              <Route path="roles" element={<AdminRoles />} />
+              <Route path="settings" element={<AdminSettings />} />
             </Route>
             <Route path="/about" element={<About />} />
             <Route path="/services" element={<Services />} />

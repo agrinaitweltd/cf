@@ -23,9 +23,9 @@ export default function AdminLogin() {
       return
     }
 
-    const { data: adminRow } = await supabase.from('admin_users').select('id').eq('profile_id', data.user.id).maybeSingle()
+    const { data: adminRow } = await supabase.from('admin_users').select('id, activated').eq('profile_id', data.user.id).maybeSingle()
 
-    if (!adminRow) {
+    if (!adminRow || !adminRow.activated) {
       await supabase.auth.signOut()
       setSending(false)
       setError('This account does not have admin access.')

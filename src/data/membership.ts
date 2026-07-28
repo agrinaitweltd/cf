@@ -8,6 +8,8 @@ export interface MembershipPlan {
   priceEnvKey: string
   visitsPerMonth: number
   features: string[]
+  payPerVisitPrice: number
+  discountPercent: number
 }
 
 export const membershipPlans: MembershipPlan[] = [
@@ -18,6 +20,8 @@ export const membershipPlans: MembershipPlan[] = [
     priceLabel: '£79/month',
     priceEnvKey: 'VITE_STRIPE_PRICE_BRONZE',
     visitsPerMonth: 1,
+    payPerVisitPrice: 95,
+    discountPercent: 10,
     features: [
       'One visit every month',
       'Up to 3 hours',
@@ -34,6 +38,8 @@ export const membershipPlans: MembershipPlan[] = [
     priceLabel: '£149/month',
     priceEnvKey: 'VITE_STRIPE_PRICE_SILVER',
     visitsPerMonth: 2,
+    payPerVisitPrice: 190,
+    discountPercent: 22,
     features: [
       'Two visits every month',
       'Up to 3 hours each visit',
@@ -50,6 +56,8 @@ export const membershipPlans: MembershipPlan[] = [
     priceLabel: '£279/month',
     priceEnvKey: 'VITE_STRIPE_PRICE_GOLD',
     visitsPerMonth: 4,
+    payPerVisitPrice: 380,
+    discountPercent: 27,
     features: [
       'Weekly cleaning',
       'Four visits every month',
@@ -67,6 +75,8 @@ export const membershipPlans: MembershipPlan[] = [
     priceLabel: '£399/month',
     priceEnvKey: 'VITE_STRIPE_PRICE_PLATINUM',
     visitsPerMonth: 4,
+    payPerVisitPrice: 460,
+    discountPercent: 13,
     features: [
       'Weekly extended cleaning',
       'Four visits every month',

@@ -15,6 +15,8 @@ export default function Dashboard() {
   const nextClean = upcoming[0]
   const completedThisPeriod = bookings.filter(b => b.status === 'completed').length
   const visitsRemaining = plan ? Math.max(plan.visitsPerMonth - completedThisPeriod, 0) : null
+  const totalCompleted = bookings.filter(b => b.status === 'completed').length
+  const memberSince = membership ? new Date(membership.created_at).toLocaleDateString('en-GB', { month: 'short', year: 'numeric' }) : null
 
   return (
     <>
@@ -63,12 +65,22 @@ export default function Dashboard() {
               <div className={styles.cardLabel}>Visits Remaining</div>
               <div className={styles.cardValue}>{visitsRemaining ?? '—'}</div>
             </div>
+            <div className={styles.card}>
+              <div className={styles.cardLabel}>Total Cleans Completed</div>
+              <div className={styles.cardValue}>{totalCompleted}</div>
+            </div>
+            <div className={styles.card}>
+              <div className={styles.cardLabel}>Member Since</div>
+              <div className={styles.cardValueSm}>{memberSince ?? '—'}</div>
+            </div>
           </div>
 
           <div className={styles.quickActions}>
             <Link to="/cleaning/dashboard/profile" className="btn btn-ghost">Change Preferred Day</Link>
             <Link to="/cleaning/dashboard/profile" className="btn btn-ghost">Update Address</Link>
             <Link to="/cleaning/dashboard/payments" className="btn btn-ghost">View Payments</Link>
+            <Link to="/cleaning/dashboard/rewards" className="btn btn-ghost">Rewards & Vouchers</Link>
+            <Link to="/cleaning/dashboard/support" className="btn btn-ghost">Get Support</Link>
           </div>
         </>
       )}

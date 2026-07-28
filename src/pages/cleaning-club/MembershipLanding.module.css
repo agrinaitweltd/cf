@@ -10,6 +10,30 @@
   margin-top: 14px;
 }
 
+/* Trust badges */
+.trustRow {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 48px;
+}
+.trustBadge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-full);
+  background: var(--bg-card);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  transition: border-color var(--t-fast), color var(--t-fast);
+}
+.trustBadge:hover { border-color: var(--accent-border); color: var(--white); }
+.trustIcon { display: flex; color: var(--accent); }
+
 /* Benefit strip */
 .benefits {
   display: grid;
@@ -120,6 +144,20 @@
   color: var(--text-muted);
 }
 
+.savingsBadge {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--accent);
+  background: var(--accent-dim);
+  border: 1px solid var(--accent-border);
+  border-radius: var(--r-full);
+  padding: 4px 10px;
+  margin-bottom: 16px;
+}
+
 .planTagline {
   font-size: 0.82rem;
   color: var(--text-secondary);
@@ -148,7 +186,41 @@
   transform: rotate(-45deg);
 }
 
-.startBtn { width: 100%; }
+.startBtn { width: 100%; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+.startBtn svg { transition: transform var(--t-fast); }
+.startBtn:hover svg { transform: translateX(3px); }
+
+/* Comparison table */
+.compareWrap { margin-top: 72px; }
+.compareTableScroll {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  background: var(--bg-card);
+}
+.compareTable {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 640px;
+}
+.compareTable th, .compareTable td {
+  padding: 14px 18px;
+  font-size: 0.84rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+.compareTable th {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  color: var(--white);
+  background: var(--bg-primary);
+}
+.compareTable tbody tr:last-child td { border-bottom: none; }
+.compareTable tbody tr:hover td { background: var(--bg-elevated); }
+.compareRowLabel { color: var(--text-secondary); font-weight: 500; white-space: normal; min-width: 220px; }
+.compareTable td { color: var(--text-secondary); }
+.compareFeaturedCol { background: rgba(255, 255, 255, 0.03); color: var(--white) !important; }
 
 /* How it works */
 .steps {

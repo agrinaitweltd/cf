@@ -1,19 +1,19 @@
 .shell {
   display: grid;
-  grid-template-columns: 72px 1fr;
+  grid-template-columns: 232px 1fr;
   min-height: 100vh;
   background: var(--bg-primary);
 }
 
-/* Icon rail */
+/* Sidebar */
 .rail {
   background: var(--bg-card);
   border-right: 1px solid var(--border);
   display: flex;
   flex-direction: column;
-  align-items: center;
-  padding: 20px 0;
-  gap: 6px;
+  padding: 20px 14px;
+  gap: 3px;
+  overflow-y: auto;
 }
 
 .railLogo {
@@ -28,36 +28,42 @@
   font-family: var(--font-heading);
   font-weight: 800;
   font-size: 0.8rem;
-  margin-bottom: 20px;
+  margin: 0 0 20px 6px;
 }
 
 .railLink {
-  width: 44px;
-  height: 44px;
+  height: 42px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  gap: 12px;
+  padding: 0 12px;
   border-radius: var(--r-sm);
   color: var(--text-muted);
+  font-size: 0.85rem;
+  font-weight: 600;
   transition: background var(--t-fast), color var(--t-fast);
   position: relative;
+  white-space: nowrap;
 }
+.railLink svg { flex-shrink: 0; }
 .railLink:hover { background: var(--bg-elevated); color: var(--text-primary); }
 .railLinkActive { background: var(--accent-dim); color: var(--accent); border: 1px solid var(--accent-border); }
 
-.railSpacer { flex: 1; }
+.railSpacer { flex: 1; min-height: 12px; }
 
 .railLogout {
-  width: 44px;
-  height: 44px;
+  height: 42px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  gap: 12px;
+  padding: 0 12px;
   border-radius: var(--r-sm);
   color: var(--text-muted);
   background: none;
   border: none;
   cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
   transition: background var(--t-fast), color var(--t-fast);
 }
 .railLogout:hover { background: var(--bg-elevated); color: #f05050; }
@@ -120,10 +126,19 @@
   font-size: 0.8rem;
 }
 
+.avatarName { font-size: 0.82rem; font-weight: 600; color: var(--text-primary); }
+
 .main { padding: 36px 32px 48px; min-width: 0; }
 
-@media (max-width: 900px) {
-  .shell { grid-template-columns: 56px 1fr; }
+@media (max-width: 1080px) {
+  .shell { grid-template-columns: 64px 1fr; }
+  .railLink, .railLogout { justify-content: center; padding: 0; }
+  .railLinkLabel, .railLogoutLabel { display: none; }
+  .railLogo { margin-left: 0; }
+  .avatarName { display: none; }
+}
+
+@media (max-width: 640px) {
   .topbar { padding: 0 16px; }
   .topbarSearch { display: none; }
   .main { padding: 20px 16px; }
