@@ -1,0 +1,133 @@
+.title { margin-bottom: 6px; }
+.subtitle { font-size: 0.92rem; color: var(--text-secondary); margin-bottom: 28px; }
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 18px;
+  margin-bottom: 32px;
+}
+.statCard {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  padding: 22px;
+}
+.statLabel {
+  font-family: var(--font-heading);
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+.statValue { font-size: 1.5rem; font-weight: 800; color: var(--white); }
+
+.toolbar { display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
+.searchInput {
+  flex: 1;
+  min-width: 200px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  padding: 11px 16px;
+  color: var(--text-primary);
+  font-size: 0.88rem;
+  outline: none;
+}
+.searchInput:focus { border-color: var(--border-hover); }
+
+.tableWrap {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  overflow-x: auto;
+}
+.table { width: 100%; border-collapse: collapse; min-width: 640px; }
+.table th {
+  text-align: left;
+  font-family: var(--font-heading);
+  font-size: 0.64rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+.table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.84rem;
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+.table tr:last-child td { border-bottom: none; }
+
+.badge {
+  display: inline-block;
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  padding: 3px 9px;
+  border-radius: var(--r-full);
+  background: var(--accent-dim);
+  color: var(--accent);
+  border: 1px solid var(--accent-border);
+}
+
+.actionBtn {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  padding: 6px 11px;
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  margin-right: 6px;
+}
+.actionBtn:hover { border-color: var(--border-hover); color: var(--text-primary); }
+.actionBtn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 20px;
+}
+.modal {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  padding: 28px;
+  width: 100%;
+  max-width: 420px;
+}
+.modal h3 { font-size: 1.05rem; margin-bottom: 18px; }
+.modalField { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+.modalField label { font-size: 0.8rem; font-weight: 600; color: var(--text-primary); }
+.modalField input, .modalField select {
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  padding: 10px 13px;
+  color: var(--text-primary);
+  font-size: 0.86rem;
+  outline: none;
+}
+.modalActions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 8px; }
+
+.error { font-size: 0.8rem; color: #f05050; margin-bottom: 12px; }
+.empty { padding: 40px; text-align: center; color: var(--text-muted); font-size: 0.88rem; }
+
+@media (max-width: 600px) {
+  .statsGrid { grid-template-columns: 1fr 1fr; }
+}

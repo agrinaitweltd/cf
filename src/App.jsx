@@ -42,6 +42,14 @@ const PaymentHistory = lazy(() => import('./pages/cleaning-club/dashboard/Paymen
 const CustomerProfile = lazy(() => import('./pages/cleaning-club/dashboard/Profile'))
 const ProtectedRoute = lazy(() => import('./components/cleaning-club/ProtectedRoute'))
 
+const AdminLogin = lazy(() => import('./pages/admin/AdminLogin'))
+const AdminProtectedRoute = lazy(() => import('./pages/admin/AdminProtectedRoute'))
+const AdminLayout = lazy(() => import('./pages/admin/AdminLayout'))
+const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard'))
+const AdminCustomers = lazy(() => import('./pages/admin/AdminCustomers'))
+const AdminBookings = lazy(() => import('./pages/admin/AdminBookings'))
+const AdminPayments = lazy(() => import('./pages/admin/AdminPayments'))
+
 const SEO_BY_PATH = {
   '/': {
     title: 'CF Hub UK | Choose Your Service',
@@ -208,7 +216,7 @@ function App() {
   const [isUnderConstruction, setIsUnderConstruction] = useState(null);
   const previousPathRef = useRef(pathname);
   const isCleaningRoute = pathname.startsWith('/cleaning')
-  const isSelectionRoute = pathname === '/select-service' || pathname === '/'
+  const isSelectionRoute = pathname === '/select-service' || pathname === '/' || pathname.startsWith('/admin')
 
   const loadingLogoSrc = isCleaningRoute ? '/logo2.png' : '/logo.png'
   const loadingLogoAlt = isCleaningRoute ? 'CF Hub & Co. Cleaning Services' : 'CF HUB UK'
@@ -354,6 +362,17 @@ function App() {
               <Route path="upcoming-cleans" element={<UpcomingCleans />} />
               <Route path="payments" element={<PaymentHistory />} />
               <Route path="profile" element={<CustomerProfile />} />
+            </Route>
+            <Route path="/admin/login" element={<AdminLogin />} />
+            <Route path="/admin" element={
+              <AdminProtectedRoute>
+                <AdminLayout />
+              </AdminProtectedRoute>
+            }>
+              <Route index element={<AdminDashboard />} />
+              <Route path="customers" element={<AdminCustomers />} />
+              <Route path="bookings" element={<AdminBookings />} />
+              <Route path="payments" element={<AdminPayments />} />
             </Route>
             <Route path="/about" element={<About />} />
             <Route path="/services" element={<Services />} />
