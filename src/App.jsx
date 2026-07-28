@@ -304,11 +304,13 @@ function App() {
     canonical.setAttribute('href', canonicalUrl)
   }, [pathname]);
 
-  if (isUnderConstruction === null) {
+  const isAdminRoute = pathname.startsWith('/admin')
+
+  if (isUnderConstruction === null && !isAdminRoute) {
     return <main style={{ minHeight: '100vh', background: '#000' }} />;
   }
 
-  if (isUnderConstruction) {
+  if (isUnderConstruction && !isAdminRoute) {
     return <ConstructionPage />;
   }
 
