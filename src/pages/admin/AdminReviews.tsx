@@ -25,7 +25,7 @@ export default function AdminReviews() {
     setBusyId(reviewId)
     setActionError('')
     try {
-      await postAdminAction('/api/admin/action', { resource: 'review', action, reviewId })
+      await postAdminAction('/api/admin', { resource: 'review', action, reviewId })
       await refresh()
     } catch (err) {
       setActionError(err instanceof Error ? err.message : 'Something went wrong.')

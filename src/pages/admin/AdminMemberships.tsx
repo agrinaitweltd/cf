@@ -19,7 +19,7 @@ export default function AdminMemberships() {
     setActionError('')
     setBusyId(membershipId)
     try {
-      await postAdminAction('/api/admin/action', { resource: 'membership', action, membershipId, ...extra })
+      await postAdminAction('/api/admin', { resource: 'membership', action, membershipId, ...extra })
       await refresh()
     } catch (err) {
       setActionError(err instanceof Error ? err.message : 'Something went wrong.')

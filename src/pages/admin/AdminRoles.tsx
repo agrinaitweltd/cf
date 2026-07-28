@@ -21,7 +21,7 @@ export default function AdminRoles() {
     setSending(true)
     setInviteError('')
     try {
-      await postAdminAction('/api/admin/invite', { email: email.trim() })
+      await postAdminAction('/api/admin', { resource: 'invite', email: email.trim() })
       setInviteSent(true)
       setEmail('')
       await refresh()
@@ -36,7 +36,7 @@ export default function AdminRoles() {
     setBusyId(adminId)
     setActionError('')
     try {
-      await postAdminAction('/api/admin/action', { resource: 'admin_role', action: activated ? 'revoke' : 'restore', adminId })
+      await postAdminAction('/api/admin', { resource: 'admin_role', action: activated ? 'revoke' : 'restore', adminId })
       await refresh()
     } catch (err) {
       setActionError(err instanceof Error ? err.message : 'Something went wrong.')

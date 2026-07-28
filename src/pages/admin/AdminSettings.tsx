@@ -75,7 +75,7 @@ export default function AdminSettings() {
 
     setBroadcastSending(true)
     try {
-      const result = await postAdminAction('/api/admin/action', { resource: 'broadcast', title: broadcastTitle.trim(), message: broadcastMessage.trim() })
+      const result = await postAdminAction('/api/admin', { resource: 'broadcast', title: broadcastTitle.trim(), message: broadcastMessage.trim() })
       setBroadcastSent(`Sent to ${result.recipients} member${result.recipients === 1 ? '' : 's'}.`)
       setBroadcastTitle('')
       setBroadcastMessage('')

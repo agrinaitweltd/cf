@@ -1,10 +1,11 @@
-import { requireAdmin } from '../_lib/requireAdmin.js';
-import { getStripe, getPriceIdForTier } from '../_lib/stripe.js';
-import { notify } from '../_lib/notify.js';
+import crypto from 'crypto';
+import { requireAdmin } from './_lib/requireAdmin.js';
+import { getSupabaseAdmin } from './_lib/supabaseAdmin.js';
+import { getStripe, getPriceIdForTier } from './_lib/stripe.js';
+import { notify, sendServiceEmail } from './_lib/notify.js';
 
 const VALID_TIERS = ['bronze', 'silver', 'gold', 'platinum'];
-const VALID_DAYS = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
-const VALID_TIMES = ['morning', 'afternoon', 'evening'];
+const SETUP_TOKEN_TTL_HOURS = 48;
 
 async function handleBooking(admin, body) {
   const { action, bookingId, profileId, membershipId, scheduledDate, scheduledTime, cleanerName } = body;
@@ -285,15 +286,176 @@ async function handleAdminRole(admin, user, body) {
   return { success: true };
 }
 
+async function handleInvite(admin, user, body) {
+  const { email } = body;
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    throw { status: 400, message: 'A valid email address is required.' };
+  }
+
+  const { data: existing } = await admin.from('admin_users').select('id, activated').eq('invite_email', email).maybeSingle();
+  if (existing && existing.activated) {
+    throw { status: 400, message: 'This person is already an activated admin.' };
+  }
+
+  const token = crypto.randomBytes(32).toString('hex');
+  const expiresAt = new Date(Date.now() + SETUP_TOKEN_TTL_HOURS * 60 * 60 * 1000).toISOString();
+
+  if (existing) {
+    await admin.from('admin_users').update({ setup_token: token, setup_token_expires_at: expiresAt }).eq('id', existing.id);
+  } else {
+    const { error: insertError } = await admin.from('admin_users').insert({
+      invite_email: email,
+      activated: false,
+      setup_token: token,
+      setup_token_expires_at: expiresAt,
+    });
+    if (insertError) throw { status: 500, message: 'Could not create invite.' };
+  }
+
+  const siteUrl = process.env.VITE_SITE_URL || process.env.SITE_URL || 'https://www.cfhubuk.com';
+  const setupUrl = `${siteUrl}/admin/setup?token=${token}`;
+
+  await sendServiceEmail({
+    to: email,
+    subject: 'Set up your CF Hub UK admin account',
+    bodyHtml: `
+      <h2 style="margin:0 0 16px;">You've been invited as an admin</h2>
+      <p style="margin:0 0 20px;line-height:1.6;">You've been invited to manage the CF Hub UK Clean Club admin dashboard. Click below to create your password and activate your account. This link expires in ${SETUP_TOKEN_TTL_HOURS} hours and can only be used once.</p>
+      <p style="margin:0 0 24px;"><a href="${setupUrl}" style="display:inline-block;background:#0D0D0D;color:#fff;padding:14px 28px;border-radius:8px;text-decoration:none;font-weight:600;">Activate Admin Account</a></p>
+      <p style="margin:0;font-size:13px;color:#888;">If the button doesn't work, copy this link: ${setupUrl}</p>
+    `,
+  });
+
+  await admin.from('audit_logs').insert({
+    actor_email: user.email,
+    action: 'admin_invited',
+    target_type: 'admin_users',
+    target_id: email,
+    meta: { invited_by: user.email },
+  });
+
+  return { success: true };
+}
+
+async function handleSetup(body) {
+  const { token, fullName, password } = body;
+  if (!token || !fullName || !password) throw { status: 400, message: 'Token, full name and password are all required.' };
+  if (password.length < 8) throw { status: 400, message: 'Password must be at least 8 characters.' };
+
+  const admin = getSupabaseAdmin();
+
+  const { data: invite } = await admin
+    .from('admin_users')
+    .select('id, invite_email, activated, setup_token_expires_at')
+    .eq('setup_token', token)
+    .maybeSingle();
+
+  if (!invite) throw { status: 400, message: 'This setup link is invalid.' };
+  if (invite.activated) throw { status: 400, message: 'This setup link has already been used.' };
+  if (!invite.setup_token_expires_at || new Date(invite.setup_token_expires_at) < new Date()) {
+    throw { status: 400, message: 'This setup link has expired. Ask an existing admin to send a new invite.' };
+  }
+
+  const { data: existingUser } = await admin.auth.admin.listUsers({ page: 1, perPage: 1, email: invite.invite_email });
+  let profileId = existingUser?.users?.[0]?.id ?? null;
+
+  if (!profileId) {
+    const { data: created, error: createError } = await admin.auth.admin.createUser({
+      email: invite.invite_email,
+      password,
+      email_confirm: true,
+      user_metadata: { full_name: fullName },
+    });
+    if (createError) throw { status: 500, message: createError.message };
+    profileId = created.user.id;
+  } else {
+    const { error: updateError } = await admin.auth.admin.updateUserById(profileId, {
+      password,
+      user_metadata: { full_name: fullName },
+    });
+    if (updateError) throw { status: 500, message: updateError.message };
+  }
+
+  await admin.from('profiles').update({ full_name: fullName }).eq('id', profileId);
+
+  const { error: activateError } = await admin
+    .from('admin_users')
+    .update({ profile_id: profileId, full_name: fullName, activated: true, setup_token: null, setup_token_expires_at: null })
+    .eq('id', invite.id);
+  if (activateError) throw { status: 500, message: activateError.message };
+
+  await admin.from('audit_logs').insert({
+    actor_email: invite.invite_email,
+    action: 'admin_setup_completed',
+    target_type: 'admin_users',
+    target_id: invite.id,
+    meta: { full_name: fullName },
+  });
+
+  return { success: true };
+}
+
+async function handleData(admin) {
+  const [profiles, memberships, subscriptions, bookings, payments, cleaners, coupons, reviews, supportTickets, adminUsers, auditLogs] = await Promise.all([
+    admin.from('profiles').select('*').order('created_at', { ascending: false }).limit(500),
+    admin.from('memberships').select('*').order('created_at', { ascending: false }).limit(500),
+    admin.from('subscriptions').select('*').order('created_at', { ascending: false }).limit(500),
+    admin.from('bookings').select('*').order('scheduled_date', { ascending: true }).limit(500),
+    admin.from('payments').select('*').order('created_at', { ascending: false }).limit(500),
+    admin.from('cleaners').select('*').order('full_name', { ascending: true }),
+    admin.from('coupons').select('*').order('created_at', { ascending: false }).limit(200),
+    admin.from('reviews').select('*').order('created_at', { ascending: false }).limit(200),
+    admin.from('support_tickets').select('*').order('created_at', { ascending: false }).limit(200),
+    admin.from('admin_users').select('id, profile_id, invite_email, full_name, role, activated, created_at').order('created_at', { ascending: false }).limit(100),
+    admin.from('audit_logs').select('*').order('created_at', { ascending: false }).limit(100),
+  ]);
+
+  return {
+    profiles: profiles.data ?? [],
+    memberships: memberships.data ?? [],
+    subscriptions: subscriptions.data ?? [],
+    bookings: bookings.data ?? [],
+    payments: payments.data ?? [],
+    cleaners: cleaners.data ?? [],
+    coupons: coupons.data ?? [],
+    reviews: reviews.data ?? [],
+    supportTickets: supportTickets.data ?? [],
+    adminUsers: adminUsers.data ?? [],
+    auditLogs: auditLogs.data ?? [],
+  };
+}
+
 export default async function handler(req, res) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
+  // Public, unauthenticated: completing first-time admin setup from an emailed link.
+  if (req.method === 'POST' && req.body && req.body.mode === 'setup') {
+    try {
+      const result = await handleSetup(req.body);
+      return res.status(200).json(result);
+    } catch (err) {
+      if (err && err.status) return res.status(err.status).json({ error: err.message });
+      console.error('admin setup error', err);
+      return res.status(500).json({ error: 'Could not complete setup. Please try again or ask for a new invite.' });
+    }
   }
 
   const ctx = await requireAdmin(req);
   if (!ctx) return res.status(403).json({ error: 'Admin access required' });
-
   const { admin, user } = ctx;
+
+  if (req.method === 'GET') {
+    try {
+      const data = await handleData(admin);
+      return res.status(200).json(data);
+    } catch (err) {
+      console.error('admin data error', err);
+      return res.status(500).json({ error: 'Failed to load admin data' });
+    }
+  }
+
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
+
   const { resource, ...body } = req.body || {};
 
   try {
@@ -308,12 +470,13 @@ export default async function handler(req, res) {
     else if (resource === 'support_ticket') result = await handleSupportTicket(admin, body);
     else if (resource === 'broadcast') result = await handleBroadcast(admin, body);
     else if (resource === 'admin_role') result = await handleAdminRole(admin, user, body);
+    else if (resource === 'invite') result = await handleInvite(admin, user, body);
     else return res.status(400).json({ error: 'Invalid resource.' });
 
     return res.status(200).json(result);
   } catch (err) {
     if (err && err.status) return res.status(err.status).json({ error: err.message });
-    console.error('admin/action error', err);
+    console.error('admin action error', err);
     return res.status(500).json({ error: 'Something went wrong. Please try again.' });
   }
 }

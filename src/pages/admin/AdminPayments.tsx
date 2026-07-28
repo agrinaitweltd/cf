@@ -22,7 +22,7 @@ export default function AdminPayments() {
     setBusyId(refundTarget.id)
     setActionError('')
     try {
-      await postAdminAction('/api/admin/action', { resource: 'refund', paymentId: refundTarget.id })
+      await postAdminAction('/api/admin', { resource: 'refund', paymentId: refundTarget.id })
       await refresh()
       setRefundTarget(null)
     } catch (err) {

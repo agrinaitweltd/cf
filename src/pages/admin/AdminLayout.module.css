@@ -1,4 +1,29 @@
 .shell {
+  /* Admin dashboard runs its own light theme, scoped to this subtree only —
+     the rest of the site (marketing pages, customer dashboard) stays dark. */
+  --bg-primary:   #F3F4F8;
+  --bg-secondary: #FFFFFF;
+  --bg-card:      #FFFFFF;
+  --bg-elevated:  #F7F8FC;
+
+  --accent:        #7C5CFC;
+  --accent-hover:  #6A47F2;
+  --accent-dark:   #5A38DE;
+  --accent-dim:    rgba(124, 92, 252, 0.10);
+  --accent-border: rgba(124, 92, 252, 0.30);
+
+  --white:          #171A2B;
+  --text-primary:   #1F2233;
+  --text-secondary: #6B7280;
+  --text-muted:     #9AA0AC;
+
+  --border:       #E7E8F0;
+  --border-hover: #D6D8E4;
+
+  --shadow-sm: 0 1px 3px rgba(23, 26, 43, 0.06);
+  --shadow-md: 0 8px 24px rgba(23, 26, 43, 0.08);
+  --shadow-lg: 0 20px 48px rgba(23, 26, 43, 0.12);
+
   display: grid;
   grid-template-columns: 232px 1fr;
   min-height: 100vh;
@@ -20,8 +45,8 @@
   width: 36px;
   height: 36px;
   border-radius: var(--r-sm);
-  background: var(--white);
-  color: #0d0d0d;
+  background: var(--accent);
+  color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;

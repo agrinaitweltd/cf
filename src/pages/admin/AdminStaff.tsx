@@ -19,7 +19,7 @@ export default function AdminStaff() {
     if (!fullName.trim()) return
     setActionError('')
     try {
-      await postAdminAction('/api/admin/action', { resource: 'staff', action: 'create', fullName: fullName.trim(), email: email.trim() || undefined, phone: phone.trim() || undefined })
+      await postAdminAction('/api/admin', { resource: 'staff', action: 'create', fullName: fullName.trim(), email: email.trim() || undefined, phone: phone.trim() || undefined })
       setShowAdd(false)
       setFullName('')
       setEmail('')
@@ -34,7 +34,7 @@ export default function AdminStaff() {
     setBusyId(id)
     setActionError('')
     try {
-      await postAdminAction('/api/admin/action', { resource: 'staff', action: active ? 'deactivate' : 'activate', cleanerId: id })
+      await postAdminAction('/api/admin', { resource: 'staff', action: active ? 'deactivate' : 'activate', cleanerId: id })
       await refresh()
     } catch (err) {
       setActionError(err instanceof Error ? err.message : 'Something went wrong.')

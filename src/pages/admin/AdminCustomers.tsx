@@ -83,7 +83,7 @@ export default function AdminCustomers() {
     setSaving(true)
     setActionError('')
     try {
-      await postAdminAction('/api/admin/action', { resource: 'customer', action: 'update', profileId: editTarget.id, updates: editForm })
+      await postAdminAction('/api/admin', { resource: 'customer', action: 'update', profileId: editTarget.id, updates: editForm })
       await refresh()
       setEditTarget(null)
     } catch (err) {
@@ -98,7 +98,7 @@ export default function AdminCustomers() {
     setSaving(true)
     setActionError('')
     try {
-      await postAdminAction('/api/admin/action', { resource: 'customer', action: 'delete', profileId: deleteTarget.id })
+      await postAdminAction('/api/admin', { resource: 'customer', action: 'delete', profileId: deleteTarget.id })
       await refresh()
       setDeleteTarget(null)
       setConfirmText('')

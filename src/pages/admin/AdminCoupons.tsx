@@ -19,7 +19,7 @@ export default function AdminCoupons() {
     if (!code.trim() || !discountPercent) return
     setActionError('')
     try {
-      await postAdminAction('/api/admin/action', {
+      await postAdminAction('/api/admin', {
         resource: 'coupon',
         action: 'create',
         code: code.trim(),
@@ -44,7 +44,7 @@ export default function AdminCoupons() {
     setBusyId(id)
     setActionError('')
     try {
-      await postAdminAction('/api/admin/action', { resource: 'coupon', action: active ? 'deactivate' : 'activate', couponId: id })
+      await postAdminAction('/api/admin', { resource: 'coupon', action: active ? 'deactivate' : 'activate', couponId: id })
       await refresh()
     } catch (err) {
       setActionError(err instanceof Error ? err.message : 'Something went wrong.')
@@ -58,7 +58,7 @@ export default function AdminCoupons() {
     setBusyId(id)
     setActionError('')
     try {
-      await postAdminAction('/api/admin/action', { resource: 'coupon', action: 'delete', couponId: id })
+      await postAdminAction('/api/admin', { resource: 'coupon', action: 'delete', couponId: id })
       await refresh()
     } catch (err) {
       setActionError(err instanceof Error ? err.message : 'Something went wrong.')

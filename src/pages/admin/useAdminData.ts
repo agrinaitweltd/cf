@@ -136,7 +136,7 @@ export function useAdminData() {
       return
     }
     try {
-      const res = await fetch('/api/admin/data', { headers: { Authorization: `Bearer ${token}` } })
+      const res = await fetch('/api/admin', { headers: { Authorization: `Bearer ${token}` } })
       const json = await res.json()
       if (!res.ok) throw new Error(json.error || 'Failed to load admin data.')
       setData(json)

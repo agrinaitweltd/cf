@@ -23,7 +23,7 @@ export default function AdminBookings() {
     setActionError('')
     setBusyId(bookingId)
     try {
-      await postAdminAction('/api/admin/action', { resource: 'booking', action, bookingId, ...extra })
+      await postAdminAction('/api/admin', { resource: 'booking', action, bookingId, ...extra })
       await refresh()
     } catch (err) {
       setActionError(err instanceof Error ? err.message : 'Something went wrong.')
@@ -46,7 +46,7 @@ export default function AdminBookings() {
     }
     setActionError('')
     try {
-      await postAdminAction('/api/admin/action', {
+      await postAdminAction('/api/admin', {
         resource: 'booking',
         action: 'create',
         profileId: newBooking.profileId,

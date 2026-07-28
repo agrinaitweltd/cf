@@ -19,7 +19,7 @@ export default function AdminSupport() {
     setBusyId(ticketId)
     setActionError('')
     try {
-      await postAdminAction('/api/admin/action', { resource: 'support_ticket', ticketId, status })
+      await postAdminAction('/api/admin', { resource: 'support_ticket', ticketId, status })
       await refresh()
     } catch (err) {
       setActionError(err instanceof Error ? err.message : 'Something went wrong.')
@@ -33,7 +33,7 @@ export default function AdminSupport() {
     setBusyId(replyTarget.id)
     setActionError('')
     try {
-      await postAdminAction('/api/admin/action', { resource: 'support_ticket', action: 'reply', ticketId: replyTarget.id, adminReply: reply.trim(), status: 'resolved' })
+      await postAdminAction('/api/admin', { resource: 'support_ticket', action: 'reply', ticketId: replyTarget.id, adminReply: reply.trim(), status: 'resolved' })
       setReplyTarget(null)
       setReply('')
       await refresh()

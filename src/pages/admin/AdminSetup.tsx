@@ -25,10 +25,10 @@ export default function AdminSetup() {
 
     setSending(true)
     try {
-      const res = await fetch('/api/admin/setup', {
+      const res = await fetch('/api/admin', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ token, fullName: fullName.trim(), password }),
+        body: JSON.stringify({ mode: 'setup', token, fullName: fullName.trim(), password }),
       })
       const json = await res.json()
       if (!res.ok) throw new Error(json.error || 'Something went wrong.')

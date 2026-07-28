@@ -47,13 +47,13 @@ export default function AdminDashboard() {
       {error && <p className={styles.error}>{error}</p>}
 
       <div className={styles.statsGrid}>
-        <StatCard label="Active Members" value={activeMembers} percent={Math.round((activeMembers / totalMemberships) * 100)} trend="up" trendLabel={`${activeMembers}/${memberships.length}`} icon={ICONS.members} />
-        <StatCard label="Monthly Revenue" value={`£${monthlyRevenue.toLocaleString()}`} percent={Math.min(100, Math.round((monthlyRevenue / 5000) * 100))} trend="up" icon={ICONS.revenue} />
-        <StatCard label="Upcoming Cleans" value={upcomingCleans} percent={Math.min(100, upcomingCleans * 10)} icon={ICONS.cleans} />
-        <StatCard label="Payments Due / Failed" value={paymentsDue} percent={Math.round((paymentsDue / totalPayments) * 100)} trend={paymentsDue > 0 ? 'down' : 'up'} icon={ICONS.failed} />
-        <StatCard label="Cancelled Memberships" value={cancelledMembers} percent={Math.round((cancelledMembers / totalMemberships) * 100)} trend={cancelledMembers > 0 ? 'down' : 'up'} icon={ICONS.cancelled} />
-        <StatCard label="Payments This Month" value={thisMonthPayments} percent={Math.round((thisMonthPayments / totalPayments) * 100)} trend="up" icon={ICONS.paid} />
-        <StatCard label="Total Customers" value={profiles.length} percent={100} icon={ICONS.customers} />
+        <StatCard label="Active Members" value={activeMembers} percent={Math.round((activeMembers / totalMemberships) * 100)} trend="up" trendLabel={`${activeMembers}/${memberships.length}`} icon={ICONS.members} color="blue" />
+        <StatCard label="Monthly Revenue" value={`£${monthlyRevenue.toLocaleString()}`} percent={Math.min(100, Math.round((monthlyRevenue / 5000) * 100))} trend="up" icon={ICONS.revenue} color="green" />
+        <StatCard label="Upcoming Cleans" value={upcomingCleans} percent={Math.min(100, upcomingCleans * 10)} icon={ICONS.cleans} color="teal" />
+        <StatCard label="Payments Due / Failed" value={paymentsDue} percent={Math.round((paymentsDue / totalPayments) * 100)} trend={paymentsDue > 0 ? 'down' : 'up'} icon={ICONS.failed} color="orange" />
+        <StatCard label="Cancelled Memberships" value={cancelledMembers} percent={Math.round((cancelledMembers / totalMemberships) * 100)} trend={cancelledMembers > 0 ? 'down' : 'up'} icon={ICONS.cancelled} color="blue" />
+        <StatCard label="Payments This Month" value={thisMonthPayments} percent={Math.round((thisMonthPayments / totalPayments) * 100)} trend="up" icon={ICONS.paid} color="green" />
+        <StatCard label="Total Customers" value={profiles.length} percent={100} icon={ICONS.customers} color="teal" />
       </div>
     </>
   )
