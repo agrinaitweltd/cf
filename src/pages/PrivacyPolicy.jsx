@@ -136,7 +136,7 @@ function PrivacyPolicy() {
             <h2 className={styles.sectionTitle}>Contact Us</h2>
             <p>If you have any questions about this Privacy Policy or how we handle your data, contact us at:</p>
             <p><a href="mailto:enquiries@cfhubuk.com">enquiries@cfhubuk.com</a></p>
-            <p><a href="tel:07960481933">07960 481933</a></p>
+            <p><a href="tel:+447806949497">+44 (0) 7806 949497</a></p>
           </div>
         </div>
       </div>

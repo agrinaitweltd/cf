@@ -1,9 +1,11 @@
 import { Link } from 'react-router-dom'
+import MembershipPromoModal from '../components/MembershipPromoModal'
 import styles from './ServiceSelection.module.css'
 
 function ServiceSelection({ onSelect }) {
   return (
     <section className={styles.page} aria-label="Choose a CF Hub service">
+      <MembershipPromoModal />
       <div className={styles.bgLayer} aria-hidden="true" />
       <div className="container">
         <div className={styles.content}>

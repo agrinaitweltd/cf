@@ -2,6 +2,7 @@ import { useEffect, useState, type FormEvent } from 'react'
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import { supabase } from '../../lib/supabase'
+import { safeFetchJson } from '../../lib/api'
 import { membershipPlans, preferredDayOptions, preferredTimeOptions } from '../../data/membership'
 import type { MembershipTier, PreferredDay, PreferredTime } from '../../types/membership'
 import PostcodeAddressField from '../../components/cleaning-club/PostcodeAddressField'
@@ -167,7 +168,7 @@ export default function MembershipSignup() {
       const token = sessionData.session?.access_token
       if (!token) throw new Error('Your session has expired. Please sign in again.')
 
-      const res = await fetch('/api/create-checkout-session', {
+      const data = await safeFetchJson<{ clientSecret: string }>('/api/create-checkout-session', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify({
@@ -178,8 +179,6 @@ export default function MembershipSignup() {
           specialInstructions: buildFullInstructions(),
         }),
       })
-      const data = await res.json()
-      if (!res.ok) throw new Error(data.error || 'Something went wrong starting checkout.')
       setClientSecret(data.clientSecret)
     } catch (err) {
       setCheckoutError(err instanceof Error ? err.message : 'Something went wrong. Please try again.')

@@ -1,6 +1,7 @@
 import { NavLink, Outlet, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import { useAdminProfile } from './useAdminProfile'
+import { useIdleLogout } from '../../hooks/useIdleLogout'
 import styles from './AdminLayout.module.css'
 
 const NAV_ITEMS = [
@@ -63,6 +64,8 @@ export default function AdminLayout() {
   const { fullName } = useAdminProfile()
   const navigate = useNavigate()
 
+  useIdleLogout('/admin/login')
+
   const handleLogout = async () => {
     await signOut()
     navigate('/admin/login')
@@ -80,7 +83,9 @@ export default function AdminLayout() {
   return (
     <div className={styles.shell}>
       <nav className={styles.rail}>
-        <div className={styles.railLogo}>CF</div>
+        <div className={styles.railLogo}>
+          <img src="/logo2.png" alt="CF Hub & Co." />
+        </div>
         {NAV_ITEMS.map(item => (
           <NavLink
             key={item.to}

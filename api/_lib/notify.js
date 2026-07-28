@@ -26,7 +26,7 @@ function wrapEmail(bodyHtml) {
           ${bodyHtml}
         </td></tr>
         <tr><td style="padding:24px 40px;background:#f7f7f7;text-align:center;">
-          <p style="margin:0;font-size:12px;color:#888;">CF Hub UK &middot; enquiries@cfhubuk.com &middot; 07960481933</p>
+          <p style="margin:0;font-size:12px;color:#888;">CF Hub UK &middot; enquiries@cfhubuk.com &middot; +44 (0) 7806 949497</p>
         </td></tr>
       </table>
     </td></tr>

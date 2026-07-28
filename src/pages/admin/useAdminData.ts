@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { supabase } from '../../lib/supabase'
+import { safeFetchJson } from '../../lib/api'
 
 export interface AdminProfile {
   id: string
@@ -87,6 +88,7 @@ export interface AdminUserRow {
   profile_id: string | null
   invite_email: string | null
   full_name: string | null
+  phone: string | null
   role: string
   activated: boolean
   created_at: string
@@ -136,9 +138,7 @@ export function useAdminData() {
       return
     }
     try {
-      const res = await fetch('/api/admin', { headers: { Authorization: `Bearer ${token}` } })
-      const json = await res.json()
-      if (!res.ok) throw new Error(json.error || 'Failed to load admin data.')
+      const json = await safeFetchJson<AdminData>('/api/admin', { headers: { Authorization: `Bearer ${token}` } })
       setData(json)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to load admin data.')
@@ -157,12 +157,9 @@ export function useAdminData() {
 export async function postAdminAction(path: string, body: Record<string, unknown>) {
   const { data: sessionData } = await supabase.auth.getSession()
   const token = sessionData.session?.access_token
-  const res = await fetch(path, {
+  return safeFetchJson<{ success: boolean } & Record<string, unknown>>(path, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
     body: JSON.stringify(body),
   })
-  const json = await res.json()
-  if (!res.ok) throw new Error(json.error || 'Something went wrong.')
-  return json
 }

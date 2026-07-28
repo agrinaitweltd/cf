@@ -189,7 +189,7 @@ function confirmationEmail({ name, service }) {
         <!-- Urgent contact -->
         <tr>
           <td style="padding:0 48px 40px;text-align:center;">
-            <p style="margin:0;font-size:13px;color:#999999;">Need to speak to someone urgently? Call us on <a href="tel:07960481933" style="color:#0D0D0D;font-weight:700;text-decoration:none;">07960 481933</a></p>
+            <p style="margin:0;font-size:13px;color:#999999;">Need to speak to someone urgently? Call us on <a href="tel:+447806949497" style="color:#0D0D0D;font-weight:700;text-decoration:none;">+44 (0) 7806 949497</a></p>
           </td>
         </tr>
 

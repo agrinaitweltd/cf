@@ -108,7 +108,7 @@ function TermsOfService() {
             <h2 className={styles.sectionTitle}>Contact Us</h2>
             <p>Questions about these terms? Contact us at:</p>
             <p><a href="mailto:enquiries@cfhubuk.com">enquiries@cfhubuk.com</a></p>
-            <p><a href="tel:07960481933">07960 481933</a></p>
+            <p><a href="tel:+447806949497">+44 (0) 7806 949497</a></p>
           </div>
         </div>
       </div>

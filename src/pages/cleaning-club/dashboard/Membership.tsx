@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { supabase } from '../../../lib/supabase'
+import { safeFetchJson } from '../../../lib/api'
 import { useMembershipData } from './useMembershipData'
 import { getPlanByTier, membershipPlans } from '../../../data/membership'
 import type { MembershipTier } from '../../../types/membership'
@@ -32,13 +33,11 @@ export default function MembershipPage() {
     try {
       const { data: sessionData } = await supabase.auth.getSession()
       const token = sessionData.session?.access_token
-      const res = await fetch('/api/update-subscription', {
+      await safeFetchJson('/api/update-subscription', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify({ tier }),
       })
-      const data = await res.json()
-      if (!res.ok) throw new Error(data.error || 'Could not change your membership.')
       refresh()
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong.')
@@ -53,12 +52,10 @@ export default function MembershipPage() {
     try {
       const { data: sessionData } = await supabase.auth.getSession()
       const token = sessionData.session?.access_token
-      const res = await fetch('/api/create-portal-session', {
+      const data = await safeFetchJson<{ url: string }>('/api/create-portal-session', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
       })
-      const data = await res.json()
-      if (!res.ok) throw new Error(data.error || 'Could not open billing portal.')
       window.location.href = data.url
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong.')

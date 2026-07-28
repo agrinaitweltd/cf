@@ -354,7 +354,7 @@ function Contact() {
                     </div>
                     <div>
                       <p className={styles.infoLabel}>Phone</p>
-                      <a href="tel:07960481933" className={styles.infoVal}>07960481933</a>
+                      <a href="tel:+447806949497" className={styles.infoVal}>+44 (0) 7806 949497</a>
                     </div>
                   </div>
 

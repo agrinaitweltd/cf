@@ -337,23 +337,85 @@ async function handleInvite(admin, user, body) {
   return { success: true };
 }
 
-async function handleSetup(body) {
-  const { token, fullName, password } = body;
-  if (!token || !fullName || !password) throw { status: 400, message: 'Token, full name and password are all required.' };
-  if (password.length < 8) throw { status: 400, message: 'Password must be at least 8 characters.' };
+const OTP_TTL_MINUTES = 10;
 
-  const admin = getSupabaseAdmin();
-
-  const { data: invite } = await admin
+function loadInviteByToken(admin, token) {
+  return admin
     .from('admin_users')
-    .select('id, invite_email, activated, setup_token_expires_at')
+    .select('id, invite_email, activated, setup_token_expires_at, setup_otp, setup_otp_expires_at')
     .eq('setup_token', token)
     .maybeSingle();
+}
 
+function assertInviteValid(invite) {
   if (!invite) throw { status: 400, message: 'This setup link is invalid.' };
   if (invite.activated) throw { status: 400, message: 'This setup link has already been used.' };
   if (!invite.setup_token_expires_at || new Date(invite.setup_token_expires_at) < new Date()) {
     throw { status: 400, message: 'This setup link has expired. Ask an existing admin to send a new invite.' };
+  }
+}
+
+// Step 1: resolve the token so the frontend can show which email is being activated.
+async function handleVerifyToken(body) {
+  const { token } = body;
+  if (!token) throw { status: 400, message: 'Token is required.' };
+  const admin = getSupabaseAdmin();
+  const { data: invite } = await loadInviteByToken(admin, token);
+  assertInviteValid(invite);
+  return { email: invite.invite_email };
+}
+
+// Step 2: collect name/password/phone, then email a one-time code to the invited address.
+async function handleRequestOtp(body) {
+  const { token, fullName, password, phone } = body;
+  if (!token || !fullName || !password || !phone) {
+    throw { status: 400, message: 'Full name, password and phone number are all required.' };
+  }
+  if (password.length < 8) throw { status: 400, message: 'Password must be at least 8 characters.' };
+
+  const admin = getSupabaseAdmin();
+  const { data: invite } = await loadInviteByToken(admin, token);
+  assertInviteValid(invite);
+
+  const otp = String(crypto.randomInt(100000, 1000000));
+  const expiresAt = new Date(Date.now() + OTP_TTL_MINUTES * 60 * 1000).toISOString();
+
+  const { error } = await admin
+    .from('admin_users')
+    .update({ setup_otp: otp, setup_otp_expires_at: expiresAt, full_name: fullName, phone })
+    .eq('id', invite.id);
+  if (error) throw { status: 500, message: 'Could not start verification. Please try again.' };
+
+  await sendServiceEmail({
+    to: invite.invite_email,
+    subject: 'Your CF Hub UK admin verification code',
+    bodyHtml: `
+      <h2 style="margin:0 0 16px;">Verify it's you</h2>
+      <p style="margin:0 0 20px;line-height:1.6;">Enter this code to finish activating your admin account. It expires in ${OTP_TTL_MINUTES} minutes.</p>
+      <p style="margin:0 0 24px;font-size:32px;font-weight:800;letter-spacing:6px;">${otp}</p>
+      <p style="margin:0;font-size:13px;color:#888;">If you didn't request this, you can safely ignore this email.</p>
+    `,
+  });
+
+  return { success: true, email: invite.invite_email };
+}
+
+// Step 3: verify the code and actually create/activate the account.
+async function handleCompleteSetup(body) {
+  const { token, fullName, password, phone, otp } = body;
+  if (!token || !fullName || !password || !phone || !otp) {
+    throw { status: 400, message: 'Missing required fields.' };
+  }
+
+  const admin = getSupabaseAdmin();
+  const { data: invite } = await loadInviteByToken(admin, token);
+  assertInviteValid(invite);
+
+  if (!invite.setup_otp || !invite.setup_otp_expires_at || new Date(invite.setup_otp_expires_at) < new Date()) {
+    throw { status: 400, message: 'Your verification code has expired. Please request a new one.' };
+  }
+  if (String(otp).trim() !== invite.setup_otp) {
+    throw { status: 400, message: 'Incorrect verification code.' };
   }
 
   const { data: existingUser } = await admin.auth.admin.listUsers({ page: 1, perPage: 1, email: invite.invite_email });
@@ -364,23 +426,32 @@ async function handleSetup(body) {
       email: invite.invite_email,
       password,
       email_confirm: true,
-      user_metadata: { full_name: fullName },
+      user_metadata: { full_name: fullName, phone },
     });
     if (createError) throw { status: 500, message: createError.message };
     profileId = created.user.id;
   } else {
     const { error: updateError } = await admin.auth.admin.updateUserById(profileId, {
       password,
-      user_metadata: { full_name: fullName },
+      user_metadata: { full_name: fullName, phone },
     });
     if (updateError) throw { status: 500, message: updateError.message };
   }
 
-  await admin.from('profiles').update({ full_name: fullName }).eq('id', profileId);
+  await admin.from('profiles').update({ full_name: fullName, phone }).eq('id', profileId);
 
   const { error: activateError } = await admin
     .from('admin_users')
-    .update({ profile_id: profileId, full_name: fullName, activated: true, setup_token: null, setup_token_expires_at: null })
+    .update({
+      profile_id: profileId,
+      full_name: fullName,
+      phone,
+      activated: true,
+      setup_token: null,
+      setup_token_expires_at: null,
+      setup_otp: null,
+      setup_otp_expires_at: null,
+    })
     .eq('id', invite.id);
   if (activateError) throw { status: 500, message: activateError.message };
 
@@ -406,7 +477,7 @@ async function handleData(admin) {
     admin.from('coupons').select('*').order('created_at', { ascending: false }).limit(200),
     admin.from('reviews').select('*').order('created_at', { ascending: false }).limit(200),
     admin.from('support_tickets').select('*').order('created_at', { ascending: false }).limit(200),
-    admin.from('admin_users').select('id, profile_id, invite_email, full_name, role, activated, created_at').order('created_at', { ascending: false }).limit(100),
+    admin.from('admin_users').select('id, profile_id, invite_email, full_name, phone, role, activated, created_at').order('created_at', { ascending: false }).limit(100),
     admin.from('audit_logs').select('*').order('created_at', { ascending: false }).limit(100),
   ]);
 
@@ -425,11 +496,17 @@ async function handleData(admin) {
   };
 }
 
+const PUBLIC_SETUP_MODES = {
+  verify_token: handleVerifyToken,
+  request_otp: handleRequestOtp,
+  setup: handleCompleteSetup,
+};
+
 export default async function handler(req, res) {
-  // Public, unauthenticated: completing first-time admin setup from an emailed link.
-  if (req.method === 'POST' && req.body && req.body.mode === 'setup') {
+  // Public, unauthenticated: the multi-step first-time admin setup from an emailed link.
+  if (req.method === 'POST' && req.body && PUBLIC_SETUP_MODES[req.body.mode]) {
     try {
-      const result = await handleSetup(req.body);
+      const result = await PUBLIC_SETUP_MODES[req.body.mode](req.body);
       return res.status(200).json(result);
     } catch (err) {
       if (err && err.status) return res.status(err.status).json({ error: err.message });

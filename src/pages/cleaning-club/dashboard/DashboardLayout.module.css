@@ -17,6 +17,14 @@
   gap: 4px;
 }
 
+.sidebarLogo {
+  height: 44px;
+  width: auto;
+  object-fit: contain;
+  align-self: flex-start;
+  margin: 0 0 16px 4px;
+}
+
 .navLink {
   display: flex;
   align-items: center;

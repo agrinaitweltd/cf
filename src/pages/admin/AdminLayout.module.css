@@ -30,6 +30,33 @@
   background: var(--bg-primary);
 }
 
+/* The global .btn-primary / .btn-ghost classes assume a dark theme
+   (background: var(--white), white-based borders) — override them here
+   so buttons stay legible against the admin dashboard's light theme. */
+.shell :global(.btn-primary) {
+  background: var(--accent);
+  color: #ffffff;
+  border-color: var(--accent);
+}
+.shell :global(.btn-primary:hover) {
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
+  box-shadow: 0 8px 24px rgba(124, 92, 252, 0.28);
+}
+.shell :global(.btn-ghost) {
+  background: transparent;
+  color: var(--text-primary);
+  border-color: var(--border);
+}
+.shell :global(.btn-ghost:hover) {
+  background: var(--bg-elevated);
+  border-color: var(--border-hover);
+}
+.shell :global(.btn-outline) {
+  color: var(--text-primary);
+  border-color: var(--border);
+}
+
 /* Sidebar */
 .rail {
   background: var(--bg-card);
@@ -42,18 +69,20 @@
 }
 
 .railLogo {
-  width: 36px;
-  height: 36px;
-  border-radius: var(--r-sm);
-  background: var(--accent);
-  color: #ffffff;
+  height: 64px;
+  border-radius: var(--r-md);
+  background: #14161F;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: var(--font-heading);
-  font-weight: 800;
-  font-size: 0.8rem;
-  margin: 0 0 20px 6px;
+  margin: 0 0 20px;
+  overflow: hidden;
+}
+.railLogo img {
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
+  padding: 6px;
 }
 
 .railLink {

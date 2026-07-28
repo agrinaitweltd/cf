@@ -225,11 +225,13 @@ function ConstructionPage() {
 function App() {
   const { pathname } = useLocation()
   const navigate = useNavigate()
-  const [loading, setLoading] = useState(true);
+  const isInitialDashboardRoute = pathname.startsWith('/admin') || pathname.startsWith('/cleaning/dashboard')
+  const [loading, setLoading] = useState(!isInitialDashboardRoute);
   const [isUnderConstruction, setIsUnderConstruction] = useState(null);
   const previousPathRef = useRef(pathname);
   const isCleaningRoute = pathname.startsWith('/cleaning')
   const isSelectionRoute = pathname === '/select-service' || pathname === '/' || pathname.startsWith('/admin')
+  const isDashboardRoute = pathname.startsWith('/admin') || pathname.startsWith('/cleaning/dashboard')
 
   const loadingLogoSrc = isCleaningRoute ? '/logo2.png' : '/logo.png'
   const loadingLogoAlt = isCleaningRoute ? 'CF Hub & Co. Cleaning Services' : 'CF HUB UK'
@@ -260,7 +262,7 @@ function App() {
   useLayoutEffect(() => {
     if (previousPathRef.current !== pathname) {
       previousPathRef.current = pathname;
-      setLoading(true);
+      setLoading(!isDashboardRoute);
     }
   }, [pathname]);
 
@@ -327,7 +329,7 @@ function App() {
     return <ConstructionPage />;
   }
 
-  if (loading) {
+  if (loading && !isDashboardRoute) {
     return <LoadingScreen key={pathname} onFinish={handleFinish} logoSrc={loadingLogoSrc} logoAlt={loadingLogoAlt} />;
   }
 

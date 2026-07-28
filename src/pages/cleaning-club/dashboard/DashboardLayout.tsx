@@ -1,5 +1,6 @@
 import { NavLink, Outlet, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../../context/AuthContext'
+import { useIdleLogout } from '../../../hooks/useIdleLogout'
 import NotificationBell from './NotificationBell'
 import styles from './DashboardLayout.module.css'
 
@@ -18,6 +19,8 @@ export default function DashboardLayout() {
   const { signOut } = useAuth()
   const navigate = useNavigate()
 
+  useIdleLogout('/cleaning/sign-in')
+
   const handleLogout = async () => {
     await signOut()
     navigate('/cleaning')
@@ -28,6 +31,7 @@ export default function DashboardLayout() {
       <div className="container">
         <div className={styles.layout}>
           <nav className={styles.sidebar} aria-label="Dashboard navigation">
+            <img src="/logo2.png" alt="CF Hub & Co." className={styles.sidebarLogo} />
             {NAV_ITEMS.map(item => (
               <NavLink
                 key={item.to}

@@ -71,6 +71,7 @@ export default function AdminRoles() {
               <tr>
                 <th>Name</th>
                 <th>Email</th>
+                <th>Phone</th>
                 <th>Role</th>
                 <th>Status</th>
                 <th>Invited</th>
@@ -85,6 +86,7 @@ export default function AdminRoles() {
                   <tr key={a.id}>
                     <td>{a.full_name || '—'}</td>
                     <td>{a.invite_email || '—'}</td>
+                    <td>{a.phone || '—'}</td>
                     <td style={{ textTransform: 'capitalize' }}>{a.role.replace('_', ' ')}</td>
                     <td>
                       <span className={`${styles.statusDot} ${pending ? styles.dotWarn : a.activated ? styles.dotActive : styles.dotInactive}`} />

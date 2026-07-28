@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useMembershipData } from './useMembershipData'
 import { supabase } from '../../../lib/supabase'
+import { safeFetchJson } from '../../../lib/api'
 import styles from './Dashboard.module.css'
 import tableStyles from './DataTable.module.css'
 
@@ -14,14 +15,11 @@ const STATUS_LABEL: Record<string, string> = {
 async function postBookingAction(body: Record<string, unknown>) {
   const { data: sessionData } = await supabase.auth.getSession()
   const token = sessionData.session?.access_token
-  const res = await fetch('/api/customer/booking-action', {
+  return safeFetchJson('/api/customer/booking-action', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
     body: JSON.stringify(body),
   })
-  const json = await res.json()
-  if (!res.ok) throw new Error(json.error || 'Something went wrong.')
-  return json
 }
 
 export default function UpcomingCleans() {
