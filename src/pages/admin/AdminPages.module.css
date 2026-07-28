@@ -146,25 +146,106 @@
 .pageBtn:disabled { opacity: 0.4; cursor: not-allowed; }
 .pageInfo { font-size: 0.78rem; color: var(--text-muted); }
 
-.toolbar { display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
+.toolbar { display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; align-items: center; }
 .searchInput {
   flex: 1;
   min-width: 200px;
-  background: var(--bg-card);
+  background: var(--bg-primary);
   border: 1px solid var(--border);
   border-radius: var(--r-sm);
-  padding: 11px 16px;
+  padding: 11px 16px 11px 38px;
   color: var(--text-primary);
   font-size: 0.88rem;
   outline: none;
 }
 .searchInput:focus { border-color: var(--border-hover); }
 
+.searchWrap { position: relative; flex: 1; min-width: 200px; }
+.searchIcon { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); color: var(--text-muted); pointer-events: none; }
+
+.filterBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--border);
+  background: var(--bg-primary);
+  color: var(--text-secondary);
+  font-size: 0.84rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.filterBtn:hover { border-color: var(--border-hover); color: var(--text-primary); }
+
+/* Card wrapper for a whole data section (title + subtitle + count badge + tabs + toolbar + table) */
+.dataCard {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  padding: 26px 26px 0;
+}
+.dataCardHead { margin-bottom: 22px; }
+.dataCardTitleRow { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+.dataCardTitle { font-size: 1.05rem; font-weight: 700; color: var(--white); }
+.dataCardCount {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--accent);
+  background: var(--accent-dim);
+  border: 1px solid var(--accent-border);
+  padding: 2px 10px;
+  border-radius: var(--r-full);
+}
+.dataCardSubtitle { font-size: 0.84rem; color: var(--text-muted); }
+
+.statusDot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  margin-right: 7px;
+  flex-shrink: 0;
+}
+.dotActive { background: var(--accent); }
+.dotInactive { background: var(--text-muted); }
+.dotWarn { background: #f0a030; }
+
+.tagPill {
+  display: inline-block;
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  padding: 3px 10px;
+  border-radius: var(--r-full);
+  margin-right: 5px;
+  white-space: nowrap;
+}
+
+.checkbox {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+.rowSub { font-size: 0.74rem; color: var(--text-muted); margin-top: 2px; }
+
 .tableWrap {
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: var(--r-md);
   overflow-x: auto;
+}
+
+.dataCard .tableWrap {
+  border: none;
+  border-radius: 0;
+  margin: 0 -26px;
+  width: calc(100% + 52px);
 }
 .table { width: 100%; border-collapse: collapse; min-width: 640px; }
 .table th {

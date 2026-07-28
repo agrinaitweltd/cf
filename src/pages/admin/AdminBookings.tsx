@@ -68,21 +68,30 @@ export default function AdminBookings() {
       {error && <p className={styles.error}>{error}</p>}
       {actionError && <p className={styles.error}>{actionError}</p>}
 
-      <div className={styles.tabRow}>
-        <button type="button" className={`${styles.tabBtn} ${tab === 'upcoming' ? styles.tabBtnActive : ''}`} onClick={() => setTab('upcoming')}>Upcoming</button>
-        <button type="button" className={`${styles.tabBtn} ${tab === 'completed' ? styles.tabBtnActive : ''}`} onClick={() => setTab('completed')}>Completed</button>
-        <button type="button" className={`${styles.tabBtn} ${tab === 'cancelled' ? styles.tabBtnActive : ''}`} onClick={() => setTab('cancelled')}>Cancelled</button>
-      </div>
+      <div className={styles.dataCard}>
+        <div className={styles.dataCardHead}>
+          <div className={styles.dataCardTitleRow}>
+            <span className={styles.dataCardTitle}>Clean schedule</span>
+            <span className={styles.dataCardCount}>{bookings.length} bookings</span>
+          </div>
+          <p className={styles.dataCardSubtitle}>Assign cleaners and track upcoming, completed and cancelled cleans.</p>
+        </div>
 
-      <div className={styles.toolbar}>
-        <span style={{ flex: 1 }} />
-        <button type="button" className="btn btn-primary" onClick={() => setCreating(true)}>+ New Booking</button>
-      </div>
+        <div className={styles.tabRow}>
+          <button type="button" className={`${styles.tabBtn} ${tab === 'upcoming' ? styles.tabBtnActive : ''}`} onClick={() => setTab('upcoming')}>Upcoming</button>
+          <button type="button" className={`${styles.tabBtn} ${tab === 'completed' ? styles.tabBtnActive : ''}`} onClick={() => setTab('completed')}>Completed</button>
+          <button type="button" className={`${styles.tabBtn} ${tab === 'cancelled' ? styles.tabBtnActive : ''}`} onClick={() => setTab('cancelled')}>Cancelled</button>
+        </div>
 
-      {filtered.length === 0 ? (
-        <div className={styles.empty}>No {tab} bookings.</div>
-      ) : (
-        <div className={styles.tableWrap}>
+        <div className={styles.toolbar}>
+          <span style={{ flex: 1 }} />
+          <button type="button" className="btn btn-primary" onClick={() => setCreating(true)}>+ New Booking</button>
+        </div>
+
+        {filtered.length === 0 ? (
+          <div className={styles.empty}>No {tab} bookings.</div>
+        ) : (
+          <div className={styles.tableWrap}>
           <table className={styles.table}>
             <thead>
               <tr>
@@ -123,8 +132,9 @@ export default function AdminBookings() {
               })}
             </tbody>
           </table>
-        </div>
-      )}
+          </div>
+        )}
+      </div>
 
       {assignTarget && (
         <div className={styles.modalOverlay} onClick={() => setAssignTarget(null)}>
