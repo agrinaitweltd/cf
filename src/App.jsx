@@ -44,6 +44,8 @@ const Rewards = lazy(() => import('./pages/cleaning-club/dashboard/Rewards'))
 const Notifications = lazy(() => import('./pages/cleaning-club/dashboard/Notifications'))
 const Support = lazy(() => import('./pages/cleaning-club/dashboard/Support'))
 const ProtectedRoute = lazy(() => import('./components/cleaning-club/ProtectedRoute'))
+const OnboardingRoute = lazy(() => import('./components/cleaning-club/OnboardingRoute'))
+const Onboarding = lazy(() => import('./pages/cleaning-club/Onboarding'))
 
 const AdminLogin = lazy(() => import('./pages/admin/AdminLogin'))
 const AdminSetup = lazy(() => import('./pages/admin/AdminSetup'))
@@ -124,6 +126,10 @@ const SEO_BY_PATH = {
     title: 'Reset Password | The Clean Club',
     description: 'Choose a new password for your Clean Club account.',
   },
+  '/cleaning/onboarding': {
+    title: 'Complete Your Account | The Clean Club',
+    description: 'Add a few more details to finish setting up your Clean Club account.',
+  },
   '/cleaning/dashboard': {
     title: 'My Dashboard | The Clean Club',
     description: 'View your Clean Club membership, upcoming cleans and payment history.',
@@ -183,8 +189,10 @@ const SEO_BY_PATH = {
 }
 
 const CONSTRUCTION_MARKER = 'CF_HUB_UNDER_CONSTRUCTION'
+const ADMIN_ACCESS_PIN = '1900'
 
 function ConstructionPage() {
+  const navigate = useNavigate()
   return (
     <main
       style={{
@@ -195,6 +203,7 @@ function ConstructionPage() {
         color: '#fff',
         padding: '24px',
         textAlign: 'center',
+        position: 'relative',
       }}
     >
       <div>
@@ -218,6 +227,86 @@ function ConstructionPage() {
           making the site better for our customers
         </p>
       </div>
+      <button
+        type="button"
+        onClick={() => navigate('/site-access')}
+        aria-label="Admin click here"
+        title="Admin click here"
+        style={{
+          position: 'absolute',
+          bottom: '20px',
+          right: '20px',
+          width: '36px',
+          height: '36px',
+          borderRadius: '50%',
+          border: '1px solid rgba(255,255,255,0.18)',
+          background: 'rgba(255,255,255,0.04)',
+          color: 'rgba(255,255,255,0.35)',
+          cursor: 'pointer',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+        </svg>
+      </button>
+    </main>
+  )
+}
+
+function AdminAccessPin() {
+  const navigate = useNavigate()
+  const [pin, setPin] = useState('')
+  const [error, setError] = useState('')
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    if (pin === ADMIN_ACCESS_PIN) {
+      sessionStorage.setItem('cf-construction-bypass', 'true')
+      navigate('/admin/login')
+    } else {
+      setError('Incorrect PIN.')
+      setPin('')
+    }
+  }
+
+  return (
+    <main
+      style={{
+        minHeight: '100vh',
+        display: 'grid',
+        placeItems: 'center',
+        background: '#000',
+        color: '#fff',
+        padding: '24px',
+      }}
+    >
+      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16, width: '100%', maxWidth: 280 }}>
+        <h1 style={{ fontSize: '1.3rem', fontWeight: 700, margin: 0 }}>Enter Admin PIN</h1>
+        <input
+          type="password"
+          inputMode="numeric"
+          maxLength={4}
+          value={pin}
+          onChange={e => { setPin(e.target.value.replace(/\D/g, '')); setError('') }}
+          autoFocus
+          style={{
+            width: '140px',
+            textAlign: 'center',
+            fontSize: '1.6rem',
+            letterSpacing: '10px',
+            padding: '12px 0',
+            borderRadius: '8px',
+            border: '1px solid rgba(255,255,255,0.25)',
+            background: 'rgba(255,255,255,0.05)',
+            color: '#fff',
+          }}
+        />
+        {error && <p style={{ color: '#f05050', fontSize: '0.85rem', margin: 0 }}>{error}</p>}
+        <button type="submit" className="btn btn-primary" style={{ width: '100%' }}>Continue</button>
+      </form>
     </main>
   )
 }
@@ -320,12 +409,15 @@ function App() {
   }, [pathname]);
 
   const isAdminRoute = pathname.startsWith('/admin')
+  const isSiteAccessRoute = pathname === '/site-access'
+  const hasConstructionBypass = typeof window !== 'undefined' && sessionStorage.getItem('cf-construction-bypass') === 'true'
+  const bypassesConstruction = isAdminRoute || isSiteAccessRoute || hasConstructionBypass
 
-  if (isUnderConstruction === null && !isAdminRoute) {
+  if (isUnderConstruction === null && !bypassesConstruction) {
     return <main style={{ minHeight: '100vh', background: '#000' }} />;
   }
 
-  if (isUnderConstruction && !isAdminRoute) {
+  if (isUnderConstruction && !bypassesConstruction) {
     return <ConstructionPage />;
   }
 
@@ -369,6 +461,11 @@ function App() {
             <Route path="/cleaning/verify-email" element={<VerifyEmail />} />
             <Route path="/cleaning/forgot-password" element={<ForgotPassword />} />
             <Route path="/cleaning/reset-password" element={<ResetPassword />} />
+            <Route path="/cleaning/onboarding" element={
+              <OnboardingRoute>
+                <Onboarding />
+              </OnboardingRoute>
+            } />
             <Route path="/cleaning/dashboard" element={
               <ProtectedRoute>
                 <DashboardLayout />
@@ -383,6 +480,7 @@ function App() {
               <Route path="support" element={<Support />} />
               <Route path="profile" element={<CustomerProfile />} />
             </Route>
+            <Route path="/site-access" element={<AdminAccessPin />} />
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin/setup" element={<AdminSetup />} />
             <Route path="/admin" element={
